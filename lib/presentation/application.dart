@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:skolo_slide_hack/presentation/screens/menu_screen.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -16,7 +17,10 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: const PuzzlePage(),
+      home:
+          //until we add navigation, uncomment to check Menu Screen
+          //const MenuScreen(),
+          const PuzzlePage(),
     );
   }
 }

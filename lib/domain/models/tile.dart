@@ -10,7 +10,7 @@ class Tile extends Equatable {
     this.isWhitespace = false,
   });
 
-  /// Denotes the [Tile] current position in the puzzle board
+  /// Denotes the [Tile] value in the puzzle board
   final int value;
 
   /// The correct 2D [Position] of the [Tile]. All tiles must be in their

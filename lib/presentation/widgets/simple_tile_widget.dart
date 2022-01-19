@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 
 /// [SimpleTileWidget] stands for one tile widget.
@@ -22,6 +23,11 @@ class SimpleTileWidget extends StatelessWidget {
             onTap: onTap,
             child: Container(
               color: Colors.blue,
+              alignment: Alignment.center,
+              child: Text(
+                '${tile.value}',
+                style: numberTextStyle,
+              ),
             ),
           );
   }

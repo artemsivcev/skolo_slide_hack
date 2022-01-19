@@ -28,7 +28,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
               return PuzzleBoard(
                 size: puzzleState.size,
                 tiles: List.generate(
-                  16,
+                  tiles.length,
                   (index) => SimpleTileWidget(
                     onTap: () => puzzleState.onTileTapped(index),
                     tile: tiles[index],

@@ -1,25 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 
-// A 3x3 puzzle board visualization:
-//
-//   ┌─────1───────2───────3────► x
-//   │  ┌─────┐ ┌─────┐ ┌─────┐
-//   1  │  1  │ │  2  │ │  3  │
-//   │  └─────┘ └─────┘ └─────┘
-//   │  ┌─────┐ ┌─────┐ ┌─────┐
-//   2  │  4  │ │  5  │ │  6  │
-//   │  └─────┘ └─────┘ └─────┘
-//   │  ┌─────┐ ┌─────┐
-//   3  │  7  │ │  8  │
-//   │  └─────┘ └─────┘
-//   ▼
-//   y
-//
-// This puzzle is in its completed state (all tiles are arranged in
-// ascending order by value from top to bottom, left to right).
-// Each tile has a value (1-8 due to the example), correct and current positions.
-
 /// Model for a puzzle.
 class Puzzle extends Equatable {
   const Puzzle({required this.tiles});
@@ -28,11 +9,11 @@ class Puzzle extends Equatable {
   final List<Tile> tiles;
 
   /// Get the single whitespace tile object in the puzzle.
-  Tile getWhitespaceTile() => tiles.singleWhere((tile) => tile.isWhitespace);
+  Tile get getWhitespaceTile => tiles.singleWhere((tile) => tile.isWhitespace);
 
   /// Determines if the tapped tile can move in the direction of the whitespace tile.
   bool isTileMovable(Tile tile) {
-    final whitespaceTile = getWhitespaceTile();
+    final whitespaceTile = getWhitespaceTile;
     if (tile == whitespaceTile) {
       return false;
     }
@@ -49,7 +30,7 @@ class Puzzle extends Equatable {
   /// Recursively stores a list of all tiles that need to be moved and passes the
   /// list to _swapTiles to individually swap them.
   Puzzle moveTiles(Tile tile, List<Tile> tilesToSwap) {
-    final whitespaceTile = getWhitespaceTile();
+    final whitespaceTile = getWhitespaceTile;
     final deltaX = whitespaceTile.currentPosition.x - tile.currentPosition.x;
     final deltaY = whitespaceTile.currentPosition.y - tile.currentPosition.y;
 
@@ -75,7 +56,7 @@ class Puzzle extends Equatable {
     for (final tileToSwap in tilesToSwap.reversed) {
       final tileIndex = tiles.indexOf(tileToSwap);
       final tile = tiles[tileIndex];
-      final whitespaceTile = getWhitespaceTile();
+      final whitespaceTile = getWhitespaceTile;
       final whitespaceTileIndex = tiles.indexOf(whitespaceTile);
 
       // Swap current board positions of the moving tile and the whitespace.
@@ -93,9 +74,10 @@ class Puzzle extends Equatable {
   /// Sorts puzzle tiles so they are in order of their current position.
   Puzzle sort() {
     final sortedTiles = tiles.toList()
-      ..sort((tileA, tileB) {
-        return tileA.currentPosition.compareTo(tileB.currentPosition);
-      });
+      ..sort(
+        (firstTile, secondTile) =>
+            firstTile.currentPosition.compareTo(secondTile.currentPosition),
+      );
     return Puzzle(tiles: sortedTiles);
   }
 

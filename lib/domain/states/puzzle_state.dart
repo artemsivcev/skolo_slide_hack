@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
@@ -10,6 +11,10 @@ class PuzzleState = _PuzzleState with _$PuzzleState;
 abstract class _PuzzleState with Store {
   /// size of board (if dimensions are 4x4, size is 4)
   final int size = 4;
+
+  /// [random] is used for randomly shuffling puzzle
+  /// as the main purpose of this game
+  final Random random = Random();
 
   /// main puzzle board with tiles and main methods
   @observable
@@ -38,7 +43,7 @@ abstract class _PuzzleState with Store {
   }
 
   /// Build puzzle of the given size.
-  Puzzle _generatePuzzle() {
+  Puzzle _generatePuzzle({bool shuffle = true}) {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
     final whitespacePosition = Position(x: size, y: size);
@@ -57,12 +62,19 @@ abstract class _PuzzleState with Store {
       }
     }
 
+    if (shuffle) {
+      // Randomize only the current tile positions.
+      currentPositions.shuffle(random);
+    }
+
     var tiles = _getTileListFromPositions(
       correctPositions: correctPositions,
       currentPositions: currentPositions,
     );
 
-    return Puzzle(tiles: tiles);
+    var puzzle = Puzzle(tiles: tiles);
+
+    return puzzle.sort();
   }
 
   /// Build a list of tiles, giving each tile its correct and

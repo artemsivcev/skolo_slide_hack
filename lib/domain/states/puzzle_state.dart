@@ -24,6 +24,16 @@ abstract class _PuzzleState with Store {
   @computed
   List<Tile> get tiles => puzzle == null ? [] : puzzle!.tiles;
 
+  /// list of [tiles] current positions
+  @computed
+  List<Position> get tilesCurrentPositions =>
+      tiles.map((e) => e.currentPosition).toList();
+
+  /// list of [tiles] correct positions
+  @computed
+  List<Position> get tilesCorrectPositions =>
+      tiles.map((e) => e.correctPosition).toList();
+
   _PuzzleState() {
     generatePuzzle();
   }
@@ -58,30 +68,12 @@ abstract class _PuzzleState with Store {
       }
     }
 
-    // Randomize the current tile positions.
-    currentPositions.shuffle(random);
-
-    var tiles = getTilesFromPositions(
-      correctPositions: correctPositions,
-      currentPositions: currentPositions,
+    // shuffle puzzle
+    puzzle = shufflePuzzle(
+      correctPos: correctPositions,
+      currentPos: currentPositions,
     );
-
-    var newPuzzle = Puzzle(tiles: tiles);
-
-    // Assign the tiles new current positions until the puzzle can be solved
-    while (!newPuzzle.canBeSolved) {
-      currentPositions.shuffle(random);
-      tiles = getTilesFromPositions(
-        correctPositions: correctPositions,
-        currentPositions: currentPositions,
-      );
-      newPuzzle = Puzzle(tiles: tiles);
-    }
-
-    puzzle = newPuzzle.sort();
   }
-
-  @action
 
   /// Build a list of tiles with their correct and current position.
   List<Tile> getTilesFromPositions({
@@ -100,5 +92,40 @@ abstract class _PuzzleState with Store {
         isEmpty: index + 1 == size * size,
       ),
     );
+  }
+
+  /// on shuffle button tap
+  @action
+  void shuffleButtonTap() => puzzle = shufflePuzzle(
+        correctPos: tilesCorrectPositions,
+        currentPos: tilesCurrentPositions,
+      );
+
+  /// shuffle puzzle tiles with [random]
+  Puzzle shufflePuzzle({
+    required List<Position> correctPos,
+    required List<Position> currentPos,
+  }) {
+    // Randomize the current tile positions.
+    currentPos.shuffle(random);
+
+    var tiles = getTilesFromPositions(
+      correctPositions: correctPos,
+      currentPositions: currentPos,
+    );
+
+    var newPuzzle = Puzzle(tiles: tiles);
+
+    // Assign the tiles new current positions until the puzzle can be solved
+    while (!newPuzzle.canBeSolved) {
+      currentPos.shuffle(random);
+      tiles = getTilesFromPositions(
+        correctPositions: correctPos,
+        currentPositions: currentPos,
+      );
+      newPuzzle = Puzzle(tiles: tiles);
+    }
+
+    return newPuzzle.sort();
   }
 }

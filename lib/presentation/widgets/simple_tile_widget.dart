@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 
@@ -22,7 +23,7 @@ class SimpleTileWidget extends StatelessWidget {
         : InkWell(
             onTap: onTap,
             child: Container(
-              color: Colors.blue,
+              color: blueColour,
               alignment: Alignment.center,
               child: Text(
                 '${tile.value}',

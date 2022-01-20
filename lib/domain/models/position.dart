@@ -13,6 +13,12 @@ class Position extends Equatable implements Comparable<Position> {
   @override
   List<Object> get props => [x, y];
 
+  /// difference (delta) between x-coordinate position
+  int deltaX(Position other) => x - other.x;
+
+  /// difference (delta) between y-coordinate position
+  int deltaY(Position other) => y - other.y;
+
   /// comparing given positions due to their x and y coordinates
   @override
   int compareTo(Position other) {

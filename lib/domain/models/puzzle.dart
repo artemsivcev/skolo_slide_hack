@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:equatable/equatable.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 
@@ -8,62 +9,65 @@ class Puzzle extends Equatable {
   /// List of [Tile]s representing the puzzle's current arrangement.
   final List<Tile> tiles;
 
-  /// Get the single whitespace tile object in the puzzle.
-  Tile get getWhitespaceTile => tiles.singleWhere((tile) => tile.isWhitespace);
+  /// Get the empty tile object in the puzzle.
+  Tile get getEmptyTile => tiles.singleWhere((tile) => tile.isEmpty);
 
-  /// Determines if the tapped tile can move in the direction of the whitespace tile.
+  /// The dimension of a puzzle due to its tile layout
+  /// For example: A dimension of a 4x4 puzzle is 4.
+  int get getDimension => sqrt(tiles.length).toInt();
+
+  /// Determines if the tapped tile can move in the direction of the empty tile.
   bool isTileMovable(Tile tile) {
-    final whitespaceTile = getWhitespaceTile;
-    if (tile == whitespaceTile) {
+    final emptyTile = getEmptyTile;
+    if (tile == emptyTile) {
       return false;
     }
 
-    // A tile must be in the same row or column as the whitespace to move.
-    if (whitespaceTile.currentPosition.x != tile.currentPosition.x &&
-        whitespaceTile.currentPosition.y != tile.currentPosition.y) {
+    // A tile must be in the same row or column as the empty to move.
+    if (emptyTile.currentPosition.x != tile.currentPosition.x &&
+        emptyTile.currentPosition.y != tile.currentPosition.y) {
       return false;
     }
     return true;
   }
 
-  /// Shifts one or many tiles in a row/column with the whitespace and returns the modified puzzle.
-  /// Recursively stores a list of all tiles that need to be moved and passes the
-  /// list to _swapTiles to individually swap them.
+  /// Shifts one or many tiles and returns the modified puzzle.
+  /// A list of all tiles that need to be moved is recursively stored and swapped by [swapTiles].
   Puzzle moveTiles(Tile tile, List<Tile> tilesToSwap) {
-    final whitespaceTile = getWhitespaceTile;
-    final deltaX = whitespaceTile.currentPosition.x - tile.currentPosition.x;
-    final deltaY = whitespaceTile.currentPosition.y - tile.currentPosition.y;
+    final deltaX = getEmptyTile.currentPosition.deltaX(tile.currentPosition);
+    final deltaY = getEmptyTile.currentPosition.deltaY(tile.currentPosition);
 
-    if ((deltaX.abs() + deltaY.abs()) > 1) {
-      final shiftPointX = tile.currentPosition.x + deltaX.sign;
-      final shiftPointY = tile.currentPosition.y + deltaY.sign;
-      final tileToSwapWith = tiles.singleWhere(
-        (tile) =>
-            tile.currentPosition.x == shiftPointX &&
-            tile.currentPosition.y == shiftPointY,
-      );
+    // if tile is positioned near the empty tile, we just pass it for swapping each other.
+    // if it is not, we recursively pass it to the same method and
+    // swap in individual order after it finally stands near the empty one.
+    if (deltaX.abs() + deltaY.abs() > 1) {
+      // find the nearest position we need to shift the tile due to deltas
+      final shiftX = tile.currentPosition.x + deltaX.sign;
+      final shiftY = tile.currentPosition.y + deltaY.sign;
+      final tileToSwapWith = tiles.singleWhere((tile) =>
+          tile.currentPosition.x == shiftX && tile.currentPosition.y == shiftY);
       tilesToSwap.add(tile);
       return moveTiles(tileToSwapWith, tilesToSwap);
     } else {
       tilesToSwap.add(tile);
-      return _swapTiles(tilesToSwap);
+      return swapTiles(tilesToSwap);
     }
   }
 
-  /// Returns puzzle with new tile arrangement after individually swapping each
-  /// tile in tilesToSwap with the whitespace.
-  Puzzle _swapTiles(List<Tile> tilesToSwap) {
-    for (final tileToSwap in tilesToSwap.reversed) {
+  /// Returns puzzle with new tile arrangement after swapping each
+  /// tile in [tilesToSwap] with the empty onr.
+  Puzzle swapTiles(List<Tile> tilesToSwap) {
+    for (var tileToSwap in tilesToSwap.reversed) {
       final tileIndex = tiles.indexOf(tileToSwap);
       final tile = tiles[tileIndex];
-      final whitespaceTile = getWhitespaceTile;
-      final whitespaceTileIndex = tiles.indexOf(whitespaceTile);
+      final emptyTile = getEmptyTile;
+      final emptyTileIndex = tiles.indexOf(emptyTile);
 
-      // Swap current board positions of the moving tile and the whitespace.
+      // Swap current board positions of the moving tile and the empty.
       tiles[tileIndex] = tile.copyWith(
-        currentPosition: whitespaceTile.currentPosition,
+        currentPosition: emptyTile.currentPosition,
       );
-      tiles[whitespaceTileIndex] = whitespaceTile.copyWith(
+      tiles[emptyTileIndex] = emptyTile.copyWith(
         currentPosition: tile.currentPosition,
       );
     }
@@ -73,13 +77,59 @@ class Puzzle extends Equatable {
 
   /// Sorts puzzle tiles so they are in order of their current position.
   Puzzle sort() {
-    final sortedTiles = tiles.toList()
-      ..sort(
+    final sortedTiles = [...tiles]..sort(
         (firstTile, secondTile) =>
             firstTile.currentPosition.compareTo(secondTile.currentPosition),
       );
     return Puzzle(tiles: sortedTiles);
   }
+
+  /// Detects if puzzle is solvable
+  /// It depends on the number of inversion (an inversion is any pair of tiles that are not
+  /// in the correct order) and should suits the formula:
+  /// - If the puzzle width is odd, the number of inversions in a solvable situation is even.
+  /// - If the puzzle width is even, and the blank is on an even row counting from the bottom,
+  /// the number of inversions in a solvable situation is odd.
+  /// - If the puzzle width is even, and the blank is on an odd row counting from the bottom,
+  /// the number of inversions in a solvable situation is even.
+  bool get canBeSolved {
+    var puzzleDimension = getDimension;
+    var inversions = countInversions();
+
+    if (puzzleDimension.isOdd) {
+      return inversions.isEven;
+    }
+
+    var emptyTileRow = getEmptyTile.currentPosition.y;
+
+    return (puzzleDimension - emptyTileRow + 1).isEven
+        ? inversions.isOdd
+        : inversions.isEven;
+  }
+
+  /// Count the number of inversions in a puzzle due to the tile layout.
+  /// Empty tile is not considered when finding inversions.
+  int countInversions() {
+    var count = 0;
+
+    for (var i = 0; i < tiles.length; i++) {
+      if (tiles[i].isEmpty) continue;
+
+      for (var j = i + 1; j < tiles.length; j++) {
+        if (!tiles[j].isEmpty && isInversion(tiles[i], tiles[j])) {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  /// Determines if there is an inversion between tiles. As tiles are not sorted due to their
+  /// current position now (their values are placed correctly in the ascending order),
+  /// we need to compare their current position - not values:
+  /// A tile of a higher value should be in a greater position than a tile of a lower value.
+  bool isInversion(Tile a, Tile b) =>
+      a.currentPosition.compareTo(b.currentPosition) > 0;
 
   @override
   List<Object> get props => [tiles];

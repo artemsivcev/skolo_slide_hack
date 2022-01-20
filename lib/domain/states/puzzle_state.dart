@@ -47,14 +47,14 @@ abstract class _PuzzleState with Store {
   void generatePuzzle() {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
-    final whitespacePos = Position(x: size, y: size);
+    final emptyPos = Position(x: size, y: size);
 
     // Create all possible board positions.
     for (var y = 1; y <= size; y++) {
       for (var x = 1; x <= size; x++) {
         final pos = Position(x: x, y: y);
-        correctPositions.add(x == size && y == size ? whitespacePos : pos);
-        currentPositions.add(x == size && y == size ? whitespacePos : pos);
+        correctPositions.add(x == size && y == size ? emptyPos : pos);
+        currentPositions.add(x == size && y == size ? emptyPos : pos);
       }
     }
 
@@ -66,7 +66,19 @@ abstract class _PuzzleState with Store {
       currentPositions: currentPositions,
     );
 
-    puzzle = Puzzle(tiles: tiles).sort();
+    var newPuzzle = Puzzle(tiles: tiles);
+
+    // Assign the tiles new current positions until the puzzle can be solved
+    while (!newPuzzle.canBeSolved) {
+      currentPositions.shuffle(random);
+      tiles = getTilesFromPositions(
+        correctPositions: correctPositions,
+        currentPositions: currentPositions,
+      );
+      newPuzzle = Puzzle(tiles: tiles);
+    }
+
+    puzzle = newPuzzle.sort();
   }
 
   @action
@@ -76,17 +88,16 @@ abstract class _PuzzleState with Store {
     required List<Position> correctPositions,
     required List<Position> currentPositions,
   }) {
-    final whitespacePosition = Position(x: size, y: size);
+    final emptyPosition = Position(x: size, y: size);
 
     return List.generate(
       size * size,
       (index) => Tile(
         value: index + 1,
-        correctPosition: index + 1 == size * size
-            ? whitespacePosition
-            : correctPositions[index],
+        correctPosition:
+            index + 1 == size * size ? emptyPosition : correctPositions[index],
         currentPosition: currentPositions[index],
-        isWhitespace: index + 1 == size * size,
+        isEmpty: index + 1 == size * size,
       ),
     );
   }

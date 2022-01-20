@@ -7,7 +7,7 @@ class Tile extends Equatable {
     required this.value,
     required this.correctPosition,
     required this.currentPosition,
-    this.isWhitespace = false,
+    this.isEmpty = false,
   });
 
   /// Denotes the [Tile] value in the puzzle board
@@ -20,8 +20,8 @@ class Tile extends Equatable {
   /// The current 2D [Position] of the [Tile].
   final Position currentPosition;
 
-  /// Denotes if the [Tile] is the whitespace tile or not.
-  final bool isWhitespace;
+  /// Denotes if the [Tile] is the tile empty or not.
+  final bool isEmpty;
 
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({required Position currentPosition}) {
@@ -29,7 +29,7 @@ class Tile extends Equatable {
       value: value,
       correctPosition: correctPosition,
       currentPosition: currentPosition,
-      isWhitespace: isWhitespace,
+      isEmpty: isEmpty,
     );
   }
 
@@ -38,6 +38,6 @@ class Tile extends Equatable {
         value,
         correctPosition,
         currentPosition,
-        isWhitespace,
+        isEmpty,
       ];
 }

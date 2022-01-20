@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
@@ -11,6 +12,10 @@ abstract class _PuzzleState with Store {
   /// size of board (if dimensions are 4x4, size is 4)
   final int size = 4;
 
+  /// [random] is used for randomly shuffling puzzle
+  /// as the main purpose of this game
+  final Random random = Random();
+
   /// main puzzle board with tiles and main methods
   @observable
   Puzzle? puzzle;
@@ -19,8 +24,18 @@ abstract class _PuzzleState with Store {
   @computed
   List<Tile> get tiles => puzzle == null ? [] : puzzle!.tiles;
 
+  /// list of [tiles] current positions
+  @computed
+  List<Position> get tilesCurrentPositions =>
+      tiles.map((e) => e.currentPosition).toList();
+
+  /// list of [tiles] correct positions
+  @computed
+  List<Position> get tilesCorrectPositions =>
+      tiles.map((e) => e.correctPosition).toList();
+
   _PuzzleState() {
-    puzzle = _generatePuzzle();
+    generatePuzzle();
   }
 
   /// [onTileTapped] stands for method that is invoked when any tile is tapped.
@@ -31,56 +46,86 @@ abstract class _PuzzleState with Store {
     final tappedTile = tiles[indexTappedTile];
 
     if (puzzle!.isTileMovable(tappedTile)) {
-      final mutablePuzzle = Puzzle(tiles: [...tiles]);
+      final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
       puzzle = puzzleWithMovedTiles.sort();
     }
   }
 
   /// Build puzzle of the given size.
-  Puzzle _generatePuzzle() {
+  @action
+  void generatePuzzle() {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
-    final whitespacePosition = Position(x: size, y: size);
+    final emptyPos = Position(x: size, y: size);
 
     // Create all possible board positions.
     for (var y = 1; y <= size; y++) {
       for (var x = 1; x <= size; x++) {
-        if (x == size && y == size) {
-          correctPositions.add(whitespacePosition);
-          currentPositions.add(whitespacePosition);
-        } else {
-          final position = Position(x: x, y: y);
-          correctPositions.add(position);
-          currentPositions.add(position);
-        }
+        final pos = Position(x: x, y: y);
+        correctPositions.add(x == size && y == size ? emptyPos : pos);
+        currentPositions.add(x == size && y == size ? emptyPos : pos);
       }
     }
 
-    var tiles = _getTileListFromPositions(
-      correctPositions: correctPositions,
-      currentPositions: currentPositions,
+    // shuffle puzzle
+    puzzle = shufflePuzzle(
+      correctPos: correctPositions,
+      currentPos: currentPositions,
     );
-
-    return Puzzle(tiles: tiles);
   }
 
-  /// Build a list of tiles, giving each tile its correct and
-  /// current position.
-  List<Tile> _getTileListFromPositions({
+  /// Build a list of tiles with their correct and current position.
+  List<Tile> getTilesFromPositions({
     required List<Position> correctPositions,
     required List<Position> currentPositions,
   }) {
-    final whitespacePosition = Position(x: size, y: size);
-    return [
-      for (int i = 1; i <= size * size; i++)
-        Tile(
-          value: i,
-          correctPosition:
-              i == size * size ? whitespacePosition : correctPositions[i - 1],
-          currentPosition: currentPositions[i - 1],
-          isWhitespace: i == size * size,
-        )
-    ];
+    final emptyPosition = Position(x: size, y: size);
+
+    return List.generate(
+      size * size,
+      (index) => Tile(
+        value: index + 1,
+        correctPosition:
+            index + 1 == size * size ? emptyPosition : correctPositions[index],
+        currentPosition: currentPositions[index],
+        isEmpty: index + 1 == size * size,
+      ),
+    );
+  }
+
+  /// on shuffle button tap
+  @action
+  void shuffleButtonTap() => puzzle = shufflePuzzle(
+        correctPos: tilesCorrectPositions,
+        currentPos: tilesCurrentPositions,
+      );
+
+  /// shuffle puzzle tiles with [random]
+  Puzzle shufflePuzzle({
+    required List<Position> correctPos,
+    required List<Position> currentPos,
+  }) {
+    // Randomize the current tile positions.
+    currentPos.shuffle(random);
+
+    var tiles = getTilesFromPositions(
+      correctPositions: correctPos,
+      currentPositions: currentPos,
+    );
+
+    var newPuzzle = Puzzle(tiles: tiles);
+
+    // Assign the tiles new current positions until the puzzle can be solved
+    while (!newPuzzle.canBeSolved) {
+      currentPos.shuffle(random);
+      tiles = getTilesFromPositions(
+        correctPositions: correctPos,
+        currentPositions: currentPos,
+      );
+      newPuzzle = Puzzle(tiles: tiles);
+    }
+
+    return newPuzzle.sort();
   }
 }

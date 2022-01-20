@@ -24,6 +24,10 @@ abstract class _PuzzleState with Store {
   @computed
   List<Tile> get tiles => puzzle == null ? [] : puzzle!.tiles;
 
+  /// if the user win the game
+  @computed
+  bool get isComplete => puzzle == null ? false : puzzle!.isComplete;
+
   /// list of [tiles] current positions
   @computed
   List<Position> get tilesCurrentPositions =>
@@ -45,7 +49,7 @@ abstract class _PuzzleState with Store {
   void onTileTapped(int indexTappedTile) {
     final tappedTile = tiles[indexTappedTile];
 
-    if (puzzle!.isTileMovable(tappedTile)) {
+    if (puzzle!.isTileMovable(tappedTile) && !isComplete) {
       final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
       puzzle = puzzleWithMovedTiles.sort();

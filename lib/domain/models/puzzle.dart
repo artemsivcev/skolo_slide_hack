@@ -131,6 +131,23 @@ class Puzzle extends Equatable {
   bool isInversion(Tile a, Tile b) =>
       a.currentPosition.compareTo(b.currentPosition) > 0;
 
+  /// Count the number of tiles that are placed in their correct position.
+  int get countCorrectTiles {
+    final emptyTile = getEmptyTile;
+    var countCorrectTiles = 0;
+    for (final tile in tiles) {
+      if (tile == emptyTile) continue;
+
+      if (tile.currentPosition == tile.correctPosition) {
+        countCorrectTiles++;
+      }
+    }
+    return countCorrectTiles;
+  }
+
+  /// Determines if the puzzle is completed.
+  bool get isComplete => tiles.length == countCorrectTiles + 1;
+
   @override
   List<Object> get props => [tiles];
 }

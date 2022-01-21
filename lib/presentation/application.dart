@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       home:
           //until we add navigation, uncomment to check Menu Screen
-          //const MenuScreen(),
-          const PuzzlePage(),
+          const MenuScreen(),
+      // const PuzzlePage(),
     );
   }
 }

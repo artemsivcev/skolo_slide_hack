@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_btn_pressed.dart';
+import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_btn_unpressed.dart';
 
-class MenuButtonWidget extends StatelessWidget {
-  const MenuButtonWidget(
-      {Key? key, required this.iconUrl, required this.btnText})
+class MenuButtonWidget extends StatefulWidget {
+  MenuButtonWidget(
+      {Key? key,
+      required this.iconUrl,
+      required this.btnText,
+      required this.isPressed,
+      required this.onTap})
       : super(key: key);
 
   ///Url for button icon
@@ -13,51 +19,38 @@ class MenuButtonWidget extends StatelessWidget {
   ///Button text
   final String btnText;
 
+  ///Checks if button is pressed
+  final bool isPressed;
+
+  ///OnTap function
+  final VoidCallback onTap;
+
+  @override
+  _MenuButtonWidgetState createState() => _MenuButtonWidgetState();
+}
+
+class _MenuButtonWidgetState extends State<MenuButtonWidget> {
+  final menuState = injector<MenuState>();
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onTap: () {},
-      child: Column(
-        children: [
-          Container(
-            height: 100.0,
-            width: 100.0,
-            child: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: SvgPicture.asset(
-                iconUrl,
-                color: colorsPurpleBluePrimary,
-              ),
-            ),
-            decoration: const BoxDecoration(
-                color: colorsGreyMediumPrimary,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(3.0, 3.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 0.5,
-                      color: colorsGreyDarkPrimary),
-                  BoxShadow(
-                      offset: Offset(-3.0, -3.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 0.5,
-                      color: colorsWhitePrimary),
-                ]),
-          ),
-          const SizedBox(height: 20),
-          Text(btnText,
-              style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: colorsGreyDarkPrimary))
-        ],
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 1500),
+      firstCurve: Curves.easeInQuint,
+      secondCurve: Curves.easeInQuint,
+      firstChild: MenuBtnUnpressed(
+        iconUrl: widget.iconUrl,
+        btnText: widget.btnText,
+        onTap: widget.onTap,
       ),
+      secondChild: MenuBtnPressed(
+        iconUrl: widget.iconUrl,
+        btnText: widget.btnText,
+        onTap: widget.onTap,
+      ),
+      crossFadeState: widget.isPressed
+          ? CrossFadeState.showSecond
+          : CrossFadeState.showFirst,
     );
   }
 }

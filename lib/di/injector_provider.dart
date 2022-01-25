@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 /// It is necessary to register a file in the "injector"
@@ -7,6 +8,7 @@ final GetIt injector = GetIt.I;
 
 Future<void> setupInjection() async {
   injector.registerSingleton(PuzzleState());
+  injector.registerSingleton(MenuState());
 
   await injector.allReady();
 }

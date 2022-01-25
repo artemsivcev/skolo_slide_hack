@@ -49,8 +49,8 @@ dependencies:
   #localization
   easy_localization: ^3.0.0
 
-  #file picker for pick image and cropper for crop it
-  file_picker: ^4.3.2
+  #image_picker for pick image and cropperx for crop it to rectangle
+  image_picker: ^0.8.4+4
   cropperx: ^1.0.0
 
 dev_dependencies:

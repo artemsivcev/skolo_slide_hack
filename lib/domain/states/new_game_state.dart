@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 
 part 'new_game_state.g.dart';
@@ -15,16 +15,15 @@ abstract class _NewGameState with Store {
   @observable
   Uint8List? croppedImage;
 
+  final ImagePicker _picker = ImagePicker();
+
   Future<Uint8List?> chooseImagePress() async {
     isBtnChooseImagePressed = !isBtnChooseImagePressed;
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      withData: true,
-    );
-    if (result != null) {
-      PlatformFile file = result.files.first;
+    final XFile? image =
+        await _picker.pickImage(source: ImageSource.gallery, maxWidth: 720);
 
-      return file.bytes;
+    if (image != null) {
+      return image.readAsBytes();
     } else {
       // User canceled the picker
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
+import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 
 /// [SimpleTileWidget] stands for one tile widget.
 /// Depending on the condition if tile is empty or not
@@ -22,12 +22,13 @@ class SimpleTileWidget extends StatelessWidget {
         ? const SizedBox()
         : InkWell(
             onTap: onTap,
-            child: Container(
-              color: blueColour,
-              alignment: Alignment.center,
-              child: Text(
-                '${tile.value}',
-                style: numberTextStyle,
+            child: PolymorphicContainer(
+              userInnerStyle: false,
+              child: Center(
+                child: Text(
+                  '${tile.value}',
+                  style: numberTextStyle.copyWith(color: Colors.black),
+                ),
               ),
             ),
           );

@@ -29,6 +29,7 @@ class _CropPageState extends State<CropPage> {
       cropperKey: _cropperKey, // Reference it through the key
     );
     newGameState.croppedImage = imageBytes;
+    await Future.delayed(const Duration(microseconds: 1));
     Navigator.of(context).pop();
   }
 
@@ -46,20 +47,20 @@ class _CropPageState extends State<CropPage> {
           )
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              color: Colors.black,
-              padding: const EdgeInsets.all(8),
-              child: Cropper(
-                cropperKey: _cropperKey,
-                overlayType: OverlayType.rectangle,
-                image: Image.memory(widget.image),
-              ),
+      body: Container(
+        color:  Colors.white,
+        child: Expanded(
+          child: Hero(
+            tag: "imageName",
+            child: Cropper(
+              backgroundColor: Colors.white,
+              overlayColor:  Colors.white,
+              cropperKey: _cropperKey,
+              overlayType: OverlayType.rectangle,
+              image: Image.memory(widget.image),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

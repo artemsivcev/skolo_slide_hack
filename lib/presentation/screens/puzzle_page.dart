@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
+import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
-import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 class PuzzlePage extends StatefulWidget {
   const PuzzlePage({Key? key}) : super(key: key);
@@ -41,30 +42,42 @@ class _PuzzlePageState extends State<PuzzlePage> {
                 onPressed: () => puzzleState.shuffleButtonTap(),
                 iconColor: whiteColour,
               ),
-              const SizedBox(width: 36),
-              SizedBox(
-                width: 300,
-                height: 300,
+              onPressed: () => puzzleState.shuffleButtonTap(),
+              iconColor: whiteColour,
+            ),
+            const SizedBox(width: 36),
+            SizedBox(
+              width: 307,
+              height: 307,
+              child: PolymorphicContainer(
+                userInnerStyle: true,
                 child: Observer(
                   builder: (context) {
                     var tiles = puzzleState.tiles;
 
-                    return PuzzleBoard(
-                      size: puzzleState.size,
-                      tiles: List.generate(
-                        tiles.length,
-                        (index) => SimpleTileWidget(
-                          onTap: () => puzzleState.onTileTapped(index),
-                          tile: tiles[index],
+                    return Padding(
+                      padding: const EdgeInsets.all(7.0),
+                      child: SizedBox(
+                        width: 300,
+                        height: 300,
+                        child: PuzzleBoard(
+                          size: puzzleState.size,
+                          tiles: List.generate(
+                            tiles.length,
+                            (index) => SimpleTileWidget(
+                              onTap: () => puzzleState.onTileTapped(index),
+                              tile: tiles[index],
+                            ),
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
               ),
-            ],
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

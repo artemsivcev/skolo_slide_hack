@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
@@ -19,41 +20,51 @@ class _PuzzlePageState extends State<PuzzlePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ButtonWithIcon(
-              color: blueColour,
-              icon: const Icon(
-                Icons.refresh,
-              ),
-              onPressed: () => puzzleState.shuffleButtonTap(),
-              iconColor: whiteColour,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Observer(
+            builder: (context) => Text(
+              puzzleState.isComplete ? 'We win!!!!!!' : 'Find the solution',
+              style: puzzlePageTitleTextStyle,
             ),
-            const SizedBox(width: 36),
-            SizedBox(
-              width: 300,
-              height: 300,
-              child: Observer(
-                builder: (context) {
-                  var tiles = puzzleState.tiles;
+          ),
+          const SizedBox(height: 36),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ButtonWithIcon(
+                color: blueColour,
+                icon: const Icon(
+                  Icons.refresh,
+                ),
+                onPressed: () => puzzleState.shuffleButtonTap(),
+                iconColor: whiteColour,
+              ),
+              const SizedBox(width: 36),
+              SizedBox(
+                width: 300,
+                height: 300,
+                child: Observer(
+                  builder: (context) {
+                    var tiles = puzzleState.tiles;
 
-                  return PuzzleBoard(
-                    size: puzzleState.size,
-                    tiles: List.generate(
-                      tiles.length,
-                      (index) => SimpleTileWidget(
-                        onTap: () => puzzleState.onTileTapped(index),
-                        tile: tiles[index],
+                    return PuzzleBoard(
+                      size: puzzleState.size,
+                      tiles: List.generate(
+                        tiles.length,
+                        (index) => SimpleTileWidget(
+                          onTap: () => puzzleState.onTileTapped(index),
+                          tile: tiles[index],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }

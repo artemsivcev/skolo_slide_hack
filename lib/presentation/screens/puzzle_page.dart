@@ -4,6 +4,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
+import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
 
 class PuzzlePage extends StatefulWidget {
@@ -16,24 +17,8 @@ class PuzzlePage extends StatefulWidget {
 class _PuzzlePageState extends State<PuzzlePage> {
   final puzzleState = injector<PuzzleState>();
 
-  Color getTopLightShadowColor(Color backGroundColor) {
-    final hsl = HSLColor.fromColor(backGroundColor);
-    final hslDark = hsl.withLightness((hsl.lightness - 0.3).clamp(0.0, 1.0));
-
-    return hslDark.toColor().withOpacity(0.1);
-  }
-
-  Color getBottomDarkShadowColor(Color backGroundColor) {
-    final hsl = HSLColor.fromColor(backGroundColor);
-    final hslDark = hsl.withLightness((hsl.lightness + 0.3).clamp(0.0, 1.0));
-
-    return hslDark.toColor();
-  }
-
   @override
   Widget build(BuildContext context) {
-    var bg_color = Theme.of(context).canvasColor;
-
     return Scaffold(
       body: Center(
         child: Row(
@@ -48,29 +33,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
               iconColor: whiteColour,
             ),
             const SizedBox(width: 36),
-            Container(
+            SizedBox(
               width: 307,
               height: 307,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 7,
-                      color: getBottomDarkShadowColor(bg_color),
-                      offset: Offset(7, 7),
-                    ),
-                    BoxShadow(
-                      blurRadius: 7,
-                      color: getTopLightShadowColor(bg_color),
-                      offset: Offset(-7, -7),
-                    ),
-                  ],
-                ),
+              child: PolymorphicContainer(
+                userInnerStyle: true,
                 child: Observer(
                   builder: (context) {
                     var tiles = puzzleState.tiles;
@@ -95,7 +62,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                   },
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),

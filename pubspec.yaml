@@ -49,6 +49,10 @@ dependencies:
   #localization
   easy_localization: ^3.0.0
 
+  #file picker for pick image and cropper for crop it
+  file_picker: ^4.3.2
+  cropperx: ^1.0.0
+
 dev_dependencies:
   dart_code_metrics: ^4.9.1
   build_runner: ^2.1.7

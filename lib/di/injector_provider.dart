@@ -8,9 +8,9 @@ import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 final GetIt injector = GetIt.I;
 
 Future<void> setupInjection() async {
+  injector.registerSingleton(NewGameState());
   injector.registerSingleton(PuzzleState());
   injector.registerSingleton(MenuState());
-  injector.registerSingleton(NewGameState());
 
   await injector.allReady();
 }

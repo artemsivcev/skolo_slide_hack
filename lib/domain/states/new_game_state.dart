@@ -1,5 +1,7 @@
+import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:image/image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 
@@ -12,20 +14,75 @@ abstract class _NewGameState with Store {
   @observable
   bool isBtnChooseImagePressed = false;
 
+  //bool for btn state
+  @observable
+  bool isBtnPlayPressed = false;
+
+  //cropped image to preview on new game screen
   @observable
   Uint8List? croppedImage;
 
+  // divided user image. first value in index and second is image in Unit8List format
+  HashMap<dynamic, dynamic>? imageMap;
+
+  // image picker controller to get image from user space
   final ImagePicker _picker = ImagePicker();
 
+  // logic for choose image btn. It change btn state, choose image and return it
   Future<Uint8List?> chooseImagePress() async {
     isBtnChooseImagePressed = !isBtnChooseImagePressed;
-    final XFile? image =
-        await _picker.pickImage(source: ImageSource.gallery, maxWidth: 720);
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 720,
+      imageQuality: 25,
+    );
 
     if (image != null) {
       return image.readAsBytes();
     } else {
       // User canceled the picker
     }
+  }
+
+  // logic for play btn. It change btn state
+  // and called [splitImage] function
+  Future<void> playPress() async {
+    isBtnPlayPressed = !isBtnPlayPressed;
+    if (croppedImage != null) imageMap = splitImage(4);
+  }
+
+  // logic for splitting image, working really bad, but we can use loaders!!!
+  HashMap<dynamic, dynamic> splitImage(int squareSide) {
+    print("start = " + DateTime.now().toString());
+
+    //todo this is problem spot
+    Image image = decodeImage(croppedImage!.toList())!;
+    print("end decodeImage = " + DateTime.now().toString());
+    int x = 0, y = 0;
+    int width = (image.width / squareSide).floor();
+    int height = (image.height / squareSide).floor();
+
+    // split image to parts
+
+    List<Image> parts = <Image>[];
+    for (int i = 0; i < squareSide; i++) {
+      for (int j = 0; j < squareSide; j++) {
+        parts.add(copyCrop(image, x, y, width, height));
+        x += width;
+      }
+      x = 0;
+      y += height;
+    }
+
+    print("start fill map = " + DateTime.now().toString());
+    HashMap output = HashMap<int, Uint8List>();
+    for (int i = 0; i < parts.length; i++) {
+      output.putIfAbsent(
+          i, () => Uint8List.fromList(encodeJpg(parts[i], quality: 25)));
+    }
+
+    print("\nend = " + DateTime.now().toString());
+
+    return output;
   }
 }

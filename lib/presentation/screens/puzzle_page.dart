@@ -19,6 +19,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
   final puzzleState = injector<PuzzleState>();
 
   @override
+  void initState() {
+    //need to generate new puzzle with image
+    puzzleState.generatePuzzle();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(

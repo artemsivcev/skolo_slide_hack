@@ -1,9 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
+import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_button_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 
@@ -35,6 +38,7 @@ class _NewGamePageState extends State<NewGamePage> {
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         MenuButtonWidget(
                           iconUrl: 'assets/images/puzzle-continue.svg',
@@ -82,6 +86,35 @@ class _NewGamePageState extends State<NewGamePage> {
                         )
                       ],
                     ),
+                  ),
+                ),
+              );
+            },
+          ),
+          Observer(
+            builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 42.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MenuButtonWidget(
+                        iconUrl: 'assets/images/puzzle-new.svg',
+                        btnText: 'Play!',
+                        isPressed: newGameState.isBtnPlayPressed,
+                        onTap: () async {
+                         await newGameState.playPress();
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) => const PuzzlePage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               );

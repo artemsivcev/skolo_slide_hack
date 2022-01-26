@@ -1,14 +1,22 @@
+import 'dart:collection';
 import 'dart:math';
+
 import 'package:mobx/mobx.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
+
+import 'new_game_state.dart';
 
 part 'puzzle_state.g.dart';
 
 class PuzzleState = _PuzzleState with _$PuzzleState;
 
 abstract class _PuzzleState with Store {
+  //state with user image data
+  final newGameState = injector<NewGameState>();
+
   /// size of board (if dimensions are 4x4, size is 4)
   final int size = 4;
 
@@ -94,6 +102,7 @@ abstract class _PuzzleState with Store {
             index + 1 == size * size ? emptyPosition : correctPositions[index],
         currentPosition: currentPositions[index],
         isEmpty: index + 1 == size * size,
+        customImage: newGameState.imageMap != null ? newGameState.imageMap![index] : null,
       ),
     );
   }

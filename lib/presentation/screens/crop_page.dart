@@ -49,16 +49,13 @@ class _CropPageState extends State<CropPage> {
       ),
       body: Container(
         color:  Colors.white,
-        child: Expanded(
-          child: Hero(
-            tag: "imageName",
-            child: Cropper(
-              backgroundColor: Colors.white,
-              overlayColor:  Colors.white,
-              cropperKey: _cropperKey,
-              overlayType: OverlayType.rectangle,
-              image: Image.memory(widget.image),
-            ),
+        child: Hero(
+          tag: "imageName",
+          child: Cropper(
+            backgroundColor: Colors.white,
+            cropperKey: _cropperKey,
+            overlayType: OverlayType.rectangle,
+            image: Image.memory(widget.image),
           ),
         ),
       ),

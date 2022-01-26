@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
@@ -26,7 +27,11 @@ abstract class _PuzzleState with Store {
 
   /// if the user win the game
   @computed
-  bool get isComplete => puzzle == null ? false : puzzle!.isComplete;
+  bool get isComplete => puzzle == null
+      ? false
+      : isFirstScreenEntry
+          ? false
+          : puzzle!.isComplete;
 
   /// list of [tiles] current positions
   @computed
@@ -37,6 +42,10 @@ abstract class _PuzzleState with Store {
   @computed
   List<Position> get tilesCorrectPositions =>
       tiles.map((e) => e.correctPosition).toList();
+
+  /// User enter to the screen at the first time.
+  @observable
+  bool isFirstScreenEntry = true;
 
   _PuzzleState() {
     generatePuzzle();
@@ -72,11 +81,17 @@ abstract class _PuzzleState with Store {
       }
     }
 
-    // shuffle puzzle
-    puzzle = shufflePuzzle(
-      correctPos: correctPositions,
-      currentPos: currentPositions,
-    );
+    puzzle = Puzzle(
+        tiles: getTilesFromPositions(
+      correctPositions: correctPositions,
+      currentPositions: currentPositions,
+    ));
+
+    // // shuffle puzzle
+    // puzzle = shufflePuzzle(
+    //   correctPos: correctPositions,
+    //   currentPos: currentPositions,
+    // );
   }
 
   /// Build a list of tiles with their correct and current position.

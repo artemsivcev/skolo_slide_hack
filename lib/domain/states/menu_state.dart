@@ -15,7 +15,18 @@ abstract class _MenuState with Store {
   @observable
   bool exitBtnPressed = false;
 
-  ///Changes buttons' current state
+  ///Bools for checking if buttons are hovered
+  @observable
+  bool continueBtnHovered = false;
+
+  @observable
+  bool newGameBtnHovered = false;
+
+  @observable
+  bool exitBtnHovered = false;
+
+  ///Changes buttons' current state in the case of pressing
+
   @action
   void togglePressedBtn(int btnIndex) {
     switch (btnIndex) {
@@ -30,6 +41,24 @@ abstract class _MenuState with Store {
         break;
       default:
         print('Unknown button pressed');
+    }
+  }
+
+  ///Changes buttons' current state in the case of hovering
+  @action
+  void toggleHoveredBtn(int btnIndex) {
+    switch (btnIndex) {
+      case 0:
+        continueBtnHovered = !continueBtnHovered;
+        break;
+      case 1:
+        newGameBtnHovered = !newGameBtnHovered;
+        break;
+      case 2:
+        exitBtnHovered = !exitBtnHovered;
+        break;
+      default:
+        print('Unknown button hovered');
     }
   }
 }

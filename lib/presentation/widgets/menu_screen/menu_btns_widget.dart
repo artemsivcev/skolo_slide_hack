@@ -19,6 +19,10 @@ class MenuBtnsWidget extends StatelessWidget {
             onTap: () {
               menuState.togglePressedBtn(0);
             },
+            isHovered: menuState.continueBtnHovered,
+            onHover: (value) {
+              menuState.toggleHoveredBtn(0);
+            },
           ),
           const SizedBox(width: 26),
           MenuButtonWidget(
@@ -28,6 +32,10 @@ class MenuBtnsWidget extends StatelessWidget {
             onTap: () {
               menuState.togglePressedBtn(1);
             },
+            isHovered: menuState.newGameBtnHovered,
+            onHover: (value) {
+              menuState.toggleHoveredBtn(1);
+            },
           ),
           const SizedBox(width: 26),
           MenuButtonWidget(
@@ -36,6 +44,10 @@ class MenuBtnsWidget extends StatelessWidget {
             isPressed: menuState.exitBtnPressed,
             onTap: () {
               menuState.togglePressedBtn(2);
+            },
+            isHovered: menuState.exitBtnHovered,
+            onHover: (value) {
+              menuState.toggleHoveredBtn(2);
             },
           ),
         ],

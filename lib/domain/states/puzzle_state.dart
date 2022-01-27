@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:mobx/mobx.dart';
@@ -16,9 +15,6 @@ class PuzzleState = _PuzzleState with _$PuzzleState;
 abstract class _PuzzleState with Store {
   //state with user image data
   final newGameState = injector<NewGameState>();
-
-  /// size of board (if dimensions are 4x4, size is 4)
-  final int size = 4;
 
   /// [random] is used for randomly shuffling puzzle
   /// as the main purpose of this game
@@ -46,10 +42,6 @@ abstract class _PuzzleState with Store {
   List<Position> get tilesCorrectPositions =>
       tiles.map((e) => e.correctPosition).toList();
 
-  _PuzzleState() {
-    generatePuzzle();
-  }
-
   /// [onTileTapped] stands for method that is invoked when any tile is tapped.
   /// Index of tapped tile need ti be passed.
   /// Check if tile is movable and modifies puzzle board.
@@ -69,14 +61,21 @@ abstract class _PuzzleState with Store {
   void generatePuzzle() {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
-    final emptyPos = Position(x: size, y: size);
+    final emptyPos =
+        Position(x: newGameState.boardSize, y: newGameState.boardSize);
 
     // Create all possible board positions.
-    for (var y = 1; y <= size; y++) {
-      for (var x = 1; x <= size; x++) {
+    for (var y = 1; y <= newGameState.boardSize; y++) {
+      for (var x = 1; x <= newGameState.boardSize; x++) {
         final pos = Position(x: x, y: y);
-        correctPositions.add(x == size && y == size ? emptyPos : pos);
-        currentPositions.add(x == size && y == size ? emptyPos : pos);
+        correctPositions.add(
+            x == newGameState.boardSize && y == newGameState.boardSize
+                ? emptyPos
+                : pos);
+        currentPositions.add(
+            x == newGameState.boardSize && y == newGameState.boardSize
+                ? emptyPos
+                : pos);
       }
     }
 
@@ -92,17 +91,22 @@ abstract class _PuzzleState with Store {
     required List<Position> correctPositions,
     required List<Position> currentPositions,
   }) {
-    final emptyPosition = Position(x: size, y: size);
+    final emptyPosition =
+        Position(x: newGameState.boardSize, y: newGameState.boardSize);
 
     return List.generate(
-      size * size,
+      newGameState.boardSize * newGameState.boardSize,
       (index) => Tile(
         value: index + 1,
         correctPosition:
-            index + 1 == size * size ? emptyPosition : correctPositions[index],
+            index + 1 == newGameState.boardSize * newGameState.boardSize
+                ? emptyPosition
+                : correctPositions[index],
         currentPosition: currentPositions[index],
-        isEmpty: index + 1 == size * size,
-        customImage: newGameState.imageMap != null ? newGameState.imageMap![index] : null,
+        isEmpty: index + 1 == newGameState.boardSize * newGameState.boardSize,
+        customImage: newGameState.imageMap != null
+            ? newGameState.imageMap![index]
+            : null,
       ),
     );
   }

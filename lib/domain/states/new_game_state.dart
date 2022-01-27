@@ -20,6 +20,10 @@ abstract class _NewGameState with Store {
 
   //cropped image to preview on new game screen
   @observable
+  Uint8List? chosenImage;
+
+  //cropped image to preview on new game screen
+  @observable
   Uint8List? croppedImage;
 
   // divided user image. first value in index and second is image in Unit8List format
@@ -28,8 +32,12 @@ abstract class _NewGameState with Store {
   // image picker controller to get image from user space
   final ImagePicker _picker = ImagePicker();
 
+  /// size of board (if dimensions are 4x4, size is 4)
+  final int boardSize = 4;
+
   // logic for choose image btn. It change btn state, choose image and return it
-  Future<Uint8List?> chooseImagePress() async {
+  @action
+  Future<void> chooseImagePress() async {
     isBtnChooseImagePressed = !isBtnChooseImagePressed;
     final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
@@ -38,7 +46,8 @@ abstract class _NewGameState with Store {
     );
 
     if (image != null) {
-      return image.readAsBytes();
+      croppedImage = null;
+      chosenImage = await image.readAsBytes();
     } else {
       // User canceled the picker
     }
@@ -46,27 +55,28 @@ abstract class _NewGameState with Store {
 
   // logic for play btn. It change btn state
   // and called [splitImage] function
+  @action
   Future<void> playPress() async {
     isBtnPlayPressed = !isBtnPlayPressed;
-    if (croppedImage != null) imageMap = splitImage(4);
+    if (croppedImage != null) imageMap = splitImage();
   }
 
   // logic for splitting image, working really bad, but we can use loaders!!!
-  HashMap<dynamic, dynamic> splitImage(int squareSide) {
+  HashMap<dynamic, dynamic> splitImage() {
     print("start = " + DateTime.now().toString());
 
     //todo this is problem spot
     Image image = decodeImage(croppedImage!.toList())!;
     print("end decodeImage = " + DateTime.now().toString());
     int x = 0, y = 0;
-    int width = (image.width / squareSide).floor();
-    int height = (image.height / squareSide).floor();
+    int width = (image.width / boardSize).floor();
+    int height = (image.height / boardSize).floor();
 
     // split image to parts
 
     List<Image> parts = <Image>[];
-    for (int i = 0; i < squareSide; i++) {
-      for (int j = 0; j < squareSide; j++) {
+    for (int i = 0; i < boardSize; i++) {
+      for (int j = 0; j < boardSize; j++) {
         parts.add(copyCrop(image, x, y, width, height));
         x += width;
       }

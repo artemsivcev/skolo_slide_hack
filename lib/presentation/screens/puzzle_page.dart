@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
+import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
@@ -17,6 +18,7 @@ class PuzzlePage extends StatefulWidget {
 
 class _PuzzlePageState extends State<PuzzlePage> {
   final puzzleState = injector<PuzzleState>();
+  final newGameState = injector<NewGameState>();
 
   @override
   void initState() {
@@ -65,7 +67,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                           width: 300,
                           height: 300,
                           child: PuzzleBoard(
-                            size: puzzleState.size,
+                            size: newGameState.boardSize,
                             tiles: List.generate(
                               tiles.length,
                               (index) => SimpleTileWidget(

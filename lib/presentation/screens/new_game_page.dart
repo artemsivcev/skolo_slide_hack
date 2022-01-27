@@ -22,8 +22,8 @@ class _NewGamePageState extends State<NewGamePage> {
   // Define a key
   final _cropperKey = GlobalKey(debugLabel: 'cropperKey');
 
-  //crossfade state logic
-  CrossFadeState _crossFadeState = CrossFadeState.showFirst;
+  //crossfade state for buttons crop and play logic
+  CrossFadeState _crossStateButtons = CrossFadeState.showFirst;
 
   Future<void> _cropImage() async {
     // Get the cropped image as bytes
@@ -42,11 +42,12 @@ class _NewGamePageState extends State<NewGamePage> {
       body: Observer(builder: (context) {
         var showChosen = newGameState.chosenImage != null;
         var showCropped = newGameState.croppedImage != null;
+        var showPreview = !showChosen && !showCropped;
 
         if (showChosen) {
-          _crossFadeState = CrossFadeState.showFirst;
+          _crossStateButtons = CrossFadeState.showFirst;
         } else {
-          _crossFadeState = CrossFadeState.showSecond;
+          _crossStateButtons = CrossFadeState.showSecond;
         }
 
         return Center(
@@ -59,6 +60,7 @@ class _NewGamePageState extends State<NewGamePage> {
                 isPressed: newGameState.isBtnChooseImagePressed,
                 onTap: () async {
                   await newGameState.chooseImagePress();
+                  newGameState.isBtnChooseImagePressed = false;
                 },
               ),
               Padding(
@@ -70,12 +72,18 @@ class _NewGamePageState extends State<NewGamePage> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        SvgPicture.asset(
-                          'assets/images/puzzle-new-filled.svg',
-                          color: colorsPurpleBluePrimary,
-                          width: 225,
-                          height: 225,
-                        ),
+                        if (showPreview)
+                          SvgPicture.asset(
+                            'assets/images/puzzle-new-filled.svg',
+                            color: colorsPurpleBluePrimary,
+                            width: 225,
+                            height: 225,
+                          )
+                        else
+                          const SizedBox(
+                            width: 225,
+                            height: 225,
+                          ),
                         AnimatedContainer(
                           width: showChosen
                               ? width * 0.25
@@ -113,12 +121,12 @@ class _NewGamePageState extends State<NewGamePage> {
                 ),
               ),
               AnimatedCrossFade(
-                crossFadeState: _crossFadeState,
+                crossFadeState: _crossStateButtons,
                 duration: const Duration(seconds: 2),
                 firstChild: MenuButtonWidget(
                   iconUrl: 'assets/images/puzzle-new.svg',
                   btnText: 'Crop!',
-                  isPressed: newGameState.isBtnPlayPressed,
+                  isPressed: false,
                   onTap: () async {
                     _cropImage();
                   },
@@ -126,7 +134,7 @@ class _NewGamePageState extends State<NewGamePage> {
                 secondChild: MenuButtonWidget(
                   iconUrl: 'assets/images/puzzle-new-filled.svg',
                   btnText: 'Play!',
-                  isPressed: newGameState.isBtnPlayPressed,
+                  isPressed: false,
                   onTap: () async {
                     await newGameState.playPress();
                     Navigator.push(

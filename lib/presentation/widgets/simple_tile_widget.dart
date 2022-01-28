@@ -25,9 +25,17 @@ class SimpleTileWidget extends StatelessWidget {
             child: PolymorphicContainer(
               userInnerStyle: false,
               child: Center(
-                child: Text(
-                  '${tile.value}',
-                  style: numberTextStyle.copyWith(color: Colors.black),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    tile.customImage != null
+                        ? Image.memory(tile.customImage!)
+                        : Container(),
+                    Text(
+                      '${tile.value}',
+                      style: numberTextStyle.copyWith(color: Colors.black),
+                    ),
+                  ],
                 ),
               ),
             ),

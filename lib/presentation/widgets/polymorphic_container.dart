@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:skolo_slide_hack/domain/constants/dimensions.dart';
 
 /// Creates container stylized to the polymorphic style.
 class PolymorphicContainer extends StatelessWidget {
-  const PolymorphicContainer({
+  PolymorphicContainer({
     Key? key,
     required this.child,
-    this.externalBorderRadius = 15.0,
-    this.innerShadowBorderRadius = 15.0,
+    this.externalBorderRadius =
+        const BorderRadius.all(Radius.circular(setTileCornerRadius)),
+    this.innerShadowBorderRadius =
+        const BorderRadius.all(Radius.circular(setTileCornerRadius)),
     this.darkShadowOffset = const Offset(7, 7),
     this.lightShadowOffset = const Offset(-7, -7),
     this.darkShadowBlurRadius = 7.0,
@@ -18,10 +21,10 @@ class PolymorphicContainer extends StatelessWidget {
   final Widget child;
 
   /// Corners radius of the external container.
-  final double externalBorderRadius;
+  final BorderRadius externalBorderRadius;
 
   /// Corners radius of the inner shadows of the polymorphic container.
-  final double innerShadowBorderRadius;
+  final BorderRadius innerShadowBorderRadius;
   final Offset darkShadowOffset;
   final Offset lightShadowOffset;
   final double darkShadowBlurRadius;
@@ -59,11 +62,11 @@ class PolymorphicContainer extends StatelessWidget {
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(externalBorderRadius),
+        borderRadius: externalBorderRadius,
       ),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(innerShadowBorderRadius),
+          borderRadius: innerShadowBorderRadius,
           boxShadow: userInnerStyle
               ? [
                   BoxShadow(

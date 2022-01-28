@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:skolo_slide_hack/domain/constants/timers.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
@@ -10,6 +12,10 @@ part 'puzzle_state.g.dart';
 class PuzzleState = _PuzzleState with _$PuzzleState;
 
 abstract class _PuzzleState with Store {
+  /// Animation controller for start animation
+  /// when user come to the screen at the first time.
+  AnimationController? startAnimationController;
+
   /// size of board (if dimensions are 4x4, size is 4)
   final int size = 4;
 
@@ -146,5 +152,42 @@ abstract class _PuzzleState with Store {
     }
 
     return newPuzzle.sort();
+  }
+
+  //todo replace ALL !!! that below to separate class
+  initStartAnimationController(TickerProvider tickerProvider) {
+    print('init Start animation Controller');
+    startAnimationController = AnimationController(
+      vsync: tickerProvider,
+      duration: Duration(
+        milliseconds: startAnimationCommonDuration,
+      ),
+    );
+  }
+
+  double borderStartAnimatingBeginValue(int tileIndex) {
+    var result = 0.0;
+
+    result = ((startAnimationCommonDuration / tiles.length) /
+            startAnimationCommonDuration) *
+        (tileIndex - 1);
+
+    return result;
+  }
+
+  double borderStartAnimatingEndValue(int tileIndex) {
+    var result = 0.0;
+
+    result = ((startAnimationCommonDuration / tiles.length) /
+            startAnimationCommonDuration) *
+        (tileIndex + 1);
+
+    result > 1.0 ? result = 1.0 : result;
+
+    return result;
+  }
+
+  void dispose() {
+    startAnimationController?.dispose();
   }
 }

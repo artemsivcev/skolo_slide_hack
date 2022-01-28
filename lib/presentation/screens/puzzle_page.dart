@@ -15,12 +15,31 @@ class PuzzlePage extends StatefulWidget {
   State<PuzzlePage> createState() => _PuzzlePageState();
 }
 
-class _PuzzlePageState extends State<PuzzlePage> {
+class _PuzzlePageState extends State<PuzzlePage>
+    with SingleTickerProviderStateMixin {
   final puzzleState = injector<PuzzleState>();
+
+  @override
+  void initState() {
+    super.initState();
+    puzzleState.initStartAnimationController(this);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        //todo delete onPressed
+        // only for animation testing purpose
+        onPressed: () {
+          puzzleState.startAnimationController!.isCompleted
+              ? puzzleState.startAnimationController!.reverse()
+              : puzzleState.startAnimationController!.forward();
+        },
+        child: Center(
+          child: Text('Start'),
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

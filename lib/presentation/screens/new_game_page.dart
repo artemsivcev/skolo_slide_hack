@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:animated_background/animated_background.dart';
 import 'package:cropperx/cropperx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -9,7 +6,8 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
-import 'package:skolo_slide_hack/presentation/widgets/custom_background_animation_behavior.dart';
+import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
+import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_button_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 
@@ -42,50 +40,73 @@ class _NewGamePageState extends State<NewGamePage>
   @override
   Widget build(BuildContext buildContext) {
     var width = MediaQuery.of(context).size.width;
+    var glassContainerWidth = width * 0.8;
+    var defaultPreviewWidthHeight = width * 0.1;
+    var imagePreviewWidthHeight = width * 0.2;
+    var imageCroppedWidthHeight = width * 0.3;
 
-    return Scaffold(
-      backgroundColor: colorsBackgroundMenu,
-      body: AnimatedBackground(
-        behaviour: CustomBackgroundAnimationBehaviour(),
-        vsync: this,
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 15.0,
-            sigmaY: 15.0,
-          ),
-          child: Observer(builder: (context) {
-            var showChosen = newGameState.chosenImage != null;
-            var showCropped = newGameState.croppedImage != null;
-            var showPreview = !showChosen && !showCropped;
+    if (width > 1024) {
+      //more then 1024
+      glassContainerWidth = width * 0.32;
+      defaultPreviewWidthHeight = width * 0.08;
+      imagePreviewWidthHeight = width * 0.16;
+      imageCroppedWidthHeight = width * 0.24;
+    } else if (width < 601) {
+      //less then 601, mobile
+      glassContainerWidth = width * 0.72;
+      defaultPreviewWidthHeight = width * 0.32;
+      imagePreviewWidthHeight = width * 0.48;
+      imageCroppedWidthHeight = width * 0.56;
+    } else {
+      //600-1024
+      glassContainerWidth = width * 0.48;
+      defaultPreviewWidthHeight = width * 0.24;
+      imagePreviewWidthHeight = width * 0.32;
+      imageCroppedWidthHeight = width * 0.40;
+    }
 
-            if (showChosen) {
-              _crossStateButtons = CrossFadeState.showFirst;
-            } else {
-              _crossStateButtons = CrossFadeState.showSecond;
-            }
+    return BackgroundWithBubbles(
+      colorsBackground: colorsBackgroundMenu,
+      child: Observer(builder: (context) {
+        var showChosen = newGameState.chosenImage != null;
+        var showCropped = newGameState.croppedImage != null;
+        var showPreview = !showChosen && !showCropped;
 
-            return Center(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(55),
-                    border: Border.all(
-                        color: Colors.white.withOpacity(0.8), width: 1.5)),
+        if (showChosen) {
+          _crossStateButtons = CrossFadeState.showFirst;
+        } else {
+          _crossStateButtons = CrossFadeState.showSecond;
+        }
+
+        return GlassContainer(
+          width: glassContainerWidth,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () async => {
+                  await newGameState.chooseImagePress(),
+                  newGameState.isBtnChooseImagePressed = false,
+                },
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     MenuButtonWidget(
                       iconUrl: 'assets/images/puzzle-continue.svg',
                       btnText: 'Choose image',
                       isPressed: newGameState.isBtnChooseImagePressed,
-                      onTap: () async {
-                        await newGameState.chooseImagePress();
-                        newGameState.isBtnChooseImagePressed = false;
-                      },
+                      onTap: () {},
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 42.0),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                            color: colorsGreyMediumPrimary, width: 1.5),
+                      ),
                       child: PolymorphicContainer(
                         userInnerStyle: true,
                         child: Padding(
@@ -97,33 +118,33 @@ class _NewGamePageState extends State<NewGamePage>
                                 SvgPicture.asset(
                                   'assets/images/puzzle-new-filled.svg',
                                   color: colorsPurpleBluePrimary,
-                                  width: 225,
-                                  height: 225,
+                                  width: defaultPreviewWidthHeight,
+                                  height: defaultPreviewWidthHeight,
                                 )
                               else
-                                const SizedBox(
-                                  width: 225,
-                                  height: 225,
+                                SizedBox(
+                                  width: defaultPreviewWidthHeight,
+                                  height: defaultPreviewWidthHeight,
                                 ),
                               AnimatedContainer(
                                 width: showChosen
-                                    ? width * 0.25
+                                    ? imagePreviewWidthHeight
                                     : showCropped
-                                        ? width * 0.35
-                                        : 225,
+                                        ? imageCroppedWidthHeight
+                                        : defaultPreviewWidthHeight,
                                 height: showChosen
-                                    ? width * 0.25
+                                    ? imagePreviewWidthHeight
                                     : showCropped
-                                        ? width * 0.35
-                                        : 225,
+                                        ? imageCroppedWidthHeight
+                                        : defaultPreviewWidthHeight,
                                 duration: const Duration(seconds: 2),
                                 curve: Curves.fastOutSlowIn,
                                 child: showCropped
                                     ? Image.memory(
                                         newGameState.croppedImage!.buffer
                                             .asUint8List(),
-                                        width: 225,
-                                        height: 225,
+                                        width: defaultPreviewWidthHeight,
+                                        height: defaultPreviewWidthHeight,
                                         fit: BoxFit.scaleDown,
                                       )
                                     : showChosen
@@ -141,39 +162,39 @@ class _NewGamePageState extends State<NewGamePage>
                         ),
                       ),
                     ),
-                    AnimatedCrossFade(
-                      crossFadeState: _crossStateButtons,
-                      duration: const Duration(seconds: 2),
-                      firstChild: MenuButtonWidget(
-                        iconUrl: 'assets/images/puzzle-new.svg',
-                        btnText: 'Crop!',
-                        isPressed: false,
-                        onTap: () async {
-                          _cropImage();
-                        },
-                      ),
-                      secondChild: MenuButtonWidget(
-                        iconUrl: 'assets/images/puzzle-new-filled.svg',
-                        btnText: 'Play!',
-                        isPressed: false,
-                        onTap: () async {
-                          await newGameState.playPress();
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              pageBuilder: (_, __, ___) => const PuzzlePage(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
                   ],
                 ),
               ),
-            );
-          }),
-        ),
-      ),
+              AnimatedCrossFade(
+                crossFadeState: _crossStateButtons,
+                duration: const Duration(seconds: 2),
+                firstChild: MenuButtonWidget(
+                  iconUrl: 'assets/images/puzzle-new.svg',
+                  btnText: 'Crop!',
+                  isPressed: false,
+                  onTap: () async {
+                    _cropImage();
+                  },
+                ),
+                secondChild: MenuButtonWidget(
+                  iconUrl: 'assets/images/puzzle-new-filled.svg',
+                  btnText: 'Play!',
+                  isPressed: false,
+                  onTap: () async {
+                    await newGameState.playPress();
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const PuzzlePage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

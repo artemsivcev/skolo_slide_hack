@@ -155,6 +155,13 @@ abstract class _PuzzleState with Store {
   }
 
   //todo replace ALL !!! that below to separate class
+
+  late double borderOneTileDuration;
+  late double borderValue;
+
+  late double blowOneTileDuration;
+  late double blowValue;
+
   initStartAnimationController(TickerProvider tickerProvider) {
     print('init Start animation Controller');
     startAnimationController = AnimationController(
@@ -163,16 +170,23 @@ abstract class _PuzzleState with Store {
         milliseconds: startAnimationCommonDuration,
       ),
     );
+
+    borderOneTileDuration = startBorderCornerAnimationDuration / tiles.length;
+    borderValue = borderOneTileDuration / startAnimationCommonDuration;
+
+    blowOneTileDuration = startBlowAnimationDuration / tiles.length;
+    blowValue = blowOneTileDuration / startAnimationCommonDuration;
+    //
+    // print('tiles length: ${tiles.length}');
+    // print('borderOneTileDuration: $borderOneTileDuration, value: $borderValue');
+    // print('blowOneTileDuration: $blowOneTileDuration, value: $blowValue');
   }
 
   double borderStartAnimatingBeginValue(int tileIndex) {
     var result = 0.0;
 
-    result = ((startBorderCornerAnimationDuration / tiles.length) /
-            startBorderCornerAnimationDuration) *
-        (tileIndex - 1);
-
-    print('$tileIndex Corner Begin: $result');
+    result =
+        (borderOneTileDuration / startAnimationCommonDuration) * (tileIndex);
 
     return result;
   }
@@ -180,27 +194,24 @@ abstract class _PuzzleState with Store {
   double borderStartAnimatingEndValue(int tileIndex) {
     var result = 0.0;
 
-    result = ((startBorderCornerAnimationDuration / tiles.length) /
-            startBorderCornerAnimationDuration) *
-        (tileIndex + 1);
-
-    result > 1.0 ? result = 1.0 : result;
-
-    print('$tileIndex Corner End: $result');
+    result = borderValue * (tileIndex + 1);
 
     return result;
   }
 
-  double sizeStartAnimationBeginValue(int tileIndex) {
+  double blowStartAnimationBeginValue(int tileIndex) {
     var result = 0.0;
 
-    result = ((startBlowAnimationDuration / tiles.length) /
-            startBlowAnimationDuration) *
-        (tileIndex + 1);
+    result =
+        (borderOneTileDuration / startAnimationCommonDuration) * (tileIndex);
 
-    result > 1.0 ? result = 1.0 : result;
+    return result;
+  }
 
-    print('$tileIndex Blow Start: $result');
+  double blowStartAnimationEndValue(int tileIndex) {
+    var result = 0.0;
+
+    result = borderValue * (tileIndex + 1);
 
     return result;
   }

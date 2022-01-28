@@ -41,8 +41,10 @@ class _SimpleTileWidgetState extends State<SimpleTileWidget> {
       CurvedAnimation(
         parent: _puzzleState.startAnimationController!,
         curve: Interval(
-          0.0,
-          0.5,
+          //0.0,
+          //0.5
+          _puzzleState.blowStartAnimationBeginValue(widget.tile.value),
+          _puzzleState.blowStartAnimationEndValue(widget.tile.value),
           curve: Curves.bounceOut,
         ),
       ),
@@ -59,8 +61,10 @@ class _SimpleTileWidgetState extends State<SimpleTileWidget> {
       CurvedAnimation(
         parent: _puzzleState.startAnimationController!,
         curve: Interval(
-          0.1,
-          1,
+          // 0.1,
+          // 1,
+          _puzzleState.borderStartAnimatingBeginValue(widget.tile.value),
+          _puzzleState.borderStartAnimatingEndValue(widget.tile.value),
           curve: Curves.bounceOut,
         ),
       ),

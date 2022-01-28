@@ -28,10 +28,25 @@ class _SimpleTileWidgetState extends State<SimpleTileWidget> {
 
   //start animations
   late Animation<BorderRadius?> _borderRadiusAnimation;
+  late Animation<double?> _blowSizeAnimation;
 
   @override
   void initState() {
     super.initState();
+
+    _blowSizeAnimation = Tween<double>(
+      begin: noInstalledTileBlowSize,
+      end: setTileBlowSize,
+    ).animate(
+      CurvedAnimation(
+        parent: _puzzleState.startAnimationController!,
+        curve: Interval(
+          0.0,
+          0.5,
+          curve: Curves.bounceOut,
+        ),
+      ),
+    );
 
     _borderRadiusAnimation = BorderRadiusTween(
       begin: BorderRadius.circular(
@@ -44,8 +59,8 @@ class _SimpleTileWidgetState extends State<SimpleTileWidget> {
       CurvedAnimation(
         parent: _puzzleState.startAnimationController!,
         curve: Interval(
-          _puzzleState.borderStartAnimatingBeginValue(widget.tile.value),
-          _puzzleState.borderStartAnimatingEndValue(widget.tile.value),
+          0.1,
+          1,
           curve: Curves.bounceOut,
         ),
       ),
@@ -61,14 +76,18 @@ class _SimpleTileWidgetState extends State<SimpleTileWidget> {
             child: AnimatedBuilder(
               animation: _puzzleState.startAnimationController!,
               builder: (_, __) {
-                return PolymorphicContainer(
-                  backgroundColor: Colors.indigoAccent,
-                  userInnerStyle: false,
-                  externalBorderRadius: _borderRadiusAnimation.value!,
-                  child: Center(
-                    child: Text(
-                      '${widget.tile.value}',
-                      style: numberTextStyle.copyWith(color: Colors.black),
+                return SizedBox(
+                  width: _blowSizeAnimation.value,
+                  height: _blowSizeAnimation.value,
+                  child: PolymorphicContainer(
+                    backgroundColor: Colors.indigoAccent,
+                    userInnerStyle: false,
+                    externalBorderRadius: _borderRadiusAnimation.value!,
+                    child: Center(
+                      child: Text(
+                        '${widget.tile.value}',
+                        style: numberTextStyle.copyWith(color: Colors.black),
+                      ),
                     ),
                   ),
                 );

@@ -80,10 +80,16 @@ class _PuzzlePageState extends State<PuzzlePage>
                             size: puzzleState.size,
                             tiles: List.generate(
                               tiles.length,
-                              (index) => SimpleTileWidget(
-                                onTap: () => puzzleState.onTileTapped(index),
-                                tile: tiles[index],
-                              ),
+                              (index) => Stack(children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: SimpleTileWidget(
+                                    onTap: () =>
+                                        puzzleState.onTileTapped(index),
+                                    tile: tiles[index],
+                                  ),
+                                ),
+                              ]),
                             ),
                           ),
                         ),

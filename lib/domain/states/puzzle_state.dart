@@ -159,7 +159,7 @@ abstract class _PuzzleState with Store {
     print('init Start animation Controller');
     startAnimationController = AnimationController(
       vsync: tickerProvider,
-      duration: Duration(
+      duration: const Duration(
         milliseconds: startAnimationCommonDuration,
       ),
     );
@@ -168,9 +168,11 @@ abstract class _PuzzleState with Store {
   double borderStartAnimatingBeginValue(int tileIndex) {
     var result = 0.0;
 
-    result = ((startAnimationCommonDuration / tiles.length) /
-            startAnimationCommonDuration) *
+    result = ((startBorderCornerAnimationDuration / tiles.length) /
+            startBorderCornerAnimationDuration) *
         (tileIndex - 1);
+
+    print('$tileIndex Corner Begin: $result');
 
     return result;
   }
@@ -178,11 +180,27 @@ abstract class _PuzzleState with Store {
   double borderStartAnimatingEndValue(int tileIndex) {
     var result = 0.0;
 
-    result = ((startAnimationCommonDuration / tiles.length) /
-            startAnimationCommonDuration) *
+    result = ((startBorderCornerAnimationDuration / tiles.length) /
+            startBorderCornerAnimationDuration) *
         (tileIndex + 1);
 
     result > 1.0 ? result = 1.0 : result;
+
+    print('$tileIndex Corner End: $result');
+
+    return result;
+  }
+
+  double sizeStartAnimationBeginValue(int tileIndex) {
+    var result = 0.0;
+
+    result = ((startBlowAnimationDuration / tiles.length) /
+            startBlowAnimationDuration) *
+        (tileIndex + 1);
+
+    result > 1.0 ? result = 1.0 : result;
+
+    print('$tileIndex Blow Start: $result');
 
     return result;
   }

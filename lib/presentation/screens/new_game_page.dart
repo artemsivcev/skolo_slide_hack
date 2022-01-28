@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:animated_background/animated_background.dart';
 import 'package:cropperx/cropperx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -6,6 +9,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
+import 'package:skolo_slide_hack/presentation/widgets/custom_background_animation_behavior.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_button_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 
@@ -16,14 +20,15 @@ class NewGamePage extends StatefulWidget {
   State<NewGamePage> createState() => _NewGamePageState();
 }
 
-class _NewGamePageState extends State<NewGamePage> {
+class _NewGamePageState extends State<NewGamePage>
+    with TickerProviderStateMixin {
   final newGameState = injector<NewGameState>();
 
   // Define a key
   final _cropperKey = GlobalKey(debugLabel: 'cropperKey');
 
-  //crossfade state logic
-  CrossFadeState _crossFadeState = CrossFadeState.showFirst;
+  //crossfade state for buttons crop and play logic
+  CrossFadeState _crossStateButtons = CrossFadeState.showFirst;
 
   Future<void> _cropImage() async {
     // Get the cropped image as bytes
@@ -39,109 +44,136 @@ class _NewGamePageState extends State<NewGamePage> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Observer(builder: (context) {
-        var showChosen = newGameState.chosenImage != null;
-        var showCropped = newGameState.croppedImage != null;
+      backgroundColor: colorsBackgroundMenu,
+      body: AnimatedBackground(
+        behaviour: CustomBackgroundAnimationBehaviour(),
+        vsync: this,
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 15.0,
+            sigmaY: 15.0,
+          ),
+          child: Observer(builder: (context) {
+            var showChosen = newGameState.chosenImage != null;
+            var showCropped = newGameState.croppedImage != null;
+            var showPreview = !showChosen && !showCropped;
 
-        if (showChosen) {
-          _crossFadeState = CrossFadeState.showFirst;
-        } else {
-          _crossFadeState = CrossFadeState.showSecond;
-        }
+            if (showChosen) {
+              _crossStateButtons = CrossFadeState.showFirst;
+            } else {
+              _crossStateButtons = CrossFadeState.showSecond;
+            }
 
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MenuButtonWidget(
-                iconUrl: 'assets/images/puzzle-continue.svg',
-                btnText: 'Choose image',
-                isPressed: newGameState.isBtnChooseImagePressed,
-                onTap: () async {
-                  await newGameState.chooseImagePress();
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 42.0),
-                child: PolymorphicContainer(
-                  userInnerStyle: true,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/puzzle-new-filled.svg',
-                          color: colorsPurpleBluePrimary,
-                          width: 225,
-                          height: 225,
-                        ),
-                        AnimatedContainer(
-                          width: showChosen
-                              ? width * 0.25
-                              : showCropped
-                                  ? width * 0.35
-                                  : 225,
-                          height: showChosen
-                              ? width * 0.25
-                              : showCropped
-                                  ? width * 0.35
-                                  : 225,
-                          duration: const Duration(seconds: 2),
-                          curve: Curves.fastOutSlowIn,
-                          child: showCropped
-                              ? Image.memory(
-                                  newGameState.croppedImage!.buffer
-                                      .asUint8List(),
+            return Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(55),
+                    border: Border.all(
+                        color: Colors.white.withOpacity(0.8), width: 1.5)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MenuButtonWidget(
+                      iconUrl: 'assets/images/puzzle-continue.svg',
+                      btnText: 'Choose image',
+                      isPressed: newGameState.isBtnChooseImagePressed,
+                      onTap: () async {
+                        await newGameState.chooseImagePress();
+                        newGameState.isBtnChooseImagePressed = false;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 42.0),
+                      child: PolymorphicContainer(
+                        userInnerStyle: true,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              if (showPreview)
+                                SvgPicture.asset(
+                                  'assets/images/puzzle-new-filled.svg',
+                                  color: colorsPurpleBluePrimary,
                                   width: 225,
                                   height: 225,
-                                  fit: BoxFit.scaleDown,
                                 )
-                              : showChosen
-                                  ? Cropper(
-                                      backgroundColor: Colors.white,
-                                      cropperKey: _cropperKey,
-                                      overlayType: OverlayType.rectangle,
-                                      image: Image.memory(
-                                          newGameState.chosenImage!),
-                                    )
-                                  : Container(),
+                              else
+                                const SizedBox(
+                                  width: 225,
+                                  height: 225,
+                                ),
+                              AnimatedContainer(
+                                width: showChosen
+                                    ? width * 0.25
+                                    : showCropped
+                                        ? width * 0.35
+                                        : 225,
+                                height: showChosen
+                                    ? width * 0.25
+                                    : showCropped
+                                        ? width * 0.35
+                                        : 225,
+                                duration: const Duration(seconds: 2),
+                                curve: Curves.fastOutSlowIn,
+                                child: showCropped
+                                    ? Image.memory(
+                                        newGameState.croppedImage!.buffer
+                                            .asUint8List(),
+                                        width: 225,
+                                        height: 225,
+                                        fit: BoxFit.scaleDown,
+                                      )
+                                    : showChosen
+                                        ? Cropper(
+                                            backgroundColor: Colors.white,
+                                            cropperKey: _cropperKey,
+                                            overlayType: OverlayType.rectangle,
+                                            image: Image.memory(
+                                                newGameState.chosenImage!),
+                                          )
+                                        : Container(),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              AnimatedCrossFade(
-                crossFadeState: _crossFadeState,
-                duration: const Duration(seconds: 2),
-                firstChild: MenuButtonWidget(
-                  iconUrl: 'assets/images/puzzle-new.svg',
-                  btnText: 'Crop!',
-                  isPressed: newGameState.isBtnPlayPressed,
-                  onTap: () async {
-                    _cropImage();
-                  },
-                ),
-                secondChild: MenuButtonWidget(
-                  iconUrl: 'assets/images/puzzle-new-filled.svg',
-                  btnText: 'Play!',
-                  isPressed: newGameState.isBtnPlayPressed,
-                  onTap: () async {
-                    await newGameState.playPress();
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const PuzzlePage(),
                       ),
-                    );
-                  },
+                    ),
+                    AnimatedCrossFade(
+                      crossFadeState: _crossStateButtons,
+                      duration: const Duration(seconds: 2),
+                      firstChild: MenuButtonWidget(
+                        iconUrl: 'assets/images/puzzle-new.svg',
+                        btnText: 'Crop!',
+                        isPressed: false,
+                        onTap: () async {
+                          _cropImage();
+                        },
+                      ),
+                      secondChild: MenuButtonWidget(
+                        iconUrl: 'assets/images/puzzle-new-filled.svg',
+                        btnText: 'Play!',
+                        isPressed: false,
+                        onTap: () async {
+                          await newGameState.playPress();
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) => const PuzzlePage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        );
-      }),
+            );
+          }),
+        ),
+      ),
     );
   }
 }

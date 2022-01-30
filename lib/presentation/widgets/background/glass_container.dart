@@ -12,16 +12,19 @@ class GlassContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: width,
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(55),
-          border: Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Center(
+        child: Container(
+          width: width,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(55),
+            border: Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),
+          ),
+          child: child,
         ),
-        child: child,
       ),
     );
   }

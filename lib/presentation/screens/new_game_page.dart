@@ -9,7 +9,9 @@ import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_button_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/new_game_screen/new_game_widgets_orientation_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
+import 'package:skolo_slide_hack/presentation/widgets/text_shadows.dart';
 
 class NewGamePage extends StatefulWidget {
   const NewGamePage({Key? key}) : super(key: key);
@@ -45,24 +47,48 @@ class _NewGamePageState extends State<NewGamePage>
     var imagePreviewWidthHeight = width * 0.2;
     var imageCroppedWidthHeight = width * 0.3;
 
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
     if (width > 1024) {
       //more then 1024
-      glassContainerWidth = width * 0.32;
-      defaultPreviewWidthHeight = width * 0.08;
-      imagePreviewWidthHeight = width * 0.16;
-      imageCroppedWidthHeight = width * 0.24;
+
+      if (isPortrait) {
+        glassContainerWidth = width * 0.32;
+        defaultPreviewWidthHeight = width * 0.08;
+        imagePreviewWidthHeight = width * 0.16;
+        imageCroppedWidthHeight = width * 0.24;
+      } else {
+        glassContainerWidth = width * 0.72;
+        defaultPreviewWidthHeight = width * 0.32;
+        imagePreviewWidthHeight = width * 0.48;
+        imageCroppedWidthHeight = width * 0.56;
+      }
     } else if (width < 601) {
       //less then 601, mobile
-      glassContainerWidth = width * 0.72;
-      defaultPreviewWidthHeight = width * 0.32;
-      imagePreviewWidthHeight = width * 0.48;
-      imageCroppedWidthHeight = width * 0.56;
+      if (isPortrait) {
+        glassContainerWidth = width * 0.72;
+        defaultPreviewWidthHeight = width * 0.32;
+        imagePreviewWidthHeight = width * 0.48;
+        imageCroppedWidthHeight = width * 0.56;
+      } else {
+        glassContainerWidth = width * 0.72;
+        defaultPreviewWidthHeight = width * 0.32;
+        imagePreviewWidthHeight = width * 0.48;
+        imageCroppedWidthHeight = width * 0.56;
+      }
     } else {
       //600-1024
-      glassContainerWidth = width * 0.48;
-      defaultPreviewWidthHeight = width * 0.24;
-      imagePreviewWidthHeight = width * 0.32;
-      imageCroppedWidthHeight = width * 0.40;
+      if (isPortrait) {
+        glassContainerWidth = width * 0.48;
+        defaultPreviewWidthHeight = width * 0.24;
+        imagePreviewWidthHeight = width * 0.32;
+        imageCroppedWidthHeight = width * 0.40;
+      } else {
+        glassContainerWidth = width * 0.72;
+        defaultPreviewWidthHeight = width * 0.32;
+        imagePreviewWidthHeight = width * 0.48;
+        imageCroppedWidthHeight = width * 0.56;
+      }
     }
 
     return BackgroundWithBubbles(
@@ -80,28 +106,34 @@ class _NewGamePageState extends State<NewGamePage>
 
         return GlassContainer(
           width: glassContainerWidth,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
+          child: NewGameWidgetsOrientationSolver(
             children: [
-              InkWell(
-                hoverColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () async => {
-                  await newGameState.chooseImagePress(),
-                  newGameState.isBtnChooseImagePressed = false,
-                },
-                child: Column(
-                  children: [
-                    MenuButtonWidget(
-                      iconUrl: 'assets/images/puzzle-continue.svg',
-                      btnText: 'Choose image',
-                      isPressed: newGameState.isBtnChooseImagePressed,
-                      onTap: () {},
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Choose Image',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400,
+                      color: colorsGreyLightPrimary,
+                      shadows: TextShadows.generateLongShadow(),
                     ),
-                    Container(
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  InkWell(
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async => {
+                      await newGameState.chooseImagePress(),
+                      newGameState.isBtnChooseImagePressed = false,
+                    },
+                    child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
@@ -162,35 +194,37 @@ class _NewGamePageState extends State<NewGamePage>
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              AnimatedCrossFade(
-                crossFadeState: _crossStateButtons,
-                duration: const Duration(seconds: 2),
-                firstChild: MenuButtonWidget(
-                  iconUrl: 'assets/images/puzzle-new.svg',
-                  btnText: 'Crop!',
-                  isPressed: false,
-                  onTap: () async {
-                    _cropImage();
-                  },
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                AnimatedCrossFade(
+                  crossFadeState: _crossStateButtons,
+                  duration: const Duration(seconds: 2),
+                  firstChild: MenuButtonWidget(
+                    iconUrl: 'assets/images/puzzle-new.svg',
+                    btnText: 'Crop!',
+                    isPressed: false,
+                    onTap: () async {
+                      _cropImage();
+                    },
+                  ),
+                  secondChild: MenuButtonWidget(
+                    iconUrl: 'assets/images/puzzle-new-filled.svg',
+                    btnText: 'Play!',
+                    isPressed: false,
+                    onTap: () async {
+                      await newGameState.playPress();
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const PuzzlePage(),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                secondChild: MenuButtonWidget(
-                  iconUrl: 'assets/images/puzzle-new-filled.svg',
-                  btnText: 'Play!',
-                  isPressed: false,
-                  onTap: () async {
-                    await newGameState.playPress();
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const PuzzlePage(),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              ]),
             ],
           ),
         );

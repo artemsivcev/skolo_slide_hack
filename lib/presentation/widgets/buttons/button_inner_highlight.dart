@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CircleInnerShadow extends StatelessWidget {
-  final Color shadowColor;
+class ButtonCircleInnerHighlight extends StatelessWidget {
+  final Color highlightColor;
   final Color backgroundColor;
 
-  const CircleInnerShadow(
-      {Key? key, required this.shadowColor, required this.backgroundColor})
+  const ButtonCircleInnerHighlight(
+      {Key? key, required this.highlightColor, required this.backgroundColor})
       : super(key: key);
 
   @override
@@ -18,12 +18,12 @@ class CircleInnerShadow extends StatelessWidget {
         gradient: RadialGradient(
           colors: [
             backgroundColor,
-            shadowColor,
+            highlightColor,
           ],
-          center: AlignmentDirectional(0.05, 0.05),
-          focal: AlignmentDirectional(0, 0),
-          radius: 0.5,
-          focalRadius: 0,
+          center: AlignmentDirectional(-0.05, -0.05),
+          focal: AlignmentDirectional(-0.05, -0.05),
+          radius: 0.6,
+          focalRadius: 0.1,
           stops: [0.75, 1.0],
         ),
       ),
@@ -33,14 +33,14 @@ class CircleInnerShadow extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0, 0.45],
-                colors: [backgroundColor.withOpacity(0), backgroundColor])),
+                stops: [0.55, 1],
+                colors: [backgroundColor, backgroundColor.withOpacity(0)])),
       ),
     );
   }
 }
 
-class ShadowClipper extends CustomClipper<Path> {
+class HighlightClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return true;
@@ -49,9 +49,9 @@ class ShadowClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.moveTo(0, 0);
-    path.lineTo(100, 0);
-    path.lineTo(0, 100);
+    path.moveTo(size.width, 0);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
     path.close();
     return path;
   }

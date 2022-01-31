@@ -4,11 +4,11 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 
-import 'menu_btn_inner_highlight.dart';
-import 'menu_btn_inner_shadow.dart';
+import 'button_inner_highlight.dart';
+import 'button_inner_shadow.dart';
 
-class MenuBtnPressed extends StatelessWidget {
-  MenuBtnPressed({
+class ButtonPressed extends StatelessWidget {
+  ButtonPressed({
     Key? key,
     required this.iconUrl,
     required this.btnText,
@@ -60,14 +60,14 @@ class MenuBtnPressed extends StatelessWidget {
                 ),
                 ClipPath(
                   clipper: ShadowClipper(),
-                  child: CircleInnerShadow(
+                  child: ButtonCircleInnerShadow(
                     shadowColor: colorsGreyDarkPrimary,
                     backgroundColor: colorsGreyMediumPrimary,
                   ),
                 ),
                 ClipPath(
                     clipper: HighlightClipper(),
-                    child: CircleInnerHighlight(
+                    child: ButtonCircleInnerHighlight(
                       highlightColor: colorsGreyLightPrimary,
                       backgroundColor: colorsGreyMediumPrimary,
                     )),

@@ -8,7 +8,7 @@ import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_button_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/buttons/button_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game_screen/new_game_widgets_orientation_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/text_shadows.dart';
@@ -201,7 +201,7 @@ class _NewGamePageState extends State<NewGamePage>
                 AnimatedCrossFade(
                   crossFadeState: _crossStateButtons,
                   duration: const Duration(seconds: 2),
-                  firstChild: MenuButtonWidget(
+                  firstChild: ButtonWidget(
                     iconUrl: 'assets/images/puzzle-new.svg',
                     btnText: 'Crop!',
                     isPressed: false,
@@ -209,7 +209,7 @@ class _NewGamePageState extends State<NewGamePage>
                       _cropImage();
                     },
                   ),
-                  secondChild: MenuButtonWidget(
+                  secondChild: ButtonWidget(
                     iconUrl: 'assets/images/puzzle-new-filled.svg',
                     btnText: 'Play!',
                     isPressed: false,

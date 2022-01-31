@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_btns_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/buttons/buttons_group_widget.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class MenuScreen extends StatelessWidget {
               style: TextStyle(fontFamily: 'LuckiestGuy-Regular', fontSize: 84),
             ),
             const SizedBox(height: 30),
-            MenuBtnsWidget(),
+            ButtonsGroupWidget(),
           ],
         )));
   }

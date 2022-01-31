@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 
-class MenuBtnUnpressed extends StatelessWidget {
-  MenuBtnUnpressed({
+class ButtonUnpressed extends StatelessWidget {
+  ButtonUnpressed({
     Key? key,
     required this.iconUrl,
     required this.btnText,

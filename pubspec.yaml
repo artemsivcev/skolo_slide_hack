@@ -59,6 +59,8 @@ dependencies:
   #for background
   animated_background: ^2.0.0
 
+  isolated_worker: ^0.1.0
+
 dev_dependencies:
   dart_code_metrics: ^4.9.1
   build_runner: ^2.1.7

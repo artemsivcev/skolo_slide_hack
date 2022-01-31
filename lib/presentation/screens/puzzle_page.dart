@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
@@ -16,15 +18,27 @@ class PuzzlePage extends StatefulWidget {
   State<PuzzlePage> createState() => _PuzzlePageState();
 }
 
-class _PuzzlePageState extends State<PuzzlePage> {
+class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   final puzzleState = injector<PuzzleState>();
   final newGameState = injector<NewGameState>();
+  final winAnimationState = injector<WinAnimationState>();
 
   @override
   void initState() {
     //need to generate new puzzle with image
     puzzleState.generatePuzzle();
+    var controller = AnimationController(
+      duration: animationOneSecondDuration,
+      vsync: this,
+    );
+    winAnimationState.initAnimation(controller);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    winAnimationState.disposeControllers();
+    super.dispose();
   }
 
   @override
@@ -35,7 +49,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         children: [
           Observer(
             builder: (context) => Text(
-              puzzleState.isComplete ? 'We win!!!!!!' : 'Find the solution',
+              puzzleState.isComplete ? 'You win!!!!!!' : 'Find the solution',
               style: puzzlePageTitleTextStyle,
             ),
           ),
@@ -52,35 +66,49 @@ class _PuzzlePageState extends State<PuzzlePage> {
                 iconColor: whiteColour,
               ),
               const SizedBox(width: 36),
-              SizedBox(
-                width: 307,
-                height: 307,
-                child: PolymorphicContainer(
-                  userInnerStyle: true,
-                  child: Observer(
-                    builder: (context) {
-                      var tiles = puzzleState.tiles;
+              Observer(
+                builder: (context) {
+                  var tiles = puzzleState.tiles;
+                  var isCompleted = puzzleState.isComplete;
 
-                      return Padding(
-                        padding: const EdgeInsets.all(7.0),
+                  return AnimatedContainer(
+                    width: isCompleted ? 340 : 310,
+                    height: isCompleted ? 340 : 310,
+                    duration: animationOneSecondDuration,
+                    child: PolymorphicContainer(
+                      userInnerStyle: true,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
                         child: SizedBox(
                           width: 300,
                           height: 300,
                           child: PuzzleBoard(
                             size: newGameState.boardSize,
+                            spacing: 0,
                             tiles: List.generate(
                               tiles.length,
-                              (index) => SimpleTileWidget(
-                                onTap: () => puzzleState.onTileTapped(index),
-                                tile: tiles[index],
+                              (index) => AnimatedPadding(
+                                duration: animationOneSecondDuration,
+                                padding: EdgeInsets.all(
+                                    winAnimationState.spacingValue),
+                                child: SimpleTileWidget(
+                                  tweenStart: index / tiles.length,
+                                  tween: winAnimationState.tweenForFlipping,
+                                  fadeAnimation:
+                                      winAnimationState.fadeAnimation!,
+                                  isComplete: isCompleted &&
+                                      winAnimationState.isAnimCompleted,
+                                  onTap: () => puzzleState.onTileTapped(index),
+                                  tile: tiles[index],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

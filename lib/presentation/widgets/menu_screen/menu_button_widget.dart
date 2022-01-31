@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_btn_pressed.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_btn_unpressed.dart';
 
 class MenuButtonWidget extends StatefulWidget {
-  MenuButtonWidget(
+  const MenuButtonWidget(
       {Key? key,
       required this.iconUrl,
       required this.btnText,
@@ -35,7 +36,7 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return AnimatedCrossFade(
-      duration: const Duration(milliseconds: 1500),
+      duration: animationOneAndHalfSecondDuration,
       firstCurve: Curves.easeInQuint,
       secondCurve: Curves.easeInQuint,
       firstChild: MenuBtnUnpressed(

@@ -20,11 +20,11 @@ class CircleInnerHighlight extends StatelessWidget {
             backgroundColor,
             highlightColor,
           ],
-          center: AlignmentDirectional(-0.05, -0.05),
-          focal: AlignmentDirectional(-0.05, -0.05),
+          center: const AlignmentDirectional(-0.05, -0.05),
+          focal: const AlignmentDirectional(-0.05, -0.05),
           radius: 0.6,
           focalRadius: 0.1,
-          stops: [0.75, 1.0],
+          stops: const [0.75, 1.0],
         ),
       ),
       child: Container(
@@ -33,7 +33,7 @@ class CircleInnerHighlight extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0.55, 1],
+                stops: const [0.55, 1],
                 colors: [backgroundColor, backgroundColor.withOpacity(0)])),
       ),
     );

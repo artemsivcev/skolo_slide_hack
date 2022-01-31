@@ -86,51 +86,57 @@ class _NewGamePageState extends State<NewGamePage>
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius:
+                              BorderRadius.circular(showCropped ? 55.0 : 16.0),
                           border: Border.all(
                               color: colorsGreyMediumPrimary, width: 1.5),
                         ),
                         child: PolymorphicContainer(
                           userInnerStyle: true,
+                          externalBorderRadius: showCropped ? 53.0 : 15.0,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                if (showPreview)
-                                  SvgPicture.asset(
-                                    'assets/images/puzzle-new-filled.svg',
-                                    color: colorsPurpleBluePrimary,
-                                    height:
-                                        newGameState.getImageMaxSize(context),
-                                  )
-                                else
-                                  const SizedBox(),
-                                AnimatedContainer(
-                                  width: newGameState
-                                      .getAnimatedContainerSize(context),
-                                  height: newGameState
-                                      .getAnimatedContainerSize(context),
-                                  duration: const Duration(seconds: 2),
-                                  curve: Curves.fastOutSlowIn,
-                                  child: showCropped
-                                      ? Image.memory(
-                                          newGameState.croppedImage!.buffer
-                                              .asUint8List(),
-                                          fit: BoxFit.scaleDown,
-                                        )
-                                      : showChosen
-                                          ? Cropper(
-                                              backgroundColor: Colors.white,
-                                              cropperKey: _cropperKey,
-                                              overlayType:
-                                                  OverlayType.rectangle,
-                                              image: Image.memory(
-                                                  newGameState.chosenImage!),
-                                            )
-                                          : const SizedBox(),
-                                ),
-                              ],
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  showCropped ? 55.0 : 16.0),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  if (showPreview)
+                                    SvgPicture.asset(
+                                      'assets/images/puzzle-new-filled.svg',
+                                      color: colorsPurpleBluePrimary,
+                                      height:
+                                          newGameState.getImageMaxSize(context),
+                                    )
+                                  else
+                                    const SizedBox(),
+                                  AnimatedContainer(
+                                    width: newGameState
+                                        .getAnimatedContainerSize(context),
+                                    height: newGameState
+                                        .getAnimatedContainerSize(context),
+                                    duration: const Duration(seconds: 2),
+                                    curve: Curves.fastOutSlowIn,
+                                    child: showCropped
+                                        ? Image.memory(
+                                            newGameState.croppedImage!.buffer
+                                                .asUint8List(),
+                                            fit: BoxFit.scaleDown,
+                                          )
+                                        : showChosen
+                                            ? Cropper(
+                                                backgroundColor: Colors.white,
+                                                cropperKey: _cropperKey,
+                                                overlayType:
+                                                    OverlayType.rectangle,
+                                                image: Image.memory(
+                                                    newGameState.chosenImage!),
+                                              )
+                                            : const SizedBox(),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -3,9 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
 
-import 'menu_btn_inner_highlight.dart';
-import 'menu_btn_inner_shadow.dart';
+import 'btn_text.dart';
+import '../clips/menu_btn_inner_highlight.dart';
+import '../clips/menu_btn_inner_shadow.dart';
 
 class MenuBtnPressed extends StatelessWidget {
   MenuBtnPressed({
@@ -34,7 +36,7 @@ class MenuBtnPressed extends StatelessWidget {
       focusColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: onTap,
-      child: Column(
+      child: ColumnRowSolver(
         children: [
           Stack(
               clipBehavior: Clip.none,
@@ -60,14 +62,14 @@ class MenuBtnPressed extends StatelessWidget {
                 ),
                 ClipPath(
                   clipper: ShadowClipper(),
-                  child: CircleInnerShadow(
+                  child: const CircleInnerShadow(
                     shadowColor: colorsGreyDarkPrimary,
                     backgroundColor: colorsGreyMediumPrimary,
                   ),
                 ),
                 ClipPath(
                     clipper: HighlightClipper(),
-                    child: CircleInnerHighlight(
+                    child: const CircleInnerHighlight(
                       highlightColor: colorsGreyLightPrimary,
                       backgroundColor: colorsGreyMediumPrimary,
                     )),
@@ -83,12 +85,7 @@ class MenuBtnPressed extends StatelessWidget {
                   ),
                 ),
               ]),
-          Text(btnText,
-              style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: colorsGreyDarkPrimary)),
+          BtnText(btnText: btnText),
         ],
       ),
     );

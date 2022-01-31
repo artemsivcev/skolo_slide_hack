@@ -8,8 +8,8 @@ import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_button_widget.dart';
-import 'package:skolo_slide_hack/presentation/widgets/new_game_screen/new_game_widgets_orientation_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/menu_screen/btns/menu_button_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/text_shadows.dart';
 
@@ -105,8 +105,7 @@ class _NewGamePageState extends State<NewGamePage>
         }
 
         return GlassContainer(
-          width: glassContainerWidth,
-          child: NewGameWidgetsOrientationSolver(
+          child: RowColumnSolver(
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -56,7 +56,8 @@ class PolymorphicContainer extends StatelessWidget {
     final defaultBackGroundColor =
         backgroundColor ?? Theme.of(context).canvasColor;
 
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(seconds: 2),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(externalBorderRadius),

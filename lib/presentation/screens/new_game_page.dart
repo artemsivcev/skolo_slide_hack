@@ -84,13 +84,14 @@ class _NewGamePageState extends State<NewGamePage>
                         await newGameState.chooseImagePress(),
                         newGameState.isBtnChooseImagePressed = false,
                       },
-                      child: Container(
+                      child: AnimatedContainer(
                         decoration: BoxDecoration(
                           borderRadius:
                               BorderRadius.circular(showCropped ? 55.0 : 16.0),
                           border: Border.all(
                               color: colorsGreyMediumPrimary, width: 1.5),
                         ),
+                        duration: const Duration(seconds: 2),
                         child: PolymorphicContainer(
                           userInnerStyle: true,
                           externalBorderRadius: showCropped ? 53.0 : 15.0,

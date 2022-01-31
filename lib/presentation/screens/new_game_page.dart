@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
@@ -169,7 +170,7 @@ class _NewGamePageState extends State<NewGamePage>
                                     : showCropped
                                         ? imageCroppedWidthHeight
                                         : defaultPreviewWidthHeight,
-                                duration: const Duration(seconds: 2),
+                                duration: animationTwoSecondSDuration,
                                 curve: Curves.fastOutSlowIn,
                                 child: showCropped
                                     ? Image.memory(
@@ -200,7 +201,7 @@ class _NewGamePageState extends State<NewGamePage>
               Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 AnimatedCrossFade(
                   crossFadeState: _crossStateButtons,
-                  duration: const Duration(seconds: 2),
+                  duration: animationTwoSecondSDuration,
                   firstChild: MenuButtonWidget(
                     iconUrl: 'assets/images/puzzle-new.svg',
                     btnText: 'Crop!',

@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-
 import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 

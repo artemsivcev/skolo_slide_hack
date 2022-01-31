@@ -20,11 +20,11 @@ class ButtonCircleInnerShadow extends StatelessWidget {
             backgroundColor,
             shadowColor,
           ],
-          center: AlignmentDirectional(0.05, 0.05),
-          focal: AlignmentDirectional(0, 0),
+          center: const AlignmentDirectional(0.05, 0.05),
+          focal: const AlignmentDirectional(0, 0),
           radius: 0.5,
           focalRadius: 0,
-          stops: [0.75, 1.0],
+          stops: const [0.75, 1.0],
         ),
       ),
       child: Container(
@@ -33,7 +33,7 @@ class ButtonCircleInnerShadow extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0, 0.45],
+                stops: const [0, 0.45],
                 colors: [backgroundColor.withOpacity(0), backgroundColor])),
       ),
     );

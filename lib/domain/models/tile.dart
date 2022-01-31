@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 
 /// Model for a puzzle tile.
@@ -9,6 +10,7 @@ class Tile extends Equatable {
     required this.value,
     required this.correctPosition,
     required this.currentPosition,
+    required this.corner,
     this.customImage,
     this.isEmpty = false,
   });
@@ -29,6 +31,10 @@ class Tile extends Equatable {
   /// Custom image for [Tile] to render
   final Uint8List? customImage;
 
+  /// Detects if tile is placed at the corner of board
+  /// due its correct position
+  final CornersEnum corner;
+
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({required Position currentPosition}) {
     return Tile(
@@ -37,6 +43,7 @@ class Tile extends Equatable {
       currentPosition: currentPosition,
       isEmpty: isEmpty,
       customImage: customImage,
+      corner: corner,
     );
   }
 
@@ -46,5 +53,6 @@ class Tile extends Equatable {
         correctPosition,
         currentPosition,
         isEmpty,
+        corner,
       ];
 }

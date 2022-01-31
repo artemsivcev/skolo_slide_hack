@@ -23,8 +23,8 @@ class ButtonText extends StatelessWidget {
         style: TextStyle(
           fontFamily: 'Montserrat',
           fontSize: 24,
-          fontWeight: FontWeight.w400,
-          color: colorsGreyLightPrimary,
+          fontWeight: FontWeight.w900,
+          color: colorsPurpleBluePrimary,
           shadows: TextShadows.generateLongShadow(),
         ),
       ),

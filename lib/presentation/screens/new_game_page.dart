@@ -70,9 +70,9 @@ class _NewGamePageState extends State<NewGamePage>
                         style: TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                          color: colorsGreyLightPrimary,
                           shadows: TextShadows.generateLongShadow(),
+                          fontWeight: FontWeight.w900,
+                          color: colorsPurpleBluePrimary,
                         ),
                       ),
                     ),
@@ -88,25 +88,25 @@ class _NewGamePageState extends State<NewGamePage>
                       child: AnimatedContainer(
                         decoration: BoxDecoration(
                           borderRadius:
-                              BorderRadius.circular(showCropped ? 55.0 : 16.0),
+                              BorderRadius.circular(showCropped ? 16.0 : 8.0),
                           border: Border.all(
                               color: colorsGreyMediumPrimary, width: 1.5),
                         ),
                         duration: const Duration(seconds: 2),
                         child: PolymorphicContainer(
                           userInnerStyle: true,
-                          externalBorderRadius: showCropped ? 53.0 : 15.0,
+                          externalBorderRadius: showCropped ? 15.0 : 7.0,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(
-                                  showCropped ? 55.0 : 16.0),
+                                  showCropped ? 16.0 : 8.0),
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   if (showPreview)
                                     SvgPicture.asset(
-                                      'assets/images/puzzle-new-filled.svg',
+                                      'assets/images/puzzle-continue.svg',
                                       color: colorsPurpleBluePrimary,
                                       height:
                                           newGameState.getImageMaxSize(context),

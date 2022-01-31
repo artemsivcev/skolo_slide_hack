@@ -16,8 +16,8 @@ class GlassContainer extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(55),
+            color: Colors.white.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(8),
             border:
                 Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),
           ),

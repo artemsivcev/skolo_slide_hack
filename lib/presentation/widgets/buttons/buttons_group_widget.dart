@@ -40,9 +40,22 @@ class ButtonsGroupWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 PageRouteBuilder(
+                  transitionDuration: const Duration(milliseconds: 1000),
+                  transitionsBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation,
+                      Widget child) {
+                    return Align(
+                      child: FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      ),
+                    );
+                  },
                   pageBuilder: (_, __, ___) => const NewGamePage(),
                 ),
               );
+              menuState.toggleNewGameBtn();
             },
             isHovered: menuState.newGameBtnHovered,
             onHover: (value) {

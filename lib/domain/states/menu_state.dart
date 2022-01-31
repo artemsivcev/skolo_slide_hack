@@ -16,20 +16,46 @@ abstract class _MenuState with Store {
   @observable
   bool exitBtnPressed = false;
 
-  //fun's to toggle btn's
+  ///Bools for checking if buttons are hovered
+  @observable
+  bool continueBtnHovered = false;
+
+  @observable
+  bool newGameBtnHovered = false;
+
+  @observable
+  bool exitBtnHovered = false;
+
+  ///Changes buttons' current state in the case of pressing
   @action
   void toggleContinueBtn() {
     continueBtnPressed = !continueBtnPressed;
   }
 
   @action
-  void toggleNewFameBtn() {
+  void toggleNewGameBtn() {
     newGameBtnPressed = !newGameBtnPressed;
   }
 
   @action
   void toggleExitBtn() {
     exitBtnPressed = !exitBtnPressed;
+  }
+
+  //change hover for buttons
+  @action
+  void toggleHoveredContinueBtn() {
+    continueBtnHovered = !continueBtnHovered;
+  }
+
+  @action
+  void toggleHoveredNewGameBtn() {
+    newGameBtnHovered = !newGameBtnHovered;
+  }
+
+  @action
+  void toggleHoveredExitBtn() {
+    exitBtnHovered = !exitBtnHovered;
   }
 
   //function help's to understand current user orientation by screen aspect ratio

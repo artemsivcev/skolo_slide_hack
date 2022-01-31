@@ -32,15 +32,6 @@ abstract class _PuzzleState with Store {
   @computed
   bool get isComplete => puzzle == null ? false : puzzle!.isComplete;
 
-  /// list of [tiles] current positions
-  @computed
-  List<Position> get tilesCurrentPositions =>
-      tiles.map((e) => e.currentPosition).toList();
-
-  /// list of [tiles] correct positions
-  @computed
-  List<Position> get tilesCorrectPositions =>
-      tiles.map((e) => e.correctPosition).toList();
 
   /// [onTileTapped] stands for method that is invoked when any tile is tapped.
   /// Index of tapped tile need ti be passed.
@@ -113,10 +104,7 @@ abstract class _PuzzleState with Store {
 
   /// on shuffle button tap
   @action
-  void shuffleButtonTap() => puzzle = shufflePuzzle(
-        correctPos: tilesCorrectPositions,
-        currentPos: tilesCurrentPositions,
-      );
+  void shuffleButtonTap() => generatePuzzle();
 
   /// shuffle puzzle tiles with [random]
   Puzzle shufflePuzzle({
@@ -126,23 +114,22 @@ abstract class _PuzzleState with Store {
     // Randomize the current tile positions.
     currentPos.shuffle(random);
 
-    var tiles = getTilesFromPositions(
+    var newTiles = getTilesFromPositions(
       correctPositions: correctPos,
       currentPositions: currentPos,
     );
 
-    var newPuzzle = Puzzle(tiles: tiles);
+    var newPuzzle = Puzzle(tiles: newTiles);
 
     // Assign the tiles new current positions until the puzzle can be solved
     while (!newPuzzle.canBeSolved) {
       currentPos.shuffle(random);
-      tiles = getTilesFromPositions(
+      newTiles = getTilesFromPositions(
         correctPositions: correctPos,
         currentPositions: currentPos,
       );
-      newPuzzle = Puzzle(tiles: tiles);
+      newPuzzle = Puzzle(tiles: newTiles);
     }
-
     return newPuzzle.sort();
   }
 }

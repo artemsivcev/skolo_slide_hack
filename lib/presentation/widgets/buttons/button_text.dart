@@ -3,10 +3,10 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 
-import '../../text_shadows.dart';
+import '../text_shadows.dart';
 
-class BtnText extends StatelessWidget {
-  BtnText({Key? key, required this.btnText}) : super(key: key);
+class ButtonText extends StatelessWidget {
+  ButtonText({Key? key, required this.btnText}) : super(key: key);
 
   final String btnText;
   final menuState = injector<MenuState>();

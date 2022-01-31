@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CircleInnerHighlight extends StatelessWidget {
-  final Color highlightColor;
+class ButtonCircleInnerShadow extends StatelessWidget {
+  final Color shadowColor;
   final Color backgroundColor;
 
-  const CircleInnerHighlight(
-      {Key? key, required this.highlightColor, required this.backgroundColor})
+  const ButtonCircleInnerShadow(
+      {Key? key, required this.shadowColor, required this.backgroundColor})
       : super(key: key);
 
   @override
@@ -18,13 +18,13 @@ class CircleInnerHighlight extends StatelessWidget {
         gradient: RadialGradient(
           colors: [
             backgroundColor,
-            highlightColor,
+            shadowColor,
           ],
-          center: const AlignmentDirectional(-0.05, -0.05),
-          focal: const AlignmentDirectional(-0.05, -0.05),
-          radius: 0.6,
-          focalRadius: 0.1,
-          stops: const [0.75, 1.0],
+          center: AlignmentDirectional(0.05, 0.05),
+          focal: AlignmentDirectional(0, 0),
+          radius: 0.5,
+          focalRadius: 0,
+          stops: [0.75, 1.0],
         ),
       ),
       child: Container(
@@ -33,14 +33,14 @@ class CircleInnerHighlight extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: const [0.55, 1],
-                colors: [backgroundColor, backgroundColor.withOpacity(0)])),
+                stops: [0, 0.45],
+                colors: [backgroundColor.withOpacity(0), backgroundColor])),
       ),
     );
   }
 }
 
-class HighlightClipper extends CustomClipper<Path> {
+class ShadowClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
     return true;
@@ -49,9 +49,9 @@ class HighlightClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.moveTo(size.width, 0);
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, size.height);
+    path.moveTo(0, 0);
+    path.lineTo(100, 0);
+    path.lineTo(0, 100);
     path.close();
     return path;
   }

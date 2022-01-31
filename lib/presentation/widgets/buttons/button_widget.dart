@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu_screen/btns/menu_btn_pressed.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu_screen/btns/menu_btn_unpressed.dart';
+import 'package:skolo_slide_hack/presentation/widgets/buttons/button_pressed.dart';
+import 'package:skolo_slide_hack/presentation/widgets/buttons/button_unpressed.dart';
 
-class MenuButtonWidget extends StatefulWidget {
-  MenuButtonWidget(
-      {Key? key,
-      required this.iconUrl,
-      required this.btnText,
-      required this.isPressed,
-      required this.onTap})
-      : super(key: key);
+class ButtonWidget extends StatefulWidget {
+  const ButtonWidget({
+    Key? key,
+    required this.iconUrl,
+    required this.btnText,
+    required this.isPressed,
+    required this.onTap,
+    this.isHovered = true,
+    this.onHover,
+  }) : super(key: key);
 
   ///Url for button icon
   final String iconUrl;
@@ -25,11 +27,17 @@ class MenuButtonWidget extends StatefulWidget {
   ///OnTap function
   final VoidCallback onTap;
 
+  ///Checks if button is hovered
+  final bool isHovered;
+
+  ///OnHover function
+  final ValueChanged<bool>? onHover;
+
   @override
-  _MenuButtonWidgetState createState() => _MenuButtonWidgetState();
+  _ButtonWidgetState createState() => _ButtonWidgetState();
 }
 
-class _MenuButtonWidgetState extends State<MenuButtonWidget> {
+class _ButtonWidgetState extends State<ButtonWidget> {
   final menuState = injector<MenuState>();
 
   @override
@@ -38,12 +46,14 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget> {
       duration: const Duration(milliseconds: 300),
       firstCurve: Curves.easeInQuint,
       secondCurve: Curves.easeInQuint,
-      firstChild: MenuBtnUnpressed(
+      firstChild: ButtonUnpressed(
         iconUrl: widget.iconUrl,
         btnText: widget.btnText,
         onTap: widget.onTap,
+        onHover: widget.onHover ?? (value) {},
+        isHovered: widget.isHovered,
       ),
-      secondChild: MenuBtnPressed(
+      secondChild: ButtonPressed(
         iconUrl: widget.iconUrl,
         btnText: widget.btnText,
         onTap: widget.onTap,

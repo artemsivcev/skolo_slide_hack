@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
-import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_btns_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/buttons/buttons_group_widget.dart';
 
 class MenuScreen extends StatelessWidget {
   MenuScreen({Key? key}) : super(key: key);
@@ -28,7 +26,7 @@ class MenuScreen extends StatelessWidget {
             //              TextStyle(fontFamily: 'LuckiestGuy-Regular', fontSize: 32),
             //        ),
             //      ),
-            GlassContainer(child: MenuBtnsWidget()),
+            GlassContainer(child: ButtonsGroupWidget()),
           ],
         )));
   }

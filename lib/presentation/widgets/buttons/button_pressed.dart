@@ -3,12 +3,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
 
-import 'menu_btn_inner_highlight.dart';
-import 'menu_btn_inner_shadow.dart';
+import 'button_inner_highlight.dart';
+import 'button_inner_shadow.dart';
+import 'button_text.dart';
 
-class MenuBtnPressed extends StatelessWidget {
-  MenuBtnPressed({
+class ButtonPressed extends StatelessWidget {
+  ButtonPressed({
     Key? key,
     required this.iconUrl,
     required this.btnText,
@@ -34,7 +36,7 @@ class MenuBtnPressed extends StatelessWidget {
       focusColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: onTap,
-      child: Column(
+      child: ColumnRowSolver(
         children: [
           Stack(
               clipBehavior: Clip.none,
@@ -60,14 +62,14 @@ class MenuBtnPressed extends StatelessWidget {
                 ),
                 ClipPath(
                   clipper: ShadowClipper(),
-                  child: const CircleInnerShadow(
+                  child: const ButtonCircleInnerShadow(
                     shadowColor: colorsGreyDarkPrimary,
                     backgroundColor: colorsGreyMediumPrimary,
                   ),
                 ),
                 ClipPath(
                     clipper: HighlightClipper(),
-                    child: const CircleInnerHighlight(
+                    child: const ButtonCircleInnerHighlight(
                       highlightColor: colorsGreyLightPrimary,
                       backgroundColor: colorsGreyMediumPrimary,
                     )),
@@ -83,12 +85,7 @@ class MenuBtnPressed extends StatelessWidget {
                   ),
                 ),
               ]),
-          Text(btnText,
-              style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: colorsGreyDarkPrimary)),
+          ButtonText(btnText: btnText),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
 part 'menu_state.g.dart';
@@ -15,21 +16,52 @@ abstract class _MenuState with Store {
   @observable
   bool exitBtnPressed = false;
 
-  ///Changes buttons' current state
+  ///Bools for checking if buttons are hovered
+  @observable
+  bool continueBtnHovered = false;
+
+  @observable
+  bool newGameBtnHovered = false;
+
+  @observable
+  bool exitBtnHovered = false;
+
+  ///Changes buttons' current state in the case of pressing
   @action
-  void togglePressedBtn(int btnIndex) {
-    switch (btnIndex) {
-      case 0:
-        continueBtnPressed = !continueBtnPressed;
-        break;
-      case 1:
-        newGameBtnPressed = !newGameBtnPressed;
-        break;
-      case 2:
-        exitBtnPressed = !exitBtnPressed;
-        break;
-      default:
-        print('Unknown button pressed');
-    }
+  void toggleContinueBtn() {
+    continueBtnPressed = !continueBtnPressed;
+  }
+
+  @action
+  void toggleNewGameBtn() {
+    newGameBtnPressed = !newGameBtnPressed;
+  }
+
+  @action
+  void toggleExitBtn() {
+    exitBtnPressed = !exitBtnPressed;
+  }
+
+  //change hover for buttons
+  @action
+  void toggleHoveredContinueBtn() {
+    continueBtnHovered = !continueBtnHovered;
+  }
+
+  @action
+  void toggleHoveredNewGameBtn() {
+    newGameBtnHovered = !newGameBtnHovered;
+  }
+
+  @action
+  void toggleHoveredExitBtn() {
+    exitBtnHovered = !exitBtnHovered;
+  }
+
+  //function help's to understand current user orientation by screen aspect ratio
+  bool isPortrait(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    return height > width;
   }
 }

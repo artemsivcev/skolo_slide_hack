@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CircleInnerShadow extends StatelessWidget {
+class ButtonCircleInnerShadow extends StatelessWidget {
   final Color shadowColor;
   final Color backgroundColor;
 
-  const CircleInnerShadow(
+  const ButtonCircleInnerShadow(
       {Key? key, required this.shadowColor, required this.backgroundColor})
       : super(key: key);
 

@@ -10,10 +10,12 @@ class BackgroundWithBubbles extends StatefulWidget {
     Key? key,
     required this.colorsBackground,
     required this.child,
+    this.direction = LineDirection.Btt,
   }) : super(key: key);
 
   final Color colorsBackground;
   final Widget child;
+  final LineDirection direction;
 
   @override
   _BackgroundWithBubblesState createState() => _BackgroundWithBubblesState();
@@ -26,7 +28,8 @@ class _BackgroundWithBubblesState extends State<BackgroundWithBubbles>
     return Scaffold(
       backgroundColor: widget.colorsBackground,
       body: AnimatedBackground(
-        behaviour: CustomBackgroundAnimationBehaviour(),
+        behaviour:
+            CustomBackgroundAnimationBehaviour(direction: widget.direction),
         vsync: this,
         child: BackdropFilter(
           filter: ImageFilter.blur(

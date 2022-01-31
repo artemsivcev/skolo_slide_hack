@@ -2,8 +2,6 @@ import 'dart:math' as math;
 
 import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:meta/meta.dart';
 
 /// Holds the information of a line used in a [CustomBackgroundAnimationBehaviour].
 class Line {
@@ -18,21 +16,6 @@ class Line {
 
   /// The color of this line.
   Color? color;
-}
-
-/// The direction in which the lines should move
-enum LineDirection {
-  /// Left to Right
-  Ltr,
-
-  /// Right to Left
-  Rtl,
-
-  /// Top to Bottom
-  Ttb,
-
-  /// Bottom to Top
-  Btt,
 }
 
 /// Renders moving lines on an [AnimatedBackground].

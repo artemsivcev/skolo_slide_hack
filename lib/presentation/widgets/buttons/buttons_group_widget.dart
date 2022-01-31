@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -16,26 +17,26 @@ class ButtonsGroupWidget extends StatelessWidget {
     return Observer(builder: (context) {
       return RowColumnSolver(
         children: [
-          ButtonWidget(
-            iconUrl: 'assets/images/puzzle-continue.svg',
-            btnText: 'Continue',
-            isPressed: menuState.continueBtnPressed,
-            onTap: () {
-              menuState.toggleContinueBtn();
-            },
-            isHovered: menuState.continueBtnHovered,
-            onHover: (value) {
-              menuState.toggleHoveredContinueBtn();
-            },
-          ),
-          const SizedBox(width: 32),
+          // ButtonWidget(
+          //   iconUrl: 'assets/images/puzzle-continue.svg',
+          //   btnText: 'Continue',
+          //   isPressed: menuState.continueBtnPressed,
+          //   onTap: () {
+          //     menuState.toggleContinueBtn();
+          //   },
+          //   isHovered: menuState.continueBtnHovered,
+          //   onHover: (value) {
+          //     menuState.toggleHoveredContinueBtn();
+          //   },
+          // ),
+          // const SizedBox(width: 32),
           ButtonWidget(
             iconUrl: 'assets/images/puzzle-new-filled.svg',
             btnText: 'New Game',
             isPressed: menuState.newGameBtnPressed,
             onTap: () async {
               menuState.toggleNewGameBtn();
-              await Future.delayed(const Duration(milliseconds: 1500));
+              await Future.delayed(const Duration(milliseconds: 450));
               Navigator.push(
                 context,
                 PageRouteBuilder(
@@ -48,19 +49,22 @@ class ButtonsGroupWidget extends StatelessWidget {
               menuState.toggleHoveredNewGameBtn();
             },
           ),
-          const SizedBox(width: 32),
-          ButtonWidget(
-            iconUrl: 'assets/images/exit.svg',
-            btnText: 'Exit',
-            isPressed: menuState.exitBtnPressed,
-            onTap: () {
-              menuState.toggleExitBtn();
-            },
-            isHovered: menuState.exitBtnHovered,
-            onHover: (value) {
-              menuState.toggleHoveredExitBtn();
-            },
-          ),
+
+          !kIsWeb ? const SizedBox(width: 32) : const SizedBox(),
+          !kIsWeb
+              ? ButtonWidget(
+                  iconUrl: 'assets/images/exit.svg',
+                  btnText: 'Exit',
+                  isPressed: menuState.exitBtnPressed,
+                  onTap: () {
+                    menuState.toggleExitBtn();
+                  },
+                  isHovered: menuState.exitBtnHovered,
+                  onHover: (value) {
+                    menuState.toggleHoveredExitBtn();
+                  },
+                )
+              : const SizedBox(),
         ],
       );
     });

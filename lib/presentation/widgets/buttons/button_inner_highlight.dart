@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CircleInnerHighlight extends StatelessWidget {
+class ButtonCircleInnerHighlight extends StatelessWidget {
   final Color highlightColor;
   final Color backgroundColor;
 
-  const CircleInnerHighlight(
+  const ButtonCircleInnerHighlight(
       {Key? key, required this.highlightColor, required this.backgroundColor})
       : super(key: key);
 

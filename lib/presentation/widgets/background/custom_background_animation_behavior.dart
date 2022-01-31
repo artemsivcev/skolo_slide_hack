@@ -17,21 +17,6 @@ class Line {
   Color? color;
 }
 
-/// The direction in which the lines should move
-enum LineDirection {
-  /// Left to Right
-  Ltr,
-
-  /// Right to Left
-  Rtl,
-
-  /// Top to Bottom
-  Ttb,
-
-  /// Bottom to Top
-  Btt,
-}
-
 /// Renders moving lines on an [AnimatedBackground].
 class CustomBackgroundAnimationBehaviour extends Behaviour {
   static final math.Random random = math.Random();

@@ -9,8 +9,8 @@ import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu_screen/menu_button_widget.dart';
-import 'package:skolo_slide_hack/presentation/widgets/new_game_screen/new_game_widgets_orientation_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/buttons/button_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/text_shadows.dart';
 
@@ -42,56 +42,6 @@ class _NewGamePageState extends State<NewGamePage>
 
   @override
   Widget build(BuildContext buildContext) {
-    var width = MediaQuery.of(context).size.width;
-    var glassContainerWidth = width * 0.8;
-    var defaultPreviewWidthHeight = width * 0.1;
-    var imagePreviewWidthHeight = width * 0.2;
-    var imageCroppedWidthHeight = width * 0.3;
-
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-
-    if (width > 1024) {
-      //more then 1024
-
-      if (isPortrait) {
-        glassContainerWidth = width * 0.32;
-        defaultPreviewWidthHeight = width * 0.08;
-        imagePreviewWidthHeight = width * 0.16;
-        imageCroppedWidthHeight = width * 0.24;
-      } else {
-        glassContainerWidth = width * 0.72;
-        defaultPreviewWidthHeight = width * 0.32;
-        imagePreviewWidthHeight = width * 0.48;
-        imageCroppedWidthHeight = width * 0.56;
-      }
-    } else if (width < 601) {
-      //less then 601, mobile
-      if (isPortrait) {
-        glassContainerWidth = width * 0.72;
-        defaultPreviewWidthHeight = width * 0.32;
-        imagePreviewWidthHeight = width * 0.48;
-        imageCroppedWidthHeight = width * 0.56;
-      } else {
-        glassContainerWidth = width * 0.72;
-        defaultPreviewWidthHeight = width * 0.32;
-        imagePreviewWidthHeight = width * 0.48;
-        imageCroppedWidthHeight = width * 0.56;
-      }
-    } else {
-      //600-1024
-      if (isPortrait) {
-        glassContainerWidth = width * 0.48;
-        defaultPreviewWidthHeight = width * 0.24;
-        imagePreviewWidthHeight = width * 0.32;
-        imageCroppedWidthHeight = width * 0.40;
-      } else {
-        glassContainerWidth = width * 0.72;
-        defaultPreviewWidthHeight = width * 0.32;
-        imagePreviewWidthHeight = width * 0.48;
-        imageCroppedWidthHeight = width * 0.56;
-      }
-    }
-
     return BackgroundWithBubbles(
       colorsBackground: colorsBackgroundMenu,
       child: Observer(builder: (context) {
@@ -105,104 +55,103 @@ class _NewGamePageState extends State<NewGamePage>
           _crossStateButtons = CrossFadeState.showSecond;
         }
 
-        return GlassContainer(
-          width: glassContainerWidth,
-          child: NewGameWidgetsOrientationSolver(
+        return Center(
+          child: RowColumnSolver(
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Choose Image',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400,
-                      color: colorsGreyLightPrimary,
-                      shadows: TextShadows.generateLongShadow(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  InkWell(
-                    hoverColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async => {
-                      await newGameState.chooseImagePress(),
-                      newGameState.isBtnChooseImagePressed = false,
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                            color: colorsGreyMediumPrimary, width: 1.5),
+              GlassContainer(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Text(
+                        'Choose Image',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                          color: colorsGreyLightPrimary,
+                          shadows: TextShadows.generateLongShadow(),
+                        ),
                       ),
-                      child: PolymorphicContainer(
-                        userInnerStyle: true,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              if (showPreview)
-                                SvgPicture.asset(
-                                  'assets/images/puzzle-new-filled.svg',
-                                  color: colorsPurpleBluePrimary,
-                                  width: defaultPreviewWidthHeight,
-                                  height: defaultPreviewWidthHeight,
-                                )
-                              else
-                                SizedBox(
-                                  width: defaultPreviewWidthHeight,
-                                  height: defaultPreviewWidthHeight,
-                                ),
-                              AnimatedContainer(
-                                width: showChosen
-                                    ? imagePreviewWidthHeight
-                                    : showCropped
-                                        ? imageCroppedWidthHeight
-                                        : defaultPreviewWidthHeight,
-                                height: showChosen
-                                    ? imagePreviewWidthHeight
-                                    : showCropped
-                                        ? imageCroppedWidthHeight
-                                        : defaultPreviewWidthHeight,
-                                duration: animationTwoSecondSDuration,
-                                curve: Curves.fastOutSlowIn,
-                                child: showCropped
-                                    ? Image.memory(
-                                        newGameState.croppedImage!.buffer
-                                            .asUint8List(),
-                                        width: defaultPreviewWidthHeight,
-                                        height: defaultPreviewWidthHeight,
-                                        fit: BoxFit.scaleDown,
-                                      )
-                                    : showChosen
-                                        ? Cropper(
-                                            backgroundColor: Colors.white,
-                                            cropperKey: _cropperKey,
-                                            overlayType: OverlayType.rectangle,
-                                            image: Image.memory(
-                                                newGameState.chosenImage!),
+                    ),
+                    InkWell(
+                      hoverColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async => {
+                        await newGameState.chooseImagePress(),
+                        newGameState.isBtnChooseImagePressed = false,
+                      },
+                      child: AnimatedContainer(
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(showCropped ? 55.0 : 16.0),
+                          border: Border.all(
+                              color: colorsGreyMediumPrimary, width: 1.5),
+                        ),
+                        duration: const Duration(seconds: 2),
+                        child: PolymorphicContainer(
+                          userInnerStyle: true,
+                          externalBorderRadius: showCropped ? 53.0 : 15.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  showCropped ? 55.0 : 16.0),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  if (showPreview)
+                                    SvgPicture.asset(
+                                      'assets/images/puzzle-new-filled.svg',
+                                      color: colorsPurpleBluePrimary,
+                                      height:
+                                          newGameState.getImageMaxSize(context),
+                                    )
+                                  else
+                                    const SizedBox(),
+                                  AnimatedContainer(
+                                    width: newGameState
+                                        .getAnimatedContainerSize(context),
+                                    height: newGameState
+                                        .getAnimatedContainerSize(context),
+                                    duration: const Duration(seconds: 2),
+                                    curve: Curves.fastOutSlowIn,
+                                    child: showCropped
+                                        ? Image.memory(
+                                            newGameState.croppedImage!.buffer
+                                                .asUint8List(),
+                                            fit: BoxFit.scaleDown,
                                           )
-                                        : Container(),
+                                        : showChosen
+                                            ? Cropper(
+                                                backgroundColor: Colors.white,
+                                                cropperKey: _cropperKey,
+                                                overlayType:
+                                                    OverlayType.rectangle,
+                                                image: Image.memory(
+                                                    newGameState.chosenImage!),
+                                              )
+                                            : const SizedBox(),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                AnimatedCrossFade(
+              GlassContainer(
+                child: AnimatedCrossFade(
                   crossFadeState: _crossStateButtons,
-                  duration: animationTwoSecondSDuration,
-                  firstChild: MenuButtonWidget(
+                  duration: const Duration(seconds: 2),
+                  firstChild: ButtonWidget(
                     iconUrl: 'assets/images/puzzle-new.svg',
                     btnText: 'Crop!',
                     isPressed: false,
@@ -210,7 +159,7 @@ class _NewGamePageState extends State<NewGamePage>
                       _cropImage();
                     },
                   ),
-                  secondChild: MenuButtonWidget(
+                  secondChild: ButtonWidget(
                     iconUrl: 'assets/images/puzzle-new-filled.svg',
                     btnText: 'Play!',
                     isPressed: false,
@@ -225,7 +174,7 @@ class _NewGamePageState extends State<NewGamePage>
                     },
                   ),
                 ),
-              ]),
+              ),
             ],
           ),
         );

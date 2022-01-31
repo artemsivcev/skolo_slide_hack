@@ -3,13 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
 
-class MenuBtnUnpressed extends StatelessWidget {
-  MenuBtnUnpressed({
+import 'button_text.dart';
+
+class ButtonUnpressed extends StatelessWidget {
+  ButtonUnpressed({
     Key? key,
     required this.iconUrl,
     required this.btnText,
     required this.onTap,
+    required this.isHovered,
+    required this.onHover,
   }) : super(key: key);
 
   ///Url for button icon
@@ -21,6 +26,12 @@ class MenuBtnUnpressed extends StatelessWidget {
   ///OnTap function
   final VoidCallback onTap;
 
+  ///Checks if button is hovered
+  final bool isHovered;
+
+  ///OnHover function
+  final ValueChanged<bool> onHover;
+
   final menuState = injector<MenuState>();
 
   @override
@@ -31,7 +42,8 @@ class MenuBtnUnpressed extends StatelessWidget {
       focusColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: onTap,
-      child: Column(
+      onHover: onHover,
+      child: ColumnRowSolver(
         children: [
           Padding(
             padding: const EdgeInsets.all(32.0),
@@ -40,9 +52,13 @@ class MenuBtnUnpressed extends StatelessWidget {
               width: 100.0,
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
-                child: SvgPicture.asset(
-                  iconUrl,
-                  color: colorsPurpleBluePrimary,
+                child: AnimatedOpacity(
+                  opacity: isHovered ? 1.0 : 0.7,
+                  duration: const Duration(milliseconds: 170),
+                  child: SvgPicture.asset(
+                    iconUrl,
+                    color: colorsPurpleBluePrimary,
+                  ),
                 ),
               ),
               decoration: const BoxDecoration(
@@ -63,12 +79,7 @@ class MenuBtnUnpressed extends StatelessWidget {
               ),
             ),
           ),
-          Text(btnText,
-              style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: colorsGreyDarkPrimary)),
+          ButtonText(btnText: btnText),
         ],
       ),
     );

@@ -1,7 +1,8 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:image/image.dart';
+import 'package:flutter/widgets.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 
@@ -10,32 +11,32 @@ part 'new_game_state.g.dart';
 class NewGameState = _NewGameState with _$NewGameState;
 
 abstract class _NewGameState with Store {
-  //bool for btn state
+  /// bool for choose image btn state
   @observable
   bool isBtnChooseImagePressed = false;
 
-  //bool for btn state
+  /// bool for play btn state
   @observable
   bool isBtnPlayPressed = false;
 
-  //cropped image to preview on new game screen
+  /// cropped image to preview on new game screen
   @observable
   Uint8List? chosenImage;
 
-  //cropped image to preview on new game screen
+  /// cropped image to preview on new game screen
   @observable
   Uint8List? croppedImage;
 
-  // divided user image. first value in index and second is image in Unit8List format
+  /// divided user image. first value in index and second is image in Unit8List format
   HashMap<dynamic, dynamic>? imageMap;
 
-  // image picker controller to get image from user space
+  /// image picker controller to get image from user space
   final ImagePicker _picker = ImagePicker();
 
   /// size of board (if dimensions are 4x4, size is 4)
   final int boardSize = 4;
 
-  // logic for choose image btn. It change btn state, choose image and return it
+  /// logic for choose image btn. It changes btn state, chooses image and returns it
   @action
   Future<void> chooseImagePress() async {
     isBtnChooseImagePressed = !isBtnChooseImagePressed;
@@ -53,8 +54,8 @@ abstract class _NewGameState with Store {
     }
   }
 
-  // logic for play btn. It change btn state
-  // and called [splitImage] function
+  /// logic for play btn. It changes btn state
+  /// and calls [splitImage] function
   @action
   Future<void> playPress() async {
     isBtnPlayPressed = !isBtnPlayPressed;
@@ -66,7 +67,7 @@ abstract class _NewGameState with Store {
     print("start = " + DateTime.now().toString());
 
     //todo this is problem spot
-    Image image = decodeImage(croppedImage!.toList())!;
+    img.Image image = img.decodeImage(croppedImage!.toList())!;
     print("end decodeImage = " + DateTime.now().toString());
     int x = 0, y = 0;
     int width = (image.width / boardSize).floor();
@@ -74,10 +75,10 @@ abstract class _NewGameState with Store {
 
     // split image to parts
 
-    List<Image> parts = <Image>[];
+    List<img.Image> parts = <img.Image>[];
     for (int i = 0; i < boardSize; i++) {
       for (int j = 0; j < boardSize; j++) {
-        parts.add(copyCrop(image, x, y, width, height));
+        parts.add(img.copyCrop(image, x, y, width, height));
         x += width;
       }
       x = 0;
@@ -88,11 +89,47 @@ abstract class _NewGameState with Store {
     HashMap output = HashMap<int, Uint8List>();
     for (int i = 0; i < parts.length; i++) {
       output.putIfAbsent(
-          i, () => Uint8List.fromList(encodeJpg(parts[i], quality: 25)));
+          i, () => Uint8List.fromList(img.encodeJpg(parts[i], quality: 25)));
     }
 
     print("\nend = " + DateTime.now().toString());
 
     return output;
+  }
+
+  /// this function gets image max size due to screen width and height
+  /// for adaptive layout
+  double getImageMaxSize(BuildContext context, {double? customMultiple}) {
+    double maxSize = 100.0;
+    double multiple = 0.4;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    if (customMultiple != null) {
+      multiple = customMultiple;
+    }
+
+    if (height > width) {
+      maxSize = width * multiple;
+    } else {
+      maxSize = height * multiple;
+    }
+
+    return maxSize;
+  }
+
+  /// this function gets animated container size
+  /// due to the state of image, selected by user
+  double getAnimatedContainerSize(BuildContext context) {
+    var showChosen = chosenImage != null;
+    var showCropped = croppedImage != null;
+
+    var size = showChosen
+        ? getImageMaxSize(context)
+        : showCropped
+            ? getImageMaxSize(context, customMultiple: 0.5)
+            : getImageMaxSize(context);
+
+    return size;
   }
 }

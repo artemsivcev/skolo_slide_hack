@@ -1,7 +1,8 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:image/image.dart';
+import 'package:flutter/widgets.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 
@@ -66,7 +67,7 @@ abstract class _NewGameState with Store {
     print("start = " + DateTime.now().toString());
 
     //todo this is problem spot
-    Image image = decodeImage(croppedImage!.toList())!;
+    img.Image image = img.decodeImage(croppedImage!.toList())!;
     print("end decodeImage = " + DateTime.now().toString());
     int x = 0, y = 0;
     int width = (image.width / boardSize).floor();
@@ -74,10 +75,10 @@ abstract class _NewGameState with Store {
 
     // split image to parts
 
-    List<Image> parts = <Image>[];
+    List<img.Image> parts = <img.Image>[];
     for (int i = 0; i < boardSize; i++) {
       for (int j = 0; j < boardSize; j++) {
-        parts.add(copyCrop(image, x, y, width, height));
+        parts.add(img.copyCrop(image, x, y, width, height));
         x += width;
       }
       x = 0;
@@ -88,11 +89,47 @@ abstract class _NewGameState with Store {
     HashMap output = HashMap<int, Uint8List>();
     for (int i = 0; i < parts.length; i++) {
       output.putIfAbsent(
-          i, () => Uint8List.fromList(encodeJpg(parts[i], quality: 25)));
+          i, () => Uint8List.fromList(img.encodeJpg(parts[i], quality: 25)));
     }
 
     print("\nend = " + DateTime.now().toString());
 
     return output;
+  }
+
+  double getImageMaxSize(BuildContext context, {double? customMultiple}) {
+    double maxSize = 100.0;
+    double multiple = 0.4;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    if (customMultiple != null) {
+      multiple = customMultiple;
+    }
+
+    if (height > width) {
+      maxSize = width * multiple;
+    } else {
+      maxSize = height * multiple;
+    }
+
+    return maxSize;
+  }
+
+  double getAnimatedContainerSize(BuildContext context){
+
+    var showChosen = chosenImage != null;
+    var showCropped = croppedImage != null;
+
+
+    var size = showChosen
+        ? getImageMaxSize(context)
+        : showCropped
+        ? getImageMaxSize(context,
+        customMultiple: 0.5)
+        : getImageMaxSize(context);
+
+    return size;
+
   }
 }

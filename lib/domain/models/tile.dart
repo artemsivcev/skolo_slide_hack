@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 
@@ -7,6 +9,7 @@ class Tile extends Equatable {
     required this.value,
     required this.correctPosition,
     required this.currentPosition,
+    this.customImage,
     this.isEmpty = false,
   });
 
@@ -23,6 +26,9 @@ class Tile extends Equatable {
   /// Denotes if the [Tile] is the tile empty or not.
   final bool isEmpty;
 
+  /// Custom image for [Tile] to render
+  final Uint8List? customImage;
+
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({required Position currentPosition}) {
     return Tile(
@@ -30,6 +36,7 @@ class Tile extends Equatable {
       correctPosition: correctPosition,
       currentPosition: currentPosition,
       isEmpty: isEmpty,
+      customImage: customImage,
     );
   }
 

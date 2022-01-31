@@ -77,25 +77,22 @@ class _SimpleTileWidgetState extends State<SimpleTileWidget> {
         ? const SizedBox()
         : InkWell(
             onTap: widget.onTap,
-            child: AnimatedBuilder(
-              animation: _puzzleState.startAnimationController!,
-              builder: (_, __) {
-                return SizedBox(
-                  width: _blowSizeAnimation.value,
-                  height: _blowSizeAnimation.value,
-                  child: PolymorphicContainer(
-                    backgroundColor: Colors.indigoAccent,
-                    userInnerStyle: false,
-                    externalBorderRadius: _borderRadiusAnimation.value!,
-                    child: Center(
-                      child: Text(
-                        '${widget.tile.value}',
-                        style: numberTextStyle.copyWith(color: Colors.black),
-                      ),
+            child: PolymorphicContainer(
+              userInnerStyle: false,
+              child: Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    widget.tile.customImage != null
+                        ? Image.memory(widget.tile.customImage!)
+                        : Container(),
+                    Text(
+                      '${widget.tile.value}',
+                      style: numberTextStyle.copyWith(color: Colors.black),
                     ),
-                  ),
-                );
-              },
+                  ],
+                ),
+              ),
             ),
           );
   }

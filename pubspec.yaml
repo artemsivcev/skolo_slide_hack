@@ -49,6 +49,16 @@ dependencies:
   #localization
   easy_localization: ^3.0.0
 
+  #image_picker for pick image and cropperx for crop it to rectangle
+  image_picker: ^0.8.4+4
+  cropperx: ^1.0.0
+
+  #need to divide image to parts
+  image: ^3.1.1
+
+  #for background
+  animated_background: ^2.0.0
+
 dev_dependencies:
   dart_code_metrics: ^4.9.1
   build_runner: ^2.1.7

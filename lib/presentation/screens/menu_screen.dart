@@ -59,11 +59,16 @@ class MenuScreen extends StatelessWidget {
                   ),
                 ]),
               ),
-              Row(
-                children: const [
-                  GitHubIcon(),
-                  SkoloIcon(),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: kToolbarHeight - 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    GitHubIcon(),
+                    SkoloIcon(),
+                  ],
+                ),
               ),
               DashIcon(),
             ],

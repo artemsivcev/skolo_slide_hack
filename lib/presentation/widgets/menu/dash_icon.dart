@@ -8,15 +8,19 @@ class DashIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomRight,
-      child: InkWell(
-        hoverColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        onTap: () async => {launch("https://flutter.com")},
-        child: Image.asset(
-          'assets/images/dash.png',
-          width: 210,
+      child: Semantics(
+        label: "Image of Dash and link to flutter website",
+        enabled: true,
+        child: InkWell(
+          hoverColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          onTap: () async => {launch("https://flutter.com")},
+          child: Image.asset(
+            'assets/images/dash.png',
+            width: 210,
+          ),
         ),
       ),
     );

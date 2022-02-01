@@ -31,19 +31,23 @@ class ButtonsGroupWidget extends StatelessWidget {
           //   },
           // ),
           // const SizedBox(width: 32),
-          ButtonWidget(
-            iconUrl: 'assets/images/puzzle-new-filled.svg',
-            btnText: 'New Game',
-            isPressed: menuState.newGameBtnPressed,
-            onTap: () async {
-              menuState.toggleNewGameBtn();
-              await Future.delayed(const Duration(milliseconds: 450));
-              newGameState.isNewGameShow = true;
-            },
-            isHovered: menuState.newGameBtnHovered,
-            onHover: (value) {
-              menuState.toggleHoveredNewGameBtn();
-            },
+          Semantics(
+            label: "Go to image chooser",
+            enabled: true,
+            child: ButtonWidget(
+              iconUrl: 'assets/images/puzzle-new-filled.svg',
+              btnText: 'New Game',
+              isPressed: menuState.newGameBtnPressed,
+              onTap: () async {
+                menuState.toggleNewGameBtn();
+                await Future.delayed(const Duration(milliseconds: 450));
+                newGameState.isNewGameShow = true;
+              },
+              isHovered: menuState.newGameBtnHovered,
+              onHover: (value) {
+                menuState.toggleHoveredNewGameBtn();
+              },
+            ),
           ),
 
           !kIsWeb ? const SizedBox(width: 32) : const SizedBox(),

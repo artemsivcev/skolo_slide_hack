@@ -11,17 +11,21 @@ class GitHubIcon extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Align(
         alignment: Alignment.topLeft,
-        child: InkWell(
-          hoverColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          onTap: () async =>
-              {launch("https://github.com/artemsivcev/skolo_slide_hack")},
-          child: SvgPicture.asset(
-            'assets/images/github.svg',
-            color: Colors.black,
-            height: 50,
+        child: Semantics(
+          label: "Go to source code",
+          enabled: true,
+          child: InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onTap: () async =>
+                {launch("https://github.com/artemsivcev/skolo_slide_hack")},
+            child: SvgPicture.asset(
+              'assets/images/github.svg',
+              color: Colors.black,
+              height: 50,
+            ),
           ),
         ),
       ),

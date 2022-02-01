@@ -30,27 +30,35 @@ class _CropAndPlayButtonState extends State<CropAndPlayButton>
       return AnimatedCrossFade(
         crossFadeState: crossStateButtons,
         duration: const Duration(seconds: 2),
-        firstChild: ButtonWidget(
-          iconUrl: 'assets/images/puzzle-new.svg',
-          btnText: 'Crop!',
-          isPressed: false,
-          onTap: () async {
-            newGameState.cropImage();
-          },
+        firstChild: Semantics(
+          label: "Crop your image to square",
+          enabled: true,
+          child: ButtonWidget(
+            iconUrl: 'assets/images/puzzle-new.svg',
+            btnText: 'Crop!',
+            isPressed: false,
+            onTap: () async {
+              newGameState.cropImage();
+            },
+          ),
         ),
-        secondChild: ButtonWidget(
-          iconUrl: 'assets/images/puzzle-new-filled.svg',
-          btnText: 'Play!',
-          isPressed: false,
-          onTap: () async {
-            await newGameState.playPress();
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => const PuzzlePage(),
-              ),
-            );
-          },
+        secondChild: Semantics(
+          label: "Go to game page",
+          enabled: true,
+          child: ButtonWidget(
+            iconUrl: 'assets/images/puzzle-new-filled.svg',
+            btnText: 'Play!',
+            isPressed: false,
+            onTap: () async {
+              await newGameState.playPress();
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => const PuzzlePage(),
+                ),
+              );
+            },
+          ),
         ),
       );
     });

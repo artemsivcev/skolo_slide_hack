@@ -88,8 +88,7 @@ abstract class _NewGameState with Store {
     print("start fill map = " + DateTime.now().toString());
     HashMap output = HashMap<int, Uint8List>();
     for (int i = 0; i < parts.length; i++) {
-      output.putIfAbsent(
-          i, () => Uint8List.fromList(img.encodeJpg(parts[i], quality: 25)));
+      output.putIfAbsent(i, () => Uint8List.fromList(parts[i].data));
     }
 
     print("\nend = " + DateTime.now().toString());
@@ -116,20 +115,16 @@ abstract class _NewGameState with Store {
     return maxSize;
   }
 
-  double getAnimatedContainerSize(BuildContext context){
-
+  double getAnimatedContainerSize(BuildContext context) {
     var showChosen = chosenImage != null;
     var showCropped = croppedImage != null;
-
 
     var size = showChosen
         ? getImageMaxSize(context)
         : showCropped
-        ? getImageMaxSize(context,
-        customMultiple: 0.5)
-        : getImageMaxSize(context);
+            ? getImageMaxSize(context, customMultiple: 0.5)
+            : getImageMaxSize(context);
 
     return size;
-
   }
 }

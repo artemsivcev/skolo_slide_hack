@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 
@@ -100,7 +101,11 @@ class CustomBackgroundAnimationBehaviour extends Behaviour {
     var targetRadius =
         random.nextDouble() * deltaTargetRadius + minTargetRadius;
     line.radius = random.nextDouble() * targetRadius;
-    line.color = Colors.white;
+    var opacity = random.nextInt(100).toDouble() / 100;
+    if (opacity == 0) {
+      opacity = 1;
+    }
+    line.color = Colors.white.withOpacity(opacity);
   }
 
   @override

@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/presentation/screens/new_game_page.dart';
+import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 
 class ButtonsGroupWidget extends StatelessWidget {
   final menuState = injector<MenuState>();
+  final newGameState = injector<NewGameState>();
 
   ButtonsGroupWidget({Key? key}) : super(key: key);
 
@@ -37,25 +38,7 @@ class ButtonsGroupWidget extends StatelessWidget {
             onTap: () async {
               menuState.toggleNewGameBtn();
               await Future.delayed(const Duration(milliseconds: 450));
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: const Duration(milliseconds: 1000),
-                  transitionsBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation,
-                      Widget child) {
-                    return Align(
-                      child: FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      ),
-                    );
-                  },
-                  pageBuilder: (_, __, ___) => const NewGamePage(),
-                ),
-              );
-              menuState.toggleNewGameBtn();
+              newGameState.isNewGameShow = true;
             },
             isHovered: menuState.newGameBtnHovered,
             onHover: (value) {

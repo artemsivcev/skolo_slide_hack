@@ -33,8 +33,8 @@ class _BackgroundWithBubblesState extends State<BackgroundWithBubbles>
         vsync: this,
         child: BackdropFilter(
           filter: ImageFilter.blur(
-            sigmaX: 15.0,
-            sigmaY: 15.0,
+            sigmaX: 7.5,
+            sigmaY: 7.5,
           ),
           child: widget.child,
         ),

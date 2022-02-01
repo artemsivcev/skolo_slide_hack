@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:cropperx/cropperx.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
@@ -88,7 +89,8 @@ abstract class _NewGameState with Store {
     print("start fill map = " + DateTime.now().toString());
     HashMap output = HashMap<int, Uint8List>();
     for (int i = 0; i < parts.length; i++) {
-      output.putIfAbsent(i, () => Uint8List.fromList(parts[i].data));
+      output.putIfAbsent(
+          i, () => Uint8List.fromList(img.encodeJpg(parts[i], quality: 25)));
     }
 
     print("\nend = " + DateTime.now().toString());
@@ -127,4 +129,21 @@ abstract class _NewGameState with Store {
 
     return size;
   }
+
+  // Define a key for cropper
+  final cropperKey = GlobalKey(debugLabel: 'cropperKey');
+
+  //function to crop chose image
+  Future<void> cropImage() async {
+    // Get the cropped image as bytes
+    final imageBytes = await Cropper.crop(
+      cropperKey: cropperKey, // Reference it through the key
+    );
+    chosenImage = null;
+    croppedImage = imageBytes;
+  }
+
+  //bool to show new game or first screen
+  @observable
+  bool isNewGameShow = false;
 }

@@ -7,23 +7,25 @@ class SkoloIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Align(
-        alignment: Alignment.topLeft,
-        child: Semantics(
-          label: "Link to Skolopendra web site",
-          enabled: true,
-          child: InkWell(
-            hoverColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            focusColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onTap: () async => {launch("https://skolopendra.com/")},
-            child: SvgPicture.asset(
-              'assets/images/skolo.svg',
-              color: Colors.black,
-              height: 50,
+    return Flexible(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Semantics(
+            label: "Link to Skolopendra web site",
+            enabled: true,
+            child: InkWell(
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () async => {launch("https://skolopendra.com/")},
+              child: SvgPicture.asset(
+                'assets/images/skolo.svg',
+                color: Colors.black,
+                height: 50,
+              ),
             ),
           ),
         ),

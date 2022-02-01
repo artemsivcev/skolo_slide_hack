@@ -59,6 +59,9 @@ dependencies:
   #for background
   animated_background: ^2.0.0
 
+  #to open url
+  url_launcher: ^6.0.18
+
 dev_dependencies:
   dart_code_metrics: ^4.9.1
   build_runner: ^2.1.7

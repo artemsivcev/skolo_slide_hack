@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:cropperx/cropperx.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
@@ -132,4 +133,21 @@ abstract class _NewGameState with Store {
 
     return size;
   }
+
+  // Define a key for cropper
+  final cropperKey = GlobalKey(debugLabel: 'cropperKey');
+
+  //function to crop chose image
+  Future<void> cropImage() async {
+    // Get the cropped image as bytes
+    final imageBytes = await Cropper.crop(
+      cropperKey: cropperKey, // Reference it through the key
+    );
+    chosenImage = null;
+    croppedImage = imageBytes;
+  }
+
+  //bool to show new game or first screen
+  @observable
+  bool isNewGameShow = false;
 }

@@ -14,13 +14,13 @@ abstract class _ShuffleAnimationState with Store {
   @observable
   Animation<double>? offsetAnimation;
 
-  final Tween<double> tweenForOffset = Tween(begin: 0.0, end: 1.0);
+  final Tween<double> tweenForOffset = Tween(begin: 0.0, end: 7.0);
 
   @action
   void initAnimation(AnimationController controller) {
     animationShuffleController = controller;
 
-    offsetAnimation = Tween(begin: 0.0, end: 12.0)
+    offsetAnimation = tweenForOffset
         .chain(CurveTween(curve: Curves.elasticIn))
         .animate(animationShuffleController!)
       ..addStatusListener((status) {

@@ -26,7 +26,6 @@ abstract class _StartAnimationState with Store {
   bool isFirstScreenEntry = true;
 
   initStartAnimationController(TickerProvider tickerProvider) {
-    print('init Start animation Controller');
     startAnimationController = AnimationController(
       vsync: tickerProvider,
       duration: const Duration(

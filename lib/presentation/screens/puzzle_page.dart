@@ -45,7 +45,6 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
       duration: animationOneSecondDuration,
       vsync: this,
     );
-
     shuffleAnimationState.initAnimation(controllerShuffle);
 
     super.initState();
@@ -74,15 +73,6 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     startAnimationState.isFirstScreenEntry = false;
-
-    final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 7.0)
-        .chain(CurveTween(curve: Curves.elasticIn))
-        .animate(shuffleAnimationState.animationShuffleController!)
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          shuffleAnimationState.animationShuffleController!.reverse();
-        }
-      });
 
     return Scaffold(
       body: Column(
@@ -119,7 +109,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                   var isCompleted = puzzleState.isComplete;
 
                   return AnimatedBuilder(
-                      animation: offsetAnimation,
+                      animation: shuffleAnimationState.offsetAnimation!,
                       child: AnimatedContainer(
                         width: isCompleted ? 340 : 310,
                         height: isCompleted ? 340 : 310,

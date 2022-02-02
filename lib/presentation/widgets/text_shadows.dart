@@ -10,9 +10,9 @@ class TextShadows {
     const double opacityPow = 1.0;
     const double offset = 0.5;
     const double offsetPow = 2.0;
-    const double blur = 35;
+    const double blur = 100;
     const double blurPow = 1;
-    final Color shadowColor = Colors.black;
+    const Color shadowColor = Colors.black;
     const Point position = Point(-100.0, -100.0);
     const double intensity = 1.0;
 

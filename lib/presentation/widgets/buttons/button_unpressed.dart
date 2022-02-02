@@ -3,6 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
+
+import 'button_text.dart';
 
 class ButtonUnpressed extends StatelessWidget {
   ButtonUnpressed({
@@ -40,7 +43,7 @@ class ButtonUnpressed extends StatelessWidget {
       highlightColor: Colors.transparent,
       onTap: onTap,
       onHover: onHover,
-      child: Column(
+      child: ColumnRowSolver(
         children: [
           Padding(
             padding: const EdgeInsets.all(32.0),
@@ -76,12 +79,7 @@ class ButtonUnpressed extends StatelessWidget {
               ),
             ),
           ),
-          Text(btnText,
-              style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: colorsGreyDarkPrimary)),
+          ButtonText(btnText: btnText),
         ],
       ),
     );

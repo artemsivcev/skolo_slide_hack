@@ -3,9 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
 
 import 'button_inner_highlight.dart';
 import 'button_inner_shadow.dart';
+import 'button_text.dart';
 
 class ButtonPressed extends StatelessWidget {
   ButtonPressed({
@@ -34,7 +36,7 @@ class ButtonPressed extends StatelessWidget {
       focusColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: onTap,
-      child: Column(
+      child: ColumnRowSolver(
         children: [
           Stack(
               clipBehavior: Clip.none,
@@ -60,14 +62,14 @@ class ButtonPressed extends StatelessWidget {
                 ),
                 ClipPath(
                   clipper: ShadowClipper(),
-                  child: ButtonCircleInnerShadow(
+                  child: const ButtonCircleInnerShadow(
                     shadowColor: colorsGreyDarkPrimary,
                     backgroundColor: colorsGreyMediumPrimary,
                   ),
                 ),
                 ClipPath(
                     clipper: HighlightClipper(),
-                    child: ButtonCircleInnerHighlight(
+                    child: const ButtonCircleInnerHighlight(
                       highlightColor: colorsGreyLightPrimary,
                       backgroundColor: colorsGreyMediumPrimary,
                     )),
@@ -83,12 +85,7 @@ class ButtonPressed extends StatelessWidget {
                   ),
                 ),
               ]),
-          Text(btnText,
-              style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  color: colorsGreyDarkPrimary)),
+          ButtonText(btnText: btnText),
         ],
       ),
     );

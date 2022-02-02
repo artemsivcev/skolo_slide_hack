@@ -1,11 +1,11 @@
 import 'dart:math';
-
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
-
+import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'new_game_state.dart';
 
 part 'puzzle_state.g.dart';
@@ -13,6 +13,8 @@ part 'puzzle_state.g.dart';
 class PuzzleState = _PuzzleState with _$PuzzleState;
 
 abstract class _PuzzleState with Store {
+  final winAnimationState = injector<WinAnimationState>();
+
   //state with user image data
   final newGameState = injector<NewGameState>();
 
@@ -28,10 +30,35 @@ abstract class _PuzzleState with Store {
   @computed
   List<Tile> get tiles => puzzle == null ? [] : puzzle!.tiles;
 
+  /// list of values that corresponds to the tiles in corners.
+  /// Depends on the puzzle boarder size.
+  /// For example, if the puzzle dimension is 4x4, the tiles in
+  /// cornets should have values 1, 4, 13 and 16
+  ///  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+  ///  │  1  │ │  2  │ │  3  │ │  4  │
+  ///  └─────┘ └─────┘ └─────┘ └─────┘
+  ///  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+  ///  │  5  │ │  6  │ │  7  │ │  8  │
+  ///  └─────┘ └─────┘ └─────┘ └─────┘
+  ///  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+  ///  │  9  │ │ 10  │ │ 11  │ │ 12  │
+  ///  └─────┘ └─────┘ └─────┘ └─────┘
+  ///  ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+  ///  │ 13  │ │ 14  │ │ 15  │ │ 16  │
+  ///  └─────┘ └─────┘ └─────┘ └─────┘
+  @computed
+  List<int> get valuesCornerTiles => [
+        1,
+        newGameState.boardSize,
+        (newGameState.boardSize * newGameState.boardSize) -
+            newGameState.boardSize +
+            1,
+        newGameState.boardSize * newGameState.boardSize,
+      ];
+
   /// if the user win the game
   @computed
   bool get isComplete => puzzle == null ? false : puzzle!.isComplete;
-
 
   /// [onTileTapped] stands for method that is invoked when any tile is tapped.
   /// Index of tapped tile need ti be passed.
@@ -45,6 +72,8 @@ abstract class _PuzzleState with Store {
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
       puzzle = puzzleWithMovedTiles.sort();
     }
+
+    if (isComplete) winAnimationState.animate();
   }
 
   /// Build puzzle of the given size.
@@ -98,13 +127,19 @@ abstract class _PuzzleState with Store {
         customImage: newGameState.imageMap != null
             ? newGameState.imageMap![index]
             : null,
+        corner: setCorner(
+          valuesCornerTiles.indexOf(index + 1),
+        ),
       ),
     );
   }
 
   /// on shuffle button tap
   @action
-  void shuffleButtonTap() => generatePuzzle();
+  void shuffleButtonTap() {
+    if (isComplete) winAnimationState.animate();
+    generatePuzzle();
+  }
 
   /// shuffle puzzle tiles with [random]
   Puzzle shufflePuzzle({

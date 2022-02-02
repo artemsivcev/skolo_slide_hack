@@ -43,7 +43,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return AnimatedCrossFade(
-      duration: const Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 300),
       firstCurve: Curves.easeInQuint,
       secondCurve: Curves.easeInQuint,
       firstChild: ButtonUnpressed(

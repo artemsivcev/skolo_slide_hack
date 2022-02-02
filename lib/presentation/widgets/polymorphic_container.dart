@@ -17,6 +17,7 @@ class PolymorphicContainer extends StatelessWidget {
     this.isBottomLeftCorner = true,
     this.isBottomRightCorner = true,
     this.userInnerStyle = false,
+    this.duration = const Duration(seconds: 2),
   }) : super(key: key);
 
   final Widget child;
@@ -43,6 +44,7 @@ class PolymorphicContainer extends StatelessWidget {
   final bool isTopLeftCorner;
   final bool isBottomRightCorner;
   final bool isBottomLeftCorner;
+  final Duration duration;
 
   Color _modifyBackGroundColor(
       Color backGroundColor, double lightnessModifier) {
@@ -67,7 +69,7 @@ class PolymorphicContainer extends StatelessWidget {
         backgroundColor ?? Theme.of(context).canvasColor;
 
     return AnimatedContainer(
-      duration: const Duration(seconds: 2),
+      duration: duration,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(

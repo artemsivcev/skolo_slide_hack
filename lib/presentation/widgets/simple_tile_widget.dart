@@ -1,9 +1,12 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
+import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 
 /// [SimpleTileWidget] stands for one tile widget.
@@ -52,7 +55,7 @@ class SimpleTileWidget extends StatelessWidget {
 }
 
 class AnimatedWidget extends StatelessWidget {
-  const AnimatedWidget({
+  AnimatedWidget({
     Key? key,
     required this.tile,
     this.onTap,
@@ -66,12 +69,14 @@ class AnimatedWidget extends StatelessWidget {
   final bool isComplete;
   final double tweenStart;
   final Tween<double> tween;
+  final _startAnimation = injector<StartAnimationState>();
 
   @override
   Widget build(BuildContext context) => AnimatedSwitcher(
         duration: animationOneThirdSecondDuration,
         transitionBuilder: transitionBuilder,
         child: isComplete
+            //win case tile
             ? PolymorphicContainer(
                 userInnerStyle: false,
                 innerShadowBorderRadius: 0,
@@ -86,10 +91,20 @@ class AnimatedWidget extends StatelessWidget {
                       : Container(),
                 ),
               )
+            // usual tile
             : InkWell(
                 onTap: onTap,
-                child: PolymorphicContainer(
-                  userInnerStyle: false,
+                child: AnimatedBuilder(
+                  animation: _startAnimation.borderRadiusAnimation,
+                  builder: (_, builderChild) {
+                    return PolymorphicContainer(
+                      duration: const Duration(seconds: 0),
+                      userInnerStyle: false,
+                      externalBorderRadius:
+                          _startAnimation.borderRadiusAnimation.value!,
+                      child: builderChild!,
+                    );
+                  },
                   child: Center(
                     child: Stack(
                       alignment: Alignment.center,

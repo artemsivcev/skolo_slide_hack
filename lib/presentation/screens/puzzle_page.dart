@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
@@ -22,6 +24,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   final puzzleState = injector<PuzzleState>();
   final newGameState = injector<NewGameState>();
   final winAnimationState = injector<WinAnimationState>();
+  final startAnimationState = injector<StartAnimationState>();
 
   @override
   void initState() {
@@ -32,7 +35,22 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
       vsync: this,
     );
     winAnimationState.initAnimation(controller);
+    startAnimationState.initStartAnimationController(this);
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    reaction<bool>((_) => startAnimationState.isFirstScreenEntry,
+        (imageMap) async {
+      if (!imageMap) {
+        await Future.delayed(const Duration(seconds: 1));
+        startAnimationState.startAnimationController!.forward();
+      }
+    });
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -43,6 +61,8 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    startAnimationState.isFirstScreenEntry = false;
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

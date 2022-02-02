@@ -43,8 +43,8 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     reaction<bool>((_) => startAnimationState.isFirstScreenEntry,
-        (imageMap) async {
-      if (!imageMap) {
+        (value) async {
+      if (!value) {
         await Future.delayed(const Duration(seconds: 1));
         startAnimationState.startAnimationController!.forward();
       }
@@ -82,7 +82,12 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                 icon: const Icon(
                   Icons.refresh,
                 ),
-                onPressed: () => puzzleState.shuffleButtonTap(),
+                onPressed: () {
+                  puzzleState.shuffleButtonTap();
+                  //todo reset start animation?
+                  // startAnimationState.resetStartAnimation();
+                  // startAnimationState.isFirstScreenEntry = true;
+                },
                 iconColor: whiteColour,
               ),
               const SizedBox(width: 36),
@@ -109,8 +114,14 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                               tiles.length,
                               (index) => AnimatedPadding(
                                 duration: animationOneSecondDuration,
-                                padding: EdgeInsets.all(
-                                    winAnimationState.spacingValue),
+                                padding: EdgeInsets.all(isCompleted
+                                    ? winAnimationState.spacingValue
+                                    : startAnimationState
+                                                .startAnimationController!
+                                                .status ==
+                                            AnimationStatus.completed
+                                        ? winAnimationState.spacingValue
+                                        : 0.0),
                                 child: SimpleTileWidget(
                                   tweenStart: index / tiles.length,
                                   tween: winAnimationState.tweenForFlipping,
@@ -140,7 +151,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
 
 /// Displays the board of the puzzle.
 class PuzzleBoard extends StatelessWidget {
-  const PuzzleBoard({
+  PuzzleBoard({
     Key? key,
     required this.size,
     required this.tiles,
@@ -156,16 +167,30 @@ class PuzzleBoard extends StatelessWidget {
   /// The spacing between each tile from [tiles].
   final double spacing;
 
+  final _startAnimation = injector<StartAnimationState>();
+  final winAnimationState = injector<WinAnimationState>();
+
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: size,
-      mainAxisSpacing: spacing,
-      crossAxisSpacing: spacing,
-      children: tiles,
-    );
+    return AnimatedBuilder(
+        animation: _startAnimation.startAnimationController!,
+        builder: (_, __) {
+          return GridView.count(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: size,
+            mainAxisSpacing: _startAnimation.startAnimationController!.status ==
+                    AnimationStatus.completed
+                ? winAnimationState.spacingValue
+                : _startAnimation.puzzleBoardAxisPaddingAnimation.value!,
+            crossAxisSpacing:
+                _startAnimation.startAnimationController!.status ==
+                        AnimationStatus.completed
+                    ? winAnimationState.spacingValue
+                    : _startAnimation.puzzleBoardAxisPaddingAnimation.value!,
+            children: tiles,
+          );
+        });
   }
 }

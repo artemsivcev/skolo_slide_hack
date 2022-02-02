@@ -12,8 +12,14 @@ abstract class _StartAnimationState with Store {
   /// when user come to the screen at the first time.
   AnimationController? startAnimationController;
 
-  //start animations
+  late Animation<double?> puzzleBoardAxisPaddingAnimation;
+
   late Animation<double?> borderRadiusAnimation;
+
+  late Tween<double> puzzleSpacingTween;
+
+  @observable
+  double puzzlePadding = startPuzzleBoardAxisPadding;
 
   /// User enter to the screen at the first time.
   @observable
@@ -24,13 +30,33 @@ abstract class _StartAnimationState with Store {
     startAnimationController = AnimationController(
       vsync: tickerProvider,
       duration: const Duration(
-        milliseconds: startBorderCornerAnimationDuration,
+        milliseconds: startShiftTilesAnimationDuration +
+            startBorderCornerAnimationDuration,
       ),
     )..addListener(() {
         if (startAnimationController!.status == AnimationStatus.completed) {
           isFirstScreenEntry = false;
         }
+
+        puzzlePadding = puzzleBoardAxisPaddingAnimation.value ??
+            startPuzzleBoardAxisPadding;
       });
+
+    puzzleSpacingTween = Tween<double>(
+      begin: startPuzzleBoardAxisPadding,
+      end: endPuzzleBoardAxisPadding,
+    );
+
+    puzzleBoardAxisPaddingAnimation = puzzleSpacingTween.animate(
+      CurvedAnimation(
+        parent: startAnimationController!,
+        curve: const Interval(
+          0.0,
+          0.5,
+          curve: Curves.linear,
+        ),
+      ),
+    );
 
     borderRadiusAnimation = Tween<double>(
       begin: notInstalledTileCornerRadius,
@@ -39,11 +65,24 @@ abstract class _StartAnimationState with Store {
       CurvedAnimation(
         parent: startAnimationController!,
         curve: const Interval(
-          0,
+          0.5,
           1,
           curve: Curves.linear,
         ),
       ),
     );
+  }
+
+  @action
+  void resetStartAnimation() {
+    startAnimationController?.reset();
+    puzzlePadding = startPuzzleBoardAxisPadding;
+    isFirstScreenEntry = false;
+  }
+
+  void dispose() {
+    startAnimationController?.dispose();
+    puzzlePadding = startPuzzleBoardAxisPadding;
+    isFirstScreenEntry = false;
   }
 }

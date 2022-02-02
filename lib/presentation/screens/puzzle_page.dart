@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
@@ -7,6 +9,7 @@ import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/constants/text_styles.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
@@ -25,6 +28,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   final newGameState = injector<NewGameState>();
   final winAnimationState = injector<WinAnimationState>();
   final startAnimationState = injector<StartAnimationState>();
+  final shuffleAnimationState = injector<ShuffleAnimationState>();
 
   @override
   void initState() {
@@ -36,6 +40,13 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
     );
     winAnimationState.initAnimation(controller);
     startAnimationState.initStartAnimationController(this);
+
+    var controllerShuffle = AnimationController(
+      duration: animationOneSecondDuration,
+      vsync: this,
+    );
+
+    shuffleAnimationState.initAnimation(controllerShuffle);
 
     super.initState();
   }
@@ -56,12 +67,22 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   @override
   void dispose() {
     winAnimationState.disposeControllers();
+    shuffleAnimationState.disposeControllers();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     startAnimationState.isFirstScreenEntry = false;
+
+    final Animation<double> offsetAnimation = Tween(begin: 0.0, end: 7.0)
+        .chain(CurveTween(curve: Curves.elasticIn))
+        .animate(shuffleAnimationState.animationShuffleController!)
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          shuffleAnimationState.animationShuffleController!.reverse();
+        }
+      });
 
     return Scaffold(
       body: Column(
@@ -87,6 +108,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                   //todo reset start animation?
                   // startAnimationState.resetStartAnimation();
                   // startAnimationState.isFirstScreenEntry = true;
+                  shuffleAnimationState.animationShuffleController!.forward();
                 },
                 iconColor: whiteColour,
               ),
@@ -96,49 +118,65 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                   var tiles = puzzleState.tiles;
                   var isCompleted = puzzleState.isComplete;
 
-                  return AnimatedContainer(
-                    width: isCompleted ? 340 : 310,
-                    height: isCompleted ? 340 : 310,
-                    duration: animationOneSecondDuration,
-                    child: PolymorphicContainer(
-                      userInnerStyle: true,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SizedBox(
-                          width: 300,
-                          height: 300,
-                          child: PuzzleBoard(
-                            size: newGameState.boardSize,
-                            spacing: 0,
-                            tiles: List.generate(
-                              tiles.length,
-                              (index) => AnimatedPadding(
-                                duration: animationOneSecondDuration,
-                                padding: EdgeInsets.all(isCompleted
-                                    ? winAnimationState.spacingValue
-                                    : startAnimationState
-                                                .startAnimationController!
-                                                .status ==
-                                            AnimationStatus.completed
+                  return AnimatedBuilder(
+                      animation: offsetAnimation,
+                      child: AnimatedContainer(
+                        width: isCompleted ? 340 : 310,
+                        height: isCompleted ? 340 : 310,
+                        duration: animationOneSecondDuration,
+                        child: PolymorphicContainer(
+                          userInnerStyle: true,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: SizedBox(
+                              width: 300,
+                              height: 300,
+                              child: PuzzleBoard(
+                                size: newGameState.boardSize,
+                                spacing: 0,
+                                tiles: List.generate(
+                                  tiles.length,
+                                  (index) => AnimatedPadding(
+                                    duration: animationOneSecondDuration,
+                                    padding: EdgeInsets.all(isCompleted
                                         ? winAnimationState.spacingValue
-                                        : 0.0),
-                                child: SimpleTileWidget(
-                                  tweenStart: index / tiles.length,
-                                  tween: winAnimationState.tweenForFlipping,
-                                  fadeAnimation:
-                                      winAnimationState.fadeAnimation!,
-                                  isComplete: isCompleted &&
-                                      winAnimationState.isAnimCompleted,
-                                  onTap: () => puzzleState.onTileTapped(index),
-                                  tile: tiles[index],
+                                        : startAnimationState
+                                                    .startAnimationController!
+                                                    .status ==
+                                                AnimationStatus.completed
+                                            ? winAnimationState.spacingValue
+                                            : 0.0),
+                                    child: SimpleTileWidget(
+                                      tweenStart: index / tiles.length,
+                                      tween: winAnimationState.tweenForFlipping,
+                                      fadeAnimation:
+                                          winAnimationState.fadeAnimation!,
+                                      isComplete: isCompleted &&
+                                          winAnimationState.isAnimCompleted,
+                                      onTap: () =>
+                                          puzzleState.onTileTapped(index),
+                                      tile: tiles[index],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
+                      builder: (context, child) {
+                        final sineValue = sin(3 *
+                            2 *
+                            pi *
+                            shuffleAnimationState
+                                .animationShuffleController!.value);
+                        return Transform.translate(
+                          // 4. apply a translation as a function of the animation value
+                          offset: Offset(sineValue * 9, 0),
+                          // 5. use the child widget
+                          child: child,
+                        );
+                      });
                 },
               ),
             ],

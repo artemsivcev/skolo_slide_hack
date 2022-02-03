@@ -29,6 +29,7 @@ abstract class _NewGameState with Store {
   Uint8List? croppedImage;
 
   /// divided user image. first value in index and second is image in Unit8List format
+  @observable
   HashMap<dynamic, dynamic>? imageMap;
 
   /// image picker controller to get image from user space
@@ -36,6 +37,9 @@ abstract class _NewGameState with Store {
 
   /// size of board (if dimensions are 4x4, size is 4)
   final int boardSize = 4;
+
+  @observable
+  bool isGameStart = false;
 
   /// logic for choose image btn. It changes btn state, chooses image and returns it
   @action
@@ -59,6 +63,7 @@ abstract class _NewGameState with Store {
   /// and calls [splitImage] function
   @action
   Future<void> playPress() async {
+    isGameStart = true;
     isBtnPlayPressed = !isBtnPlayPressed;
     if (croppedImage != null) imageMap = splitImage();
   }

@@ -16,6 +16,9 @@ abstract class _MenuState with Store {
   @observable
   bool exitBtnPressed = false;
 
+  @observable
+  bool isSoundPlay = true;
+
   ///Bools for checking if buttons are hovered
   @observable
   bool continueBtnHovered = false;
@@ -25,6 +28,9 @@ abstract class _MenuState with Store {
 
   @observable
   bool exitBtnHovered = false;
+
+  @observable
+  bool isSoundHovered = false;
 
   ///Changes buttons' current state in the case of pressing
   @action
@@ -42,6 +48,11 @@ abstract class _MenuState with Store {
     exitBtnPressed = !exitBtnPressed;
   }
 
+  @action
+  void toggleSoundBtn() {
+    isSoundPlay = !isSoundPlay;
+  }
+
   //change hover for buttons
   @action
   void toggleHoveredContinueBtn() {
@@ -56,6 +67,11 @@ abstract class _MenuState with Store {
   @action
   void toggleHoveredExitBtn() {
     exitBtnHovered = !exitBtnHovered;
+  }
+
+  @action
+  void toggleHoveredSound() {
+    isSoundHovered = !isSoundHovered;
   }
 
   //function help's to understand current user orientation by screen aspect ratio

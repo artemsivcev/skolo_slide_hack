@@ -18,7 +18,9 @@ abstract class _StartAnimationState with Store {
 
   late Animation<double?> borderRadiusAnimation;
 
-  late Animation<double?> flipAnimation;
+  late Animation<double?> flipAnimationPart1;
+
+  late Animation<double?> flipAnimationPart2;
 
   late Tween<double> puzzleSpacingTween;
 
@@ -86,7 +88,7 @@ abstract class _StartAnimationState with Store {
 
     print("Target flip value: ${pi / 2}");
 
-    flipAnimation = Tween<double>(
+    flipAnimationPart1 = Tween<double>(
       begin: pi,
       end: 0,
     ).animate(
@@ -94,17 +96,29 @@ abstract class _StartAnimationState with Store {
         parent: startAnimationController!,
         curve: const Interval(
           0.5,
-          1,
+          0.8,
           curve: Curves.linear,
         ),
       ),
     )..addListener(() {
-        print('flipAnimation value: ${flipAnimation.value!.floor()}');
-        if (needShowCorrectTile && flipAnimation.value!.floor() == 1) {
-          print("Now!");
+        if (flipAnimationPart1.status == AnimationStatus.completed) {
           needShowCorrectTile = false;
         }
       });
+
+    flipAnimationPart2 = Tween<double>(
+      begin: pi,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: startAnimationController!,
+        curve: const Interval(
+          0.8,
+          1,
+          curve: Curves.linear,
+        ),
+      ),
+    );
   }
 
   @action

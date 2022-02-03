@@ -86,12 +86,19 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
           children: [
             Observer(
               builder: (context) {
-                var tiles = startAnimationState.needShowCorrectTile
+                final showCorrectOrder =
+                    startAnimationState.needShowCorrectTile;
+
+                var tiles = showCorrectOrder
                     ? puzzleState.correctTiles
                     : puzzleState.tiles;
                 var isCompleted = puzzleState.isComplete;
 
-                print('Correct?: ${startAnimationState.needShowCorrectTile}');
+                final startFlipAnimatin = showCorrectOrder
+                    ? startAnimationState.flipAnimationPart1
+                    : startAnimationState.flipAnimationPart2;
+
+                print('Correct?: ${showCorrectOrder}');
 
                 return AnimatedBuilder(
                     animation: shuffleAnimationState.offsetAnimation!,
@@ -112,13 +119,12 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                               tiles: List.generate(
                                 tiles.length,
                                 (index) => AnimatedBuilder(
-                                  animation: startAnimationState.flipAnimation,
+                                  animation: startFlipAnimatin,
                                   builder: (context, builderChild) {
                                     return Transform(
                                       alignment: Alignment.center,
                                       transform: Matrix4.rotationX(
-                                          startAnimationState
-                                              .flipAnimation.value!),
+                                          startFlipAnimatin.value!),
                                       child: builderChild,
                                     );
                                   },

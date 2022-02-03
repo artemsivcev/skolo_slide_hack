@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
-import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/button_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
 
 class CropAndPlayButton extends StatefulWidget {
   const CropAndPlayButton({Key? key}) : super(key: key);
@@ -29,34 +31,42 @@ class _CropAndPlayButtonState extends State<CropAndPlayButton>
       }
       return AnimatedCrossFade(
         crossFadeState: crossStateButtons,
-        duration: const Duration(seconds: 2),
+        duration: animationTwoSecondsDuration,
         firstChild: Semantics(
           label: "Crop your image to square",
           enabled: true,
-          child: ButtonWidget(
-            iconUrl: 'assets/images/puzzle-new.svg',
+          child: ButtonGlass(
+            childUnpressed: SvgPicture.asset(
+              'assets/images/puzzle-new.svg',
+              color: colorsPurpleBluePrimary,
+            ),
             btnText: 'Crop!',
-            isPressed: false,
+            isPressed: newGameState.isCropPressed,
             onTap: () async {
               newGameState.cropImage();
+            },
+            isHovered: newGameState.isCropHovered,
+            onHover: (value) {
+              newGameState.toggleHoveredCrop();
             },
           ),
         ),
         secondChild: Semantics(
           label: "Go to game page",
           enabled: true,
-          child: ButtonWidget(
-            iconUrl: 'assets/images/puzzle-new-filled.svg',
+          child: ButtonGlass(
+            childUnpressed: SvgPicture.asset(
+              'assets/images/puzzle-new-filled.svg',
+              color: colorsPurpleBluePrimary,
+            ),
             btnText: 'Play!',
-            isPressed: false,
+            isPressed: newGameState.isPlayPressed,
             onTap: () async {
               await newGameState.playPress();
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const PuzzlePage(),
-                ),
-              );
+            },
+            isHovered: newGameState.isPlayHovered,
+            onHover: (value) {
+              newGameState.toggleHoveredPlay();
             },
           ),
         ),

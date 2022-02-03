@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/button_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
+
+import 'button_glass.dart';
 
 class ButtonsGroupWidget extends StatelessWidget {
   final menuState = injector<MenuState>();
@@ -34,8 +37,11 @@ class ButtonsGroupWidget extends StatelessWidget {
           Semantics(
             label: "Go to image chooser",
             enabled: true,
-            child: ButtonWidget(
-              iconUrl: 'assets/images/puzzle-new-filled.svg',
+            child: ButtonGlass(
+              childUnpressed: SvgPicture.asset(
+                'assets/images/puzzle-new-filled.svg',
+                color: colorsPurpleBluePrimary,
+              ),
               btnText: 'New Game',
               isPressed: menuState.newGameBtnPressed,
               onTap: () async {
@@ -52,8 +58,11 @@ class ButtonsGroupWidget extends StatelessWidget {
 
           !kIsWeb ? const SizedBox(width: 32) : const SizedBox(),
           !kIsWeb
-              ? ButtonWidget(
-                  iconUrl: 'assets/images/exit.svg',
+              ? ButtonGlass(
+                  childUnpressed: SvgPicture.asset(
+                    'assets/images/exit.svg',
+                    color: colorsPurpleBluePrimary,
+                  ),
                   btnText: 'Exit',
                   isPressed: menuState.exitBtnPressed,
                   onTap: () {

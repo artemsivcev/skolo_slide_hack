@@ -6,19 +6,48 @@ import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
 
+import 'sound_state.dart';
 part 'new_game_state.g.dart';
 
 class NewGameState = _NewGameState with _$NewGameState;
 
 abstract class _NewGameState with Store {
+  /// need to access to sounds
+  final soundState = injector<SoundState>();
+
   /// bool for choose image btn state
   @observable
   bool isBtnChooseImagePressed = false;
 
+  /// bool for crop image btn state
+  @observable
+  bool isCropPressed = false;
+
   /// bool for play btn state
   @observable
-  bool isBtnPlayPressed = false;
+  bool isPlayPressed = false;
+
+  /// bool for crop hover
+  @observable
+  bool isCropHovered = false;
+
+  /// fun for crop btn hover change
+  @action
+  void toggleHoveredCrop() {
+    isCropHovered = !isCropHovered;
+  }
+
+  /// bool for play hover
+  @observable
+  bool isPlayHovered = false;
+
+  /// fun for play btn hover change
+  @action
+  void toggleHoveredPlay() {
+    isPlayHovered = !isPlayHovered;
+  }
 
   /// cropped image to preview on new game screen
   @observable
@@ -29,6 +58,7 @@ abstract class _NewGameState with Store {
   Uint8List? croppedImage;
 
   /// divided user image. first value in index and second is image in Unit8List format
+  @observable
   HashMap<dynamic, dynamic>? imageMap;
 
   /// image picker controller to get image from user space
@@ -36,6 +66,9 @@ abstract class _NewGameState with Store {
 
   /// size of board (if dimensions are 4x4, size is 4)
   final int boardSize = 4;
+
+  @observable
+  bool isGameStart = false;
 
   /// logic for choose image btn. It changes btn state, chooses image and returns it
   @action
@@ -59,7 +92,9 @@ abstract class _NewGameState with Store {
   /// and calls [splitImage] function
   @action
   Future<void> playPress() async {
-    isBtnPlayPressed = !isBtnPlayPressed;
+    isGameStart = true;
+    isPlayPressed = !isPlayPressed;
+    soundState.playForwardSound();
     if (croppedImage != null) imageMap = splitImage();
   }
 
@@ -140,6 +175,7 @@ abstract class _NewGameState with Store {
   //function to crop chose image
   Future<void> cropImage() async {
     // Get the cropped image as bytes
+    isCropPressed = !isCropPressed;
     final imageBytes = await Cropper.crop(
       cropperKey: cropperKey, // Reference it through the key
     );

@@ -35,6 +35,12 @@ abstract class _PuzzleState with Store {
   @observable
   Puzzle? correctPuzzle;
 
+  /// buttons tap and hover states
+  @observable
+  bool shuffleBtnPressed = false;
+  @observable
+  bool shuffleBtnHovered = false;
+
   /// list of tiles
   @computed
   List<Tile> get tiles => puzzle == null ? [] : puzzle!.tiles;
@@ -155,10 +161,23 @@ abstract class _PuzzleState with Store {
 
   /// on shuffle button tap
   @action
-  void shuffleButtonTap() {
+  Future<void> shuffleButtonTap() async {
+    toggleShuffleBtn();
     if (isComplete) winAnimationState.animate();
     generatePuzzle();
+
+    /// todo make depending on animation
+    await Future.delayed(const Duration(milliseconds: 450));
+    toggleShuffleBtn();
   }
+
+  /// change press for buttons
+  @action
+  void toggleShuffleBtn() => shuffleBtnPressed = !shuffleBtnPressed;
+
+  /// change hover for buttons
+  @action
+  void toggleHoveredShuffleBtn() => shuffleBtnHovered = !shuffleBtnHovered;
 
   /// shuffle puzzle tiles with [random]
   Puzzle shufflePuzzle({

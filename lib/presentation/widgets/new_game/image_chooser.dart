@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 
@@ -61,7 +62,7 @@ class _ImageChooserState extends State<ImageChooser> {
                   border:
                       Border.all(color: colorsGreyMediumPrimary, width: 1.5),
                 ),
-                duration: const Duration(seconds: 2),
+                duration: animationTwoSecondsDuration,
                 child: PolymorphicContainer(
                   userInnerStyle: true,
                   externalBorderRadius: showCropped ? 15.0 : 7.0,
@@ -81,34 +82,31 @@ class _ImageChooserState extends State<ImageChooser> {
                             )
                           else
                             const SizedBox(),
-                          if (!newGameState.isGameStart)
-                            AnimatedContainer(
-                              width: newGameState
-                                  .getAnimatedContainerSize(context),
-                              height: newGameState
-                                  .getAnimatedContainerSize(context),
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.fastOutSlowIn,
-                              child: showCropped
-                                  ? Image.memory(
-                                      newGameState.croppedImage!.buffer
-                                          .asUint8List(),
-                                      fit: BoxFit.scaleDown,
-                                      width: 340,
-                                      height: 340,
-                                    )
-                                  : showChosen
-                                      ? Cropper(
-                                          backgroundColor: Colors.white,
-                                          cropperKey: newGameState.cropperKey,
-                                          overlayType: OverlayType.rectangle,
-                                          image: Image.memory(
-                                              newGameState.chosenImage!),
-                                        )
-                                      : const SizedBox(),
-                            )
-                          else
-                            PuzzlePage(),
+                          AnimatedContainer(
+                            width:
+                                newGameState.getAnimatedContainerSize(context),
+                            height:
+                                newGameState.getAnimatedContainerSize(context),
+                            duration: animationTwoSecondsDuration,
+                            curve: Curves.fastOutSlowIn,
+                            child: showCropped
+                                ? Image.memory(
+                                    newGameState.croppedImage!.buffer
+                                        .asUint8List(),
+                                    fit: BoxFit.scaleDown,
+                                    width: 340,
+                                    height: 340,
+                                  )
+                                : showChosen
+                                    ? Cropper(
+                                        backgroundColor: Colors.white,
+                                        cropperKey: newGameState.cropperKey,
+                                        overlayType: OverlayType.rectangle,
+                                        image: Image.memory(
+                                            newGameState.chosenImage!),
+                                      )
+                                    : const SizedBox(),
+                          )
                         ],
                       ),
                     ),

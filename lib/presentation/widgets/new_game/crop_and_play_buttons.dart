@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
 
@@ -30,7 +31,7 @@ class _CropAndPlayButtonState extends State<CropAndPlayButton>
       }
       return AnimatedCrossFade(
         crossFadeState: crossStateButtons,
-        duration: const Duration(seconds: 2),
+        duration: animationTwoSecondsDuration,
         firstChild: Semantics(
           label: "Crop your image to square",
           enabled: true,

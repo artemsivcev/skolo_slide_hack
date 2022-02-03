@@ -52,7 +52,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
     reaction<bool>((_) => startAnimationState.isFirstScreenEntry,
         (value) async {
       if (!value) {
-        await Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(animationOneSecondDuration);
         startAnimationState.startAnimationController!.forward();
       }
     });
@@ -73,14 +73,8 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        // Observer(
-        //   builder: (context) => Text(
-        //     puzzleState.isComplete ? 'You win!!!!!!' : 'Find the solution',
-        //     style: puzzlePageTitleTextStyle,
-        //   ),
-        // ),
-        // const SizedBox(height: 36),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

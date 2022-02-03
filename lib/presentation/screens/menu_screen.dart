@@ -14,6 +14,7 @@ import 'package:skolo_slide_hack/presentation/widgets/menu/dash_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/game_title.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/github_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/scolo_icon.dart';
+import 'package:skolo_slide_hack/presentation/widgets/menu/sound_button.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/crop_and_play_buttons.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/image_chooser.dart';
 
@@ -71,6 +72,7 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
               DashIcon(),
+              SoundButton(),
             ],
           ));
     });

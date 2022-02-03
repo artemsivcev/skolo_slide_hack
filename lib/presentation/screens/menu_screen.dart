@@ -10,7 +10,6 @@ import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/button_with_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/buttons_group_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/dash_icon.dart';

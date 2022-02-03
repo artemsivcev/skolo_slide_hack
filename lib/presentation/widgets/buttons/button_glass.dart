@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container_circle.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
 
 import 'button_text.dart';
 
-class ButtonUnpressedCustom extends StatelessWidget {
-  ButtonUnpressedCustom({
+class ButtonGlass extends StatelessWidget {
+  ButtonGlass({
     Key? key,
-    required this.child,
+    required this.childUnpressed,
+    this.childPressed,
+    required this.isPressed,
     this.btnText = "",
     required this.onTap,
     required this.isHovered,
+    this.size = 50,
     this.onHover,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+        );
 
-  ///Url for button icon
-  final Widget child;
+  ///Widget for unpressed button
+  final Widget childUnpressed;
+
+  ///Widget for pressed button
+  Widget? childPressed;
+
+  ///Is button pressed
+  final bool isPressed;
 
   ///Button text
   String? btnText = "";
@@ -31,7 +40,8 @@ class ButtonUnpressedCustom extends StatelessWidget {
   ///OnHover function
   ValueChanged<bool>? onHover = (value) {};
 
-  final menuState = injector<MenuState>();
+  ///btn custom size
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +59,30 @@ class ButtonUnpressedCustom extends StatelessWidget {
             child: GlassContainerCircle(
               isHovered: isHovered,
               child: SizedBox(
-                height: 50.0,
-                width: 50.0,
+                height: size,
+                width: size,
                 child: Center(
                   child: AnimatedOpacity(
                     opacity: isHovered ? 1.0 : 0.7,
                     duration: const Duration(milliseconds: 170),
-                    child: child,
+                    child: AnimatedCrossFade(
+                      duration: const Duration(milliseconds: 300),
+                      firstCurve: Curves.easeInQuint,
+                      secondCurve: Curves.easeInQuint,
+                      firstChild: childUnpressed,
+                      secondChild: childPressed ?? childUnpressed,
+                      crossFadeState: isPressed
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-          btnText!.isNotEmpty ? ButtonText(btnText: btnText!) : const SizedBox(),
+          btnText!.isNotEmpty
+              ? ButtonText(btnText: btnText!)
+              : const SizedBox(),
         ],
       ),
     );

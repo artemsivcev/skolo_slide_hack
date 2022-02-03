@@ -16,9 +16,33 @@ abstract class _NewGameState with Store {
   @observable
   bool isBtnChooseImagePressed = false;
 
+  /// bool for crop image btn state
+  @observable
+  bool isCropPressed = false;
+
   /// bool for play btn state
   @observable
-  bool isBtnPlayPressed = false;
+  bool isPlayPressed = false;
+
+  /// bool for crop hover
+  @observable
+  bool isCropHovered = false;
+
+  /// fun for crop btn hover change
+  @action
+  void toggleHoveredCrop() {
+    isCropHovered = !isCropHovered;
+  }
+
+  /// bool for play hover
+  @observable
+  bool isPlayHovered = false;
+
+  /// fun for play btn hover change
+  @action
+  void toggleHoveredPlay() {
+    isPlayHovered = !isPlayHovered;
+  }
 
   /// cropped image to preview on new game screen
   @observable
@@ -64,7 +88,7 @@ abstract class _NewGameState with Store {
   @action
   Future<void> playPress() async {
     isGameStart = true;
-    isBtnPlayPressed = !isBtnPlayPressed;
+    isPlayPressed = !isPlayPressed;
     if (croppedImage != null) imageMap = splitImage();
   }
 
@@ -145,6 +169,7 @@ abstract class _NewGameState with Store {
   //function to crop chose image
   Future<void> cropImage() async {
     // Get the cropped image as bytes
+    isCropPressed = !isCropPressed;
     final imageBytes = await Cropper.crop(
       cropperKey: cropperKey, // Reference it through the key
     );

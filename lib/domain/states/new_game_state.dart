@@ -29,6 +29,7 @@ abstract class _NewGameState with Store {
   Uint8List? croppedImage;
 
   /// divided user image. first value in index and second is image in Unit8List format
+  @observable
   HashMap<dynamic, dynamic>? imageMap;
 
   /// image picker controller to get image from user space

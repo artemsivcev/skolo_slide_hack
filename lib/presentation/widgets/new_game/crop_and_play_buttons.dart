@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
-import 'package:skolo_slide_hack/presentation/screens/puzzle_page.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_widget.dart';
 
 class CropAndPlayButton extends StatefulWidget {
@@ -51,12 +50,6 @@ class _CropAndPlayButtonState extends State<CropAndPlayButton>
             isPressed: false,
             onTap: () async {
               await newGameState.playPress();
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (_, __, ___) => const PuzzlePage(),
-                ),
-              );
             },
           ),
         ),

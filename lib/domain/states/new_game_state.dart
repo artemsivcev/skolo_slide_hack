@@ -6,12 +6,17 @@ import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
 
+import 'sound_state.dart';
 part 'new_game_state.g.dart';
 
 class NewGameState = _NewGameState with _$NewGameState;
 
 abstract class _NewGameState with Store {
+  /// need to access to sounds
+  final soundState = injector<SoundState>();
+
   /// bool for choose image btn state
   @observable
   bool isBtnChooseImagePressed = false;
@@ -89,6 +94,7 @@ abstract class _NewGameState with Store {
   Future<void> playPress() async {
     isGameStart = true;
     isPlayPressed = !isPlayPressed;
+    soundState.playForwardSound();
     if (croppedImage != null) imageMap = splitImage();
   }
 

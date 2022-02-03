@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
+import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 
@@ -16,6 +17,8 @@ part 'puzzle_state.g.dart';
 class PuzzleState = _PuzzleState with _$PuzzleState;
 
 abstract class _PuzzleState with Store {
+  /// need to access to sounds
+  final soundState = injector<SoundState>();
   final winAnimationState = injector<WinAnimationState>();
   final _startAnimationState = injector<StartAnimationState>();
 
@@ -86,9 +89,12 @@ abstract class _PuzzleState with Store {
     final tappedTile = tiles[indexTappedTile];
 
     if (puzzle!.isTileMovable(tappedTile) && !isComplete) {
+      soundState.playMoveSound();
       final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
       puzzle = puzzleWithMovedTiles.sort();
+    } else {
+      soundState.playCantMoveSound();
     }
 
     if (isComplete) winAnimationState.animate();

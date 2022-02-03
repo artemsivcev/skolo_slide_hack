@@ -35,7 +35,7 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
-      if (newGameState.isNewGameShow) {
+      if (newGameState.isNewGameShow && !newGameState.isPlayPressed) {
         newGameFadeState = CrossFadeState.showFirst;
       } else {
         newGameFadeState = CrossFadeState.showSecond;
@@ -54,20 +54,20 @@ class MenuScreen extends StatelessWidget {
                       child: AnimatedCrossFade(
                         crossFadeState: newGameFadeState,
                         duration: animationTwoSecondsDuration,
-                        firstChild: !newGameState.isGameStart
-                            ? ImageChooser()
+                        firstChild: ImageChooser(),
+                        secondChild: !newGameState.isGameStart
+                            ? GameTitle()
                             : PuzzlePage(),
-                        secondChild: GameTitle(),
                       ),
                     ),
                     GlassContainer(
                       child: AnimatedCrossFade(
                         crossFadeState: newGameFadeState,
                         duration: animationTwoSecondsDuration,
-                        firstChild: !newGameState.isGameStart
-                            ? CropAndPlayButton()
+                        firstChild: CropAndPlayButton(),
+                        secondChild: !newGameState.isGameStart
+                            ? ButtonsGroupWidget()
                             : PuzzleBoardButtons(),
-                        secondChild: ButtonsGroupWidget(),
                       ),
                     ),
                   ]),

@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 
 part 'menu_state.g.dart';
 
 class MenuState = _MenuState with _$MenuState;
 
 abstract class _MenuState with Store {
+  /// need to access to sounds
+  final soundState = injector<SoundState>();
+
   ///Bools for checking if buttons are pressed
   @observable
   bool continueBtnPressed = false;
@@ -17,7 +25,7 @@ abstract class _MenuState with Store {
   bool exitBtnPressed = false;
 
   @observable
-  bool isSoundPlay = true;
+  bool isSoundPlay = false;
 
   ///Bools for checking if buttons are hovered
   @observable
@@ -41,16 +49,24 @@ abstract class _MenuState with Store {
   @action
   void toggleNewGameBtn() {
     newGameBtnPressed = !newGameBtnPressed;
+    soundState.playForwardSound();
   }
 
   @action
   void toggleExitBtn() {
     exitBtnPressed = !exitBtnPressed;
+    if (Platform.isIOS) {
+      exit(0);
+    } else {
+      SystemNavigator.pop();
+    }
   }
 
   @action
   void toggleSoundBtn() {
     isSoundPlay = !isSoundPlay;
+
+    soundState.toggleMainSound();
   }
 
   //change hover for buttons

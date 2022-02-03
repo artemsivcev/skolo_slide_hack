@@ -15,6 +15,7 @@ class ButtonGlass extends StatelessWidget {
     required this.isHovered,
     this.size = 50,
     this.onHover,
+    this.padding,
   }) : super(
           key: key,
         );
@@ -43,6 +44,9 @@ class ButtonGlass extends StatelessWidget {
   ///btn custom size
   final double size;
 
+  ///btn custom padding
+  EdgeInsetsGeometry? padding = const EdgeInsets.all(32.0);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -55,7 +59,7 @@ class ButtonGlass extends StatelessWidget {
       child: ColumnRowSolver(
         children: [
           Padding(
-            padding: const EdgeInsets.all(32.0),
+            padding: padding ?? const EdgeInsets.all(32.0),
             child: GlassContainerCircle(
               isHovered: isHovered,
               child: SizedBox(

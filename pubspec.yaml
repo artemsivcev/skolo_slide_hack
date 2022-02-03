@@ -66,6 +66,9 @@ dependencies:
   just_audio: ^0.9.18
   just_audio_libwinmedia: any
 
+  #for moving text
+  marquee: ^2.2.0
+
 dev_dependencies:
   dart_code_metrics: ^4.9.1
   build_runner: ^2.1.7

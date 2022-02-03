@@ -38,6 +38,9 @@ abstract class _NewGameState with Store {
   /// size of board (if dimensions are 4x4, size is 4)
   final int boardSize = 4;
 
+  @observable
+  bool isGameStart = false;
+
   /// logic for choose image btn. It changes btn state, chooses image and returns it
   @action
   Future<void> chooseImagePress() async {
@@ -60,6 +63,7 @@ abstract class _NewGameState with Store {
   /// and calls [splitImage] function
   @action
   Future<void> playPress() async {
+    isGameStart = true;
     isBtnPlayPressed = !isBtnPlayPressed;
     if (croppedImage != null) imageMap = splitImage();
   }

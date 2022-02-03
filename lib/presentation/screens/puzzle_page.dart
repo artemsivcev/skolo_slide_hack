@@ -98,8 +98,6 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                     ? startAnimationState.flipAnimationPart1
                     : startAnimationState.flipAnimationPart2;
 
-                print('Correct?: ${showCorrectOrder}');
-
                 return AnimatedBuilder(
                     animation: shuffleAnimationState.offsetAnimation!,
                     child: AnimatedContainer(

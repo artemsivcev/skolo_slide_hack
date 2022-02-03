@@ -86,11 +86,9 @@ abstract class _StartAnimationState with Store {
       ),
     );
 
-    print("Target flip value: ${pi / 2}");
-
     flipAnimationPart1 = Tween<double>(
-      begin: pi,
-      end: 0,
+      begin: 0,
+      end: pi / 2,
     ).animate(
       CurvedAnimation(
         parent: startAnimationController!,

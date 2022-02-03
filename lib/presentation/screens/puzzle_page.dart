@@ -86,8 +86,12 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
           children: [
             Observer(
               builder: (context) {
-                var tiles = puzzleState.tiles;
+                var tiles = startAnimationState.needShowCorrectTile
+                    ? puzzleState.correctTiles
+                    : puzzleState.tiles;
                 var isCompleted = puzzleState.isComplete;
+
+                print('Correct?: ${startAnimationState.needShowCorrectTile}');
 
                 return AnimatedBuilder(
                     animation: shuffleAnimationState.offsetAnimation!,
@@ -107,26 +111,38 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                               spacing: 0,
                               tiles: List.generate(
                                 tiles.length,
-                                (index) => AnimatedPadding(
-                                  duration: animationOneSecondDuration,
-                                  padding: EdgeInsets.all(isCompleted
-                                      ? winAnimationState.spacingValue
-                                      : startAnimationState
-                                                  .startAnimationController!
-                                                  .status ==
-                                              AnimationStatus.completed
-                                          ? winAnimationState.spacingValue
-                                          : 0.0),
-                                  child: SimpleTileWidget(
-                                    tweenStart: index / tiles.length,
-                                    tween: winAnimationState.tweenForFlipping,
-                                    fadeAnimation:
-                                        winAnimationState.fadeAnimation!,
-                                    isComplete: isCompleted &&
-                                        winAnimationState.isAnimCompleted,
-                                    onTap: () =>
-                                        puzzleState.onTileTapped(index),
-                                    tile: tiles[index],
+                                (index) => AnimatedBuilder(
+                                  animation: startAnimationState.flipAnimation,
+                                  builder: (context, builderChild) {
+                                    return Transform(
+                                      alignment: Alignment.center,
+                                      transform: Matrix4.rotationX(
+                                          startAnimationState
+                                              .flipAnimation.value!),
+                                      child: builderChild,
+                                    );
+                                  },
+                                  child: AnimatedPadding(
+                                    duration: animationOneSecondDuration,
+                                    padding: EdgeInsets.all(isCompleted
+                                        ? winAnimationState.spacingValue
+                                        : startAnimationState
+                                                    .startAnimationController!
+                                                    .status ==
+                                                AnimationStatus.completed
+                                            ? winAnimationState.spacingValue
+                                            : 0.0),
+                                    child: SimpleTileWidget(
+                                      tweenStart: index / tiles.length,
+                                      tween: winAnimationState.tweenForFlipping,
+                                      fadeAnimation:
+                                          winAnimationState.fadeAnimation!,
+                                      isComplete: isCompleted &&
+                                          winAnimationState.isAnimCompleted,
+                                      onTap: () =>
+                                          puzzleState.onTileTapped(index),
+                                      tile: tiles[index],
+                                    ),
                                   ),
                                 ),
                               ),

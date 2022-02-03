@@ -7,3 +7,4 @@ var animationOneAndHalfSecondDuration = const Duration(milliseconds: 1500);
 //start animation
 const int startShiftTilesAnimationDuration = 500;
 const int startBorderCornerAnimationDuration = 500;
+const int startFlipAnimationDuration = 500;

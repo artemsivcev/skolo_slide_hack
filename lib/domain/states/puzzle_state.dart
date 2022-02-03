@@ -1,11 +1,14 @@
 import 'dart:math';
+
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
 import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
+import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
+
 import 'new_game_state.dart';
 
 part 'puzzle_state.g.dart';
@@ -14,6 +17,7 @@ class PuzzleState = _PuzzleState with _$PuzzleState;
 
 abstract class _PuzzleState with Store {
   final winAnimationState = injector<WinAnimationState>();
+  final _startAnimationState = injector<StartAnimationState>();
 
   //state with user image data
   final newGameState = injector<NewGameState>();
@@ -26,9 +30,17 @@ abstract class _PuzzleState with Store {
   @observable
   Puzzle? puzzle;
 
+  /// additional, auxiliary puzzle with tiles in correct order.
+  /// used for animation purposes and not for a game.
+  @observable
+  Puzzle? correctPuzzle;
+
   /// list of tiles
   @computed
   List<Tile> get tiles => puzzle == null ? [] : puzzle!.tiles;
+
+  @computed
+  List<Tile> get correctTiles => puzzle == null ? [] : correctPuzzle!.tiles;
 
   /// list of values that corresponds to the tiles in corners.
   /// Depends on the puzzle boarder size.
@@ -98,6 +110,13 @@ abstract class _PuzzleState with Store {
                 : pos);
       }
     }
+
+    correctPuzzle = Puzzle(
+      tiles: getTilesFromPositions(
+        correctPositions: correctPositions,
+        currentPositions: currentPositions,
+      ),
+    );
 
     // shuffle puzzle
     puzzle = shufflePuzzle(

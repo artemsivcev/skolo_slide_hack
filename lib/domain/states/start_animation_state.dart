@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/domain/constants/dimensions.dart';
@@ -16,6 +18,8 @@ abstract class _StartAnimationState with Store {
 
   late Animation<double?> borderRadiusAnimation;
 
+  late Animation<double?> flipAnimation;
+
   late Tween<double> puzzleSpacingTween;
 
   @observable
@@ -25,12 +29,21 @@ abstract class _StartAnimationState with Store {
   @observable
   bool isFirstScreenEntry = true;
 
+  @computed
+  bool get isStartAnimationCompleted => startAnimationController != null
+      ? startAnimationController!.status == AnimationStatus.completed
+      : false;
+
+  @observable
+  bool needShowCorrectTile = true;
+
   initStartAnimationController(TickerProvider tickerProvider) {
     startAnimationController = AnimationController(
       vsync: tickerProvider,
       duration: const Duration(
         milliseconds: startShiftTilesAnimationDuration +
-            startBorderCornerAnimationDuration,
+            startBorderCornerAnimationDuration +
+            startFlipAnimationDuration,
       ),
     )..addListener(() {
         if (startAnimationController!.status == AnimationStatus.completed) {
@@ -51,7 +64,7 @@ abstract class _StartAnimationState with Store {
         parent: startAnimationController!,
         curve: const Interval(
           0.0,
-          0.5,
+          0.2,
           curve: Curves.linear,
         ),
       ),
@@ -64,12 +77,34 @@ abstract class _StartAnimationState with Store {
       CurvedAnimation(
         parent: startAnimationController!,
         curve: const Interval(
+          0.2,
+          0.5,
+          curve: Curves.linear,
+        ),
+      ),
+    );
+
+    print("Target flip value: ${pi / 2}");
+
+    flipAnimation = Tween<double>(
+      begin: pi,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: startAnimationController!,
+        curve: const Interval(
           0.5,
           1,
           curve: Curves.linear,
         ),
       ),
-    );
+    )..addListener(() {
+        print('flipAnimation value: ${flipAnimation.value!.floor()}');
+        if (needShowCorrectTile && flipAnimation.value!.floor() == 1) {
+          print("Now!");
+          needShowCorrectTile = false;
+        }
+      });
   }
 
   @action
@@ -77,6 +112,7 @@ abstract class _StartAnimationState with Store {
     startAnimationController?.reset();
     puzzlePadding = startPuzzleBoardAxisPadding;
     isFirstScreenEntry = false;
+    needShowCorrectTile = true;
   }
 
   void dispose() {

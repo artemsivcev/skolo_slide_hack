@@ -171,7 +171,6 @@ abstract class _PuzzleState with Store {
     toggleShuffleBtn();
     if (isComplete) winAnimationState.animate();
     generatePuzzle();
-    soundState.playShuffleSound();
     toggleShuffleBtn();
   }
 

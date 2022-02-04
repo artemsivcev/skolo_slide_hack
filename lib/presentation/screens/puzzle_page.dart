@@ -86,8 +86,8 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
         return AnimatedBuilder(
             animation: shuffleAnimationState.offsetAnimation!,
             child: AnimatedContainer(
-              width: isCompleted ? 340 : 310,
-              height: isCompleted ? 340 : 310,
+              width: isCompleted ? 338 : 310,
+              height: isCompleted ? 338 : 310,
               duration: animationOneSecondDuration,
               child: PolymorphicContainer(
                 userInnerStyle: true,

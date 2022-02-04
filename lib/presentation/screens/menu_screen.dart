@@ -20,6 +20,7 @@ import 'package:skolo_slide_hack/presentation/widgets/menu/dash_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/game_title.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/github_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/scolo_icon.dart';
+import 'package:skolo_slide_hack/presentation/widgets/menu/small_skolo_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/sound_button.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/crop_and_play_buttons.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/image_chooser.dart';
@@ -121,27 +122,46 @@ class MenuScreen extends StatelessWidget {
                       ? 1
                       : 0;
 
+              final usedSmallMobileVersion = rotationQuarter == 1;
+
               return Padding(
-                padding: EdgeInsets.only(top: topPadding, left: 16, right: 16),
-                child: RotatedBox(
-                  quarterTurns: rotationQuarter,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      Flexible(
-                        flex: 5,
-                        child: GitHubIcon(),
-                      ),
-                      SizedBox(width: 16),
-                      Flexible(
-                        flex: 40,
-                        child: SkoloIcon(),
-                      ),
-                    ],
-                  ),
+                padding: EdgeInsets.only(
+                  top: topPadding,
+                  left: 16,
+                  right: 16,
+                  bottom: usedSmallMobileVersion ? 16.0 : 0.0,
                 ),
+                child: usedSmallMobileVersion
+                    ? Column(
+                        children: [
+                          Flexible(
+                            flex: 5,
+                            child: GitHubIcon(),
+                          ),
+                          SizedBox(width: 16),
+                          Flexible(
+                            flex: usedSmallMobileVersion ? 5 : 40,
+                            child: usedSmallMobileVersion
+                                ? SmallSkoloIcon()
+                                : SkoloIcon(),
+                          ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Flexible(
+                            flex: 5,
+                            child: GitHubIcon(),
+                          ),
+                          SizedBox(width: 16),
+                          Flexible(
+                            flex: usedSmallMobileVersion ? 5 : 40,
+                            child: usedSmallMobileVersion
+                                ? SmallSkoloIcon()
+                                : SkoloIcon(),
+                          ),
+                        ],
+                      ),
               );
             }),
             DashIcon(),

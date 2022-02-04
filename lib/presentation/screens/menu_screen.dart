@@ -46,30 +46,52 @@ class MenuScreen extends StatelessWidget {
               child: Observer(
                 builder: (context) => RowColumnSolver(
                   children: [
-                    GlassContainer(
-                      child: AnimatedCrossFade(
-                        crossFadeState: newGameState.isNewGameShow &&
-                                !newGameState.isPlayPressed
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        duration: animationTwoSecondsDuration,
-                        firstChild: ImageChooser(),
-                        secondChild: !newGameState.isGameStart
-                            ? GameTitle()
-                            : PuzzlePage(),
+                    Flexible(
+                      flex: 1,
+                      child: GlassContainer(
+                        child: AnimatedCrossFade(
+                          crossFadeState: newGameState.isNewGameShow &&
+                                  !newGameState.isPlayPressed
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          duration: animationTwoSecondsDuration,
+                          firstChild: ImageChooser(),
+                          secondChild: RowColumnSolver(
+                            children: [
+                              !newGameState.isGameStart
+                                  ? Flexible(
+                                      child: FittedBox(
+                                        child: GameTitle(),
+                                      ),
+                                    )
+                                  : Flexible(
+                                      child: FittedBox(
+                                        child: PuzzlePage(),
+                                      ),
+                                    ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                    GlassContainer(
-                      child: AnimatedCrossFade(
-                        crossFadeState: newGameState.isNewGameShow &&
-                                !newGameState.isPlayPressed
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
-                        duration: animationTwoSecondsDuration,
-                        firstChild: CropAndPlayButton(),
-                        secondChild: !newGameState.isGameStart
-                            ? ButtonsGroupWidget()
-                            : PuzzleBoardButtons(),
+                    Flexible(
+                      child: GlassContainer(
+                        child: AnimatedCrossFade(
+                          crossFadeState: newGameState.isNewGameShow &&
+                                  !newGameState.isPlayPressed
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
+                          duration: animationTwoSecondsDuration,
+                          firstChild: CropAndPlayButton(),
+                          secondChild: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              !newGameState.isGameStart
+                                  ? ButtonsGroupWidget()
+                                  : PuzzleBoardButtons(),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],

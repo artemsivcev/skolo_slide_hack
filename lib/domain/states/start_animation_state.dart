@@ -120,7 +120,6 @@ abstract class _StartAnimationState with Store {
         ),
       ),
     )..addListener(() {
-        print("flipAnimationPart2: ${flipAnimationPart2.value}");
         if (flipAnimationPart2.status == AnimationStatus.completed) {
           isStartAnimPart2End = true;
         }

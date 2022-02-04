@@ -71,17 +71,15 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     startAnimationState.isFirstScreenEntry = false;
 
-    return  Observer(
+    return Observer(
       builder: (context) {
-        final showCorrectOrder =
-            startAnimationState.needShowCorrectTile;
+        final showCorrectOrder = !startAnimationState.isStartAnimPart1End;
 
-        var tiles = showCorrectOrder
-            ? puzzleState.correctTiles
-            : puzzleState.tiles;
+        var tiles =
+            showCorrectOrder ? puzzleState.correctTiles : puzzleState.tiles;
         var isCompleted = puzzleState.isComplete;
 
-        final startFlipAnimatin = showCorrectOrder
+        final startFlipAnimation = showCorrectOrder
             ? startAnimationState.flipAnimationPart1
             : startAnimationState.flipAnimationPart2;
 
@@ -103,13 +101,15 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                       spacing: 0,
                       tiles: List.generate(
                         tiles.length,
-                            (index) => AnimatedBuilder(
-                          animation: startFlipAnimatin,
+                        (index) => AnimatedBuilder(
+                          animation: startFlipAnimation,
                           builder: (context, builderChild) {
                             return Transform(
                               alignment: Alignment.center,
                               transform: Matrix4.rotationX(
-                                  startFlipAnimatin.value!),
+                                  startAnimationState.isStartAnimPart2End
+                                      ? 0.0
+                                      : startFlipAnimation.value!),
                               child: builderChild,
                             );
                           },
@@ -118,20 +118,17 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                             padding: EdgeInsets.all(isCompleted
                                 ? winAnimationState.spacingValue
                                 : startAnimationState
-                                .startAnimationController!
-                                .status ==
-                                AnimationStatus.completed
-                                ? winAnimationState.spacingValue
-                                : 0.0),
+                                            .startAnimationController!.status ==
+                                        AnimationStatus.completed
+                                    ? winAnimationState.spacingValue
+                                    : 0.0),
                             child: SimpleTileWidget(
                               tweenStart: index / tiles.length,
                               tween: winAnimationState.tweenForFlipping,
-                              fadeAnimation:
-                              winAnimationState.fadeAnimation!,
+                              fadeAnimation: winAnimationState.fadeAnimation!,
                               isComplete: isCompleted &&
                                   winAnimationState.isAnimCompleted,
-                              onTap: () =>
-                                  puzzleState.onTileTapped(index),
+                              onTap: () => puzzleState.onTileTapped(index),
                               tile: tiles[index],
                             ),
                           ),
@@ -146,8 +143,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
               final sineValue = sin(3 *
                   2 *
                   pi *
-                  shuffleAnimationState
-                      .animationShuffleController!.value);
+                  shuffleAnimationState.animationShuffleController!.value);
               return Transform.translate(
                 // 4. apply a translation as a function of the animation value
                 offset: Offset(sineValue * 9, 0),
@@ -183,25 +179,26 @@ class PuzzleBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: _startAnimation.startAnimationController!,
-        builder: (_, __) {
-          return GridView.count(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: size,
-            mainAxisSpacing: _startAnimation.startAnimationController!.status ==
-                    AnimationStatus.completed
-                ? winAnimationState.spacingValue
-                : _startAnimation.puzzleBoardAxisPaddingAnimation.value!,
-            crossAxisSpacing:
-                _startAnimation.startAnimationController!.status ==
-                        AnimationStatus.completed
-                    ? winAnimationState.spacingValue
-                    : _startAnimation.puzzleBoardAxisPaddingAnimation.value!,
-            children: tiles,
-          );
-        });
+    return Observer(builder: (_) {
+      final isStartAnimationEnded = _startAnimation.isStartAnimPart2End;
+
+      return AnimatedBuilder(
+          animation: _startAnimation.startAnimationController!,
+          builder: (_, __) {
+            return GridView.count(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: size,
+              mainAxisSpacing: isStartAnimationEnded
+                  ? winAnimationState.spacingValue
+                  : _startAnimation.puzzleBoardAxisPaddingAnimation.value!,
+              crossAxisSpacing: isStartAnimationEnded
+                  ? winAnimationState.spacingValue
+                  : _startAnimation.puzzleBoardAxisPaddingAnimation.value!,
+              children: tiles,
+            );
+          });
+    });
   }
 }

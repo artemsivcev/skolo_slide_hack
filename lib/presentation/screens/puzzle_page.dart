@@ -5,6 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
+import 'package:skolo_slide_hack/domain/states/adaptive_dimensions_state.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
@@ -26,6 +27,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   final winAnimationState = injector<WinAnimationState>();
   final startAnimationState = injector<StartAnimationState>();
   final shuffleAnimationState = injector<ShuffleAnimationState>();
+  final adaptiveDimensionsState = injector<AdaptiveDimensionsState>();
 
   @override
   void initState() {
@@ -83,54 +85,53 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
             ? startAnimationState.flipAnimationPart1
             : startAnimationState.flipAnimationPart2;
 
+        final boardSize = adaptiveDimensionsState.getAdaptiveBoardSize(context);
+
         return AnimatedBuilder(
-            animation: shuffleAnimationState.offsetAnimation!,
-            child: AnimatedContainer(
-              width: isCompleted ? 338 : 310,
-              height: isCompleted ? 338 : 310,
-              duration: animationOneSecondDuration,
-              child: PolymorphicContainer(
-                userInnerStyle: true,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: PuzzleBoard(
-                      size: newGameState.boardSize,
-                      spacing: 0,
-                      tiles: List.generate(
-                        tiles.length,
-                        (index) => AnimatedBuilder(
-                          animation: startFlipAnimation,
-                          builder: (context, builderChild) {
-                            return Transform(
-                              alignment: Alignment.center,
-                              transform: Matrix4.rotationX(
-                                  startAnimationState.isStartAnimPart2End
-                                      ? 0.0
-                                      : startFlipAnimation.value!),
-                              child: builderChild,
-                            );
-                          },
-                          child: AnimatedPadding(
-                            duration: animationOneSecondDuration,
-                            padding: EdgeInsets.all(isCompleted
-                                ? winAnimationState.spacingValue
-                                : startAnimationState
-                                            .startAnimationController!.status ==
-                                        AnimationStatus.completed
-                                    ? winAnimationState.spacingValue
-                                    : 0.0),
-                            child: SimpleTileWidget(
-                              tweenStart: index / tiles.length,
-                              tween: winAnimationState.tweenForFlipping,
-                              fadeAnimation: winAnimationState.fadeAnimation!,
-                              isComplete: isCompleted &&
-                                  winAnimationState.isAnimCompleted,
-                              onTap: () => puzzleState.onTileTapped(index),
-                              tile: tiles[index],
-                            ),
+          animation: shuffleAnimationState.offsetAnimation!,
+          child: AnimatedContainer(
+            width: boardSize.width,
+            height: boardSize.height,
+            duration: animationOneSecondDuration,
+            child: PolymorphicContainer(
+              userInnerStyle: true,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: PuzzleBoard(
+                    size: newGameState.boardSize,
+                    spacing: 0,
+                    tiles: List.generate(
+                      tiles.length,
+                      (index) => AnimatedBuilder(
+                        animation: startFlipAnimation,
+                        builder: (context, builderChild) {
+                          return Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.rotationX(
+                                startAnimationState.isStartAnimPart2End
+                                    ? 0.0
+                                    : startFlipAnimation.value!),
+                            child: builderChild,
+                          );
+                        },
+                        child: AnimatedPadding(
+                          duration: animationOneSecondDuration,
+                          padding: EdgeInsets.all(isCompleted
+                              ? winAnimationState.spacingValue
+                              : startAnimationState
+                                          .startAnimationController!.status ==
+                                      AnimationStatus.completed
+                                  ? winAnimationState.spacingValue
+                                  : 0.0),
+                          child: SimpleTileWidget(
+                            tweenStart: index / tiles.length,
+                            tween: winAnimationState.tweenForFlipping,
+                            fadeAnimation: winAnimationState.fadeAnimation!,
+                            isComplete: isCompleted &&
+                                winAnimationState.isAnimCompleted,
+                            onTap: () => puzzleState.onTileTapped(index),
+                            tile: tiles[index],
                           ),
                         ),
                       ),
@@ -139,18 +140,20 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            builder: (context, child) {
-              final sineValue = sin(3 *
-                  2 *
-                  pi *
-                  shuffleAnimationState.animationShuffleController!.value);
-              return Transform.translate(
-                // 4. apply a translation as a function of the animation value
-                offset: Offset(sineValue * 9, 0),
-                // 5. use the child widget
-                child: child,
-              );
-            });
+          ),
+          builder: (context, child) {
+            final sineValue = sin(3 *
+                2 *
+                pi *
+                shuffleAnimationState.animationShuffleController!.value);
+            return Transform.translate(
+              // 4. apply a translation as a function of the animation value
+              offset: Offset(sineValue * 9, 0),
+              // 5. use the child widget
+              child: child,
+            );
+          },
+        );
       },
     );
   }

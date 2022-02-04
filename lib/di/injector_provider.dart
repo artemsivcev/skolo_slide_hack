@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:skolo_slide_hack/domain/states/adaptive_dimensions_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
@@ -19,6 +20,7 @@ Future<void> setupInjection() async {
   injector.registerSingleton(PuzzleState());
   injector.registerSingleton(MenuState());
   injector.registerSingleton(ShuffleAnimationState());
+  injector.registerSingleton(AdaptiveDimensionsState());
 
   await injector.allReady();
 }

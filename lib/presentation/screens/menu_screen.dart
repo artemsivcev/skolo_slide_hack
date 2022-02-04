@@ -76,32 +76,41 @@ class MenuScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: kIsWeb ? 10 : kToolbarHeight - 16, left: 16),
-              child: Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
+            Builder(builder: (_) {
+              const topPadding = kIsWeb ? 10.0 : kToolbarHeight - 16.0;
+
+              final screenSize = MediaQuery.of(context).size;
+
+              //rotate if a screen width < screen height. only for mobile devices
+              final rotationQuarter = kIsWeb
+                  ? 0
+                  : screenSize.width > screenSize.height
+                      ? 1
+                      : 0;
+
+              return Padding(
+                padding: EdgeInsets.only(top: topPadding, left: 16, right: 16),
+                child: RotatedBox(
+                  quarterTurns: rotationQuarter,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Flexible(
+                        flex: 5,
+                        child: GitHubIcon(),
+                      ),
+                      SizedBox(width: 16),
+                      Flexible(
+                        flex: 40,
+                        child: SkoloIcon(),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Flexible(
-                      flex: 5,
-                      child: GitHubIcon(),
-                    ),
-                    SizedBox(width: 16),
-                    Flexible(
-                      flex: 40,
-                      child: SkoloIcon(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+              );
+            }),
             DashIcon(),
             SoundButton(),
           ],

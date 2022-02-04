@@ -112,10 +112,12 @@ class AnimatedWidget extends StatelessWidget {
                         tile.customImage != null
                             ? Image.memory(tile.customImage!)
                             : Container(),
-                        Text(
-                          '${tile.value}',
-                          style: numberTextStyle.copyWith(color: Colors.black),
-                        ),
+                        if (tile.customImage == null)
+                          Text(
+                            '${tile.value}',
+                            style:
+                                numberTextStyle.copyWith(color: Colors.black),
+                          ),
                       ],
                     ),
                   ),

@@ -35,7 +35,6 @@ class PuzzleBoardButtons extends StatelessWidget {
                 shuffleAnimationState.shuffledPressed();
                 shuffleAnimationState.animationShuffleController!.forward();
                 await Future.delayed(const Duration(seconds: 1));
-
                 await puzzleState.shuffleButtonTap();
               },
               isHovered: puzzleState.shuffleBtnHovered,

@@ -90,9 +90,9 @@ abstract class _PuzzleState with Store {
       final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
       puzzle = puzzleWithMovedTiles.sort();
-    } else {
-      soundState.playCantMoveSound();
     }
+
+    /// todo add animation and sound when can not move
 
     if (isComplete) {
       winAnimationState.animate();
@@ -171,7 +171,6 @@ abstract class _PuzzleState with Store {
     toggleShuffleBtn();
     if (isComplete) winAnimationState.animate();
     generatePuzzle();
-    soundState.playShuffleSound();
     toggleShuffleBtn();
   }
 

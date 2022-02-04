@@ -89,51 +89,48 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
               width: isCompleted ? 338 : 310,
               height: isCompleted ? 338 : 310,
               duration: animationOneSecondDuration,
-              child: PolymorphicContainer(
-                userInnerStyle: true,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: PuzzleBoard(
-                      size: newGameState.boardSize,
-                      spacing: 0,
-                      tiles: List.generate(
-                        tiles.length,
-                        (index) => AnimatedBuilder(
-                          animation: startFlipAnimation,
-                          builder: (context, builderChild) {
-                            return Transform(
-                              alignment: Alignment.center,
-                              transform: Matrix4.rotationX(
-                                  startAnimationState.isStartAnimPart2End
-                                      ? 0.0
-                                      : startFlipAnimation.value!),
-                              child: builderChild,
-                            );
-                          },
-                          child: AnimatedPadding(
-                            duration: animationOneSecondDuration,
-                            padding: EdgeInsets.all(
-                                shuffleAnimationState.shuffled
-                                    ? shuffleAnimationState
-                                        .appearDisappearAnimation!.value!
-                                    : startAnimationState
-                                                .startAnimationController!
-                                                .status ==
-                                            AnimationStatus.completed
-                                        ? winAnimationState.spacingValue
-                                        : 0.0),
-                            child: SimpleTileWidget(
-                              tweenStart: index / tiles.length,
-                              tween: winAnimationState.tweenForFlipping,
-                              fadeAnimation: winAnimationState.fadeAnimation!,
-                              isComplete: isCompleted &&
-                                  winAnimationState.isAnimCompleted,
-                              onTap: () => puzzleState.onTileTapped(index),
-                              tile: tiles[index],
-                            ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: SizedBox(
+                  width: 300,
+                  height: 300,
+                  child: PuzzleBoard(
+                    size: newGameState.boardSize,
+                    spacing: 0,
+                    tiles: List.generate(
+                      tiles.length,
+                      (index) => AnimatedBuilder(
+                        animation: startFlipAnimation,
+                        builder: (context, builderChild) {
+                          return Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.rotationX(
+                                startAnimationState.isStartAnimPart2End
+                                    ? 0.0
+                                    : startFlipAnimation.value!),
+                            child: builderChild,
+                          );
+                        },
+                        child: AnimatedPadding(
+                          duration: animationOneSecondDuration,
+                          padding: EdgeInsets.all(
+                               shuffleAnimationState.shuffled
+                                  ? shuffleAnimationState
+                                      .appearDisappearAnimation!.value!
+                                  : startAnimationState
+                                              .startAnimationController!
+                                              .status ==
+                                          AnimationStatus.completed
+                                      ? winAnimationState.spacingValue
+                                      : 0.0),
+                          child: SimpleTileWidget(
+                            tweenStart: index / tiles.length,
+                            tween: winAnimationState.tweenForFlipping,
+                            fadeAnimation: winAnimationState.fadeAnimation!,
+                            isComplete: isCompleted &&
+                                winAnimationState.isAnimCompleted,
+                            onTap: () => puzzleState.onTileTapped(index),
+                            tile: tiles[index],
                           ),
                         ),
                       ),

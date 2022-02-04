@@ -37,7 +37,10 @@ abstract class _StartAnimationState with Store {
       : false;
 
   @observable
-  bool needShowCorrectTile = true;
+  bool isStartAnimPart1End = false;
+
+  @observable
+  bool isStartAnimPart2End = false;
 
   initStartAnimationController(TickerProvider tickerProvider) {
     startAnimationController = AnimationController(
@@ -100,7 +103,7 @@ abstract class _StartAnimationState with Store {
       ),
     )..addListener(() {
         if (flipAnimationPart1.status == AnimationStatus.completed) {
-          needShowCorrectTile = false;
+          isStartAnimPart1End = true;
         }
       });
 
@@ -116,7 +119,11 @@ abstract class _StartAnimationState with Store {
           curve: Curves.linear,
         ),
       ),
-    );
+    )..addListener(() {
+        if (flipAnimationPart2.status == AnimationStatus.completed) {
+          isStartAnimPart2End = true;
+        }
+      });
   }
 
   @action
@@ -124,7 +131,7 @@ abstract class _StartAnimationState with Store {
     startAnimationController?.reset();
     puzzlePadding = startPuzzleBoardAxisPadding;
     isFirstScreenEntry = false;
-    needShowCorrectTile = true;
+    isStartAnimPart1End = false;
   }
 
   void dispose() {

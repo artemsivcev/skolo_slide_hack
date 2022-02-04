@@ -57,8 +57,8 @@ abstract class _ShuffleAnimationState with Store {
 
   @action
   void shuffledPressed() {
-    shuffled = true;
     injector<SoundState>().playShuffleSound();
+    shuffled = true;
   }
 
   @action

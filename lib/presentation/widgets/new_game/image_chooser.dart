@@ -56,60 +56,48 @@ class _ImageChooserState extends State<ImageChooser> {
                 await newGameState.chooseImagePress(),
                 newGameState.isBtnChooseImagePressed = false,
               },
-              child: AnimatedContainer(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(showCropped ? 16.0 : 8.0),
-                  border:
-                      Border.all(color: colorsGreyMediumPrimary, width: 1.5),
-                ),
-                duration: animationTwoSecondsDuration,
-                child: PolymorphicContainer(
-                  userInnerStyle: true,
-                  externalBorderRadius: showCropped ? 15.0 : 7.0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(showCropped ? 16.0 : 8.0),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          if (showPreview)
-                            SvgPicture.asset(
-                              'assets/images/puzzle-continue.svg',
-                              color: colorsPurpleBluePrimary,
-                              height: newGameState.getImageMaxSize(context),
-                            )
-                          else
-                            const SizedBox(),
-                          AnimatedContainer(
-                            width:
-                                newGameState.getAnimatedContainerSize(context),
-                            height:
-                                newGameState.getAnimatedContainerSize(context),
-                            duration: animationTwoSecondsDuration,
-                            curve: Curves.fastOutSlowIn,
-                            child: showCropped
-                                ? Image.memory(
-                                    newGameState.croppedImage!.buffer
-                                        .asUint8List(),
-                                    fit: BoxFit.scaleDown,
-                                    width: 340,
-                                    height: 340,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(showCropped ? 16.0 : 8.0),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      if (showPreview)
+                        SvgPicture.asset(
+                          'assets/images/puzzle-continue.svg',
+                          color: colorsPurpleBluePrimary,
+                          height: newGameState.getImageMaxSize(context),
+                        )
+                      else
+                        const SizedBox(),
+                      AnimatedContainer(
+                        width:
+                            newGameState.getAnimatedContainerSize(context),
+                        height:
+                            newGameState.getAnimatedContainerSize(context),
+                        duration: animationTwoSecondsDuration,
+                        curve: Curves.fastOutSlowIn,
+                        child: showCropped
+                            ? Image.memory(
+                                newGameState.croppedImage!.buffer
+                                    .asUint8List(),
+                                fit: BoxFit.scaleDown,
+                                width: 340,
+                                height: 340,
+                              )
+                            : showChosen
+                                ? Cropper(
+                                    backgroundColor: Colors.white,
+                                    cropperKey: newGameState.cropperKey,
+                                    overlayType: OverlayType.rectangle,
+                                    image: Image.memory(
+                                        newGameState.chosenImage!),
                                   )
-                                : showChosen
-                                    ? Cropper(
-                                        backgroundColor: Colors.white,
-                                        cropperKey: newGameState.cropperKey,
-                                        overlayType: OverlayType.rectangle,
-                                        image: Image.memory(
-                                            newGameState.chosenImage!),
-                                      )
-                                    : const SizedBox(),
-                          )
-                        ],
-                      ),
-                    ),
+                                : const SizedBox(),
+                      )
+                    ],
                   ),
                 ),
               ),

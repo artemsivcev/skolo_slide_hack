@@ -84,7 +84,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
             : startAnimationState.flipAnimationPart2;
 
         return AnimatedBuilder(
-            animation: shuffleAnimationState.offsetAnimation!,
+            animation: shuffleAnimationState.shakeAnimation!,
             child: AnimatedContainer(
               width: isCompleted ? 338 : 310,
               height: isCompleted ? 338 : 310,
@@ -117,11 +117,15 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                             duration: animationOneSecondDuration,
                             padding: EdgeInsets.all(isCompleted
                                 ? winAnimationState.spacingValue
-                                : startAnimationState
-                                            .startAnimationController!.status ==
-                                        AnimationStatus.completed
-                                    ? winAnimationState.spacingValue
-                                    : 0.0),
+                                : shuffleAnimationState.shuffled
+                                    ? shuffleAnimationState
+                                        .appearDisappearAnimation!.value!
+                                    : startAnimationState
+                                                .startAnimationController!
+                                                .status ==
+                                            AnimationStatus.completed
+                                        ? winAnimationState.spacingValue
+                                        : 0.0),
                             child: SimpleTileWidget(
                               tweenStart: index / tiles.length,
                               tween: winAnimationState.tweenForFlipping,

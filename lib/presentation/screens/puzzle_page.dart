@@ -10,7 +10,6 @@ import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
 
 class PuzzlePage extends StatefulWidget {
@@ -60,12 +59,12 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
     super.didChangeDependencies();
   }
 
-  @override
-  void dispose() {
-    winAnimationState.disposeControllers();
-    shuffleAnimationState.disposeControllers();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   winAnimationState.disposeControllers();
+  //   shuffleAnimationState.disposeControllers();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +112,14 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                         },
                         child: AnimatedPadding(
                           duration: animationOneSecondDuration,
-                          padding: EdgeInsets.all(
-                               shuffleAnimationState.shuffled
-                                  ? shuffleAnimationState
-                                      .appearDisappearAnimation!.value!
-                                  : startAnimationState
-                                              .startAnimationController!
-                                              .status ==
-                                          AnimationStatus.completed
-                                      ? winAnimationState.spacingValue
-                                      : 0.0),
+                          padding: EdgeInsets.all(shuffleAnimationState.shuffled
+                              ? shuffleAnimationState
+                                  .appearDisappearAnimation!.value!
+                              : startAnimationState
+                                          .startAnimationController!.status ==
+                                      AnimationStatus.completed
+                                  ? winAnimationState.spacingValue
+                                  : 0.0),
                           child: SimpleTileWidget(
                             tweenStart: index / tiles.length,
                             tween: winAnimationState.tweenForFlipping,

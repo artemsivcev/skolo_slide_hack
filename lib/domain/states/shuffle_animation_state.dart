@@ -10,8 +10,6 @@ class ShuffleAnimationState = _ShuffleAnimationState
     with _$ShuffleAnimationState;
 
 abstract class _ShuffleAnimationState with Store {
-  final puzzleState = injector<PuzzleState>();
-
   @observable
   AnimationController? animationShuffleController;
 

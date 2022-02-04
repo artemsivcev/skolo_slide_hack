@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
@@ -7,7 +6,6 @@ import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
-import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 
 import 'new_game_state.dart';
@@ -20,7 +18,6 @@ abstract class _PuzzleState with Store {
   /// need to access to sounds
   final soundState = injector<SoundState>();
   final winAnimationState = injector<WinAnimationState>();
-  final _startAnimationState = injector<StartAnimationState>();
 
   //state with user image data
   final newGameState = injector<NewGameState>();
@@ -173,11 +170,8 @@ abstract class _PuzzleState with Store {
   Future<void> shuffleButtonTap() async {
     toggleShuffleBtn();
     if (isComplete) winAnimationState.animate();
-    soundState.playShuffleSound();
     generatePuzzle();
-
-    /// todo make depending on animation
-    await Future.delayed(const Duration(milliseconds: 450));
+    soundState.playShuffleSound();
     toggleShuffleBtn();
   }
 

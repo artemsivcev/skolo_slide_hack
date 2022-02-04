@@ -115,9 +115,8 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                           },
                           child: AnimatedPadding(
                             duration: animationOneSecondDuration,
-                            padding: EdgeInsets.all(isCompleted
-                                ? winAnimationState.spacingValue
-                                : shuffleAnimationState.shuffled
+                            padding: EdgeInsets.all(
+                                shuffleAnimationState.shuffled
                                     ? shuffleAnimationState
                                         .appearDisappearAnimation!.value!
                                     : startAnimationState

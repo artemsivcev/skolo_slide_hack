@@ -15,10 +15,10 @@ Future<void> setupInjection() async {
   injector.registerSingleton(SoundState());
   injector.registerSingleton(WinAnimationState());
   injector.registerLazySingleton(() => StartAnimationState());
+  injector.registerSingleton(ShuffleAnimationState());
   injector.registerSingleton(NewGameState());
   injector.registerSingleton(PuzzleState());
   injector.registerSingleton(MenuState());
-  injector.registerSingleton(ShuffleAnimationState());
 
   await injector.allReady();
 }

@@ -5,11 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 
 class PuzzleBoardButtons extends StatelessWidget {
   final puzzleState = injector<PuzzleState>();
+  final shuffleAnimationState = injector<ShuffleAnimationState>();
 
   PuzzleBoardButtons({Key? key}) : super(key: key);
 
@@ -29,7 +31,13 @@ class PuzzleBoardButtons extends StatelessWidget {
               ),
               btnText: 'Shuffle',
               isPressed: puzzleState.shuffleBtnPressed,
-              onTap: () async => await puzzleState.shuffleButtonTap(),
+              onTap: () async {
+                shuffleAnimationState.shuffledPressed();
+                shuffleAnimationState.animationShuffleController!.forward();
+                await Future.delayed(const Duration(seconds: 1));
+
+                await puzzleState.shuffleButtonTap();
+              },
               isHovered: puzzleState.shuffleBtnHovered,
               onHover: (value) => puzzleState.toggleHoveredShuffleBtn(),
             ),

@@ -16,7 +16,7 @@ abstract class _SoundState with Store {
   @action
   void preloadMainAudio() {
     if (mainPlayer.audioSource == null) {
-      mainPlayer.setAsset('/audio/main.mp3');
+      mainPlayer.setAsset('assets/audio/main.mp3');
       mainPlayer.setLoopMode(LoopMode.all);
     }
   }
@@ -35,7 +35,7 @@ abstract class _SoundState with Store {
   /// fun set forward.mp3 in [effectsPlayer] and playing it once
   @action
   void playForwardSound() {
-    effectsPlayer.setAsset('/audio/forward.mp3');
+    effectsPlayer.setAsset('assets/audio/forward.mp3');
     effectsPlayer.setLoopMode(LoopMode.off);
     effectsPlayer.play();
   }
@@ -43,7 +43,7 @@ abstract class _SoundState with Store {
   /// fun set backward.mp3 in [effectsPlayer] and playing it once
   @action
   void playBackwardSound() {
-    effectsPlayer.setAsset('/audio/backward.mp3');
+    effectsPlayer.setAsset('assets/audio/backward.mp3');
     effectsPlayer.setLoopMode(LoopMode.off);
     effectsPlayer.play();
   }
@@ -51,7 +51,7 @@ abstract class _SoundState with Store {
   /// fun set move.mp3 in [effectsPlayer] and playing it once
   @action
   void playMoveSound() {
-    effectsPlayer.setAsset('/audio/move.mp3');
+    effectsPlayer.setAsset('assets/audio/move.mp3');
     effectsPlayer.setLoopMode(LoopMode.off);
     effectsPlayer.play();
   }
@@ -59,7 +59,23 @@ abstract class _SoundState with Store {
   /// fun set not_movable.mp3 in [effectsPlayer] and playing it once
   @action
   void playCantMoveSound() {
-    effectsPlayer.setAsset('/audio/move.mp3');
+    effectsPlayer.setAsset('assets/audio/move.mp3');
+    effectsPlayer.setLoopMode(LoopMode.off);
+    effectsPlayer.play();
+  }
+
+  /// fun set shuffle.mp3 in [effectsPlayer] and playing it once
+  @action
+  void playShuffleSound() {
+    effectsPlayer.setAsset('assets/audio/shuffle.mp3');
+    effectsPlayer.setLoopMode(LoopMode.off);
+    effectsPlayer.play();
+  }
+
+  /// fun set win.mp3 in [effectsPlayer] and playing it once
+  @action
+  void playWinSound() {
+    effectsPlayer.setAsset('assets/audio/win.mp3');
     effectsPlayer.setLoopMode(LoopMode.off);
     effectsPlayer.play();
   }

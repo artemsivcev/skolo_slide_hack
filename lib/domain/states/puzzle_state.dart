@@ -97,7 +97,10 @@ abstract class _PuzzleState with Store {
       soundState.playCantMoveSound();
     }
 
-    if (isComplete) winAnimationState.animate();
+    if (isComplete) {
+      winAnimationState.animate();
+      soundState.playWinSound();
+    }
   }
 
   /// Build puzzle of the given size.
@@ -170,6 +173,7 @@ abstract class _PuzzleState with Store {
   Future<void> shuffleButtonTap() async {
     toggleShuffleBtn();
     if (isComplete) winAnimationState.animate();
+    soundState.playShuffleSound();
     generatePuzzle();
 
     /// todo make depending on animation

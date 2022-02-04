@@ -46,51 +46,46 @@ class MenuScreen extends StatelessWidget {
               child: Observer(
                 builder: (context) => RowColumnSolver(
                   children: [
-                    Flexible(
-                      flex: 1,
-                      child: GlassContainer(
-                        child: AnimatedCrossFade(
-                          crossFadeState: newGameState.isNewGameShow &&
-                                  !newGameState.isPlayPressed
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          duration: animationTwoSecondsDuration,
-                          firstChild: ImageChooser(),
-                          secondChild: RowColumnSolver(
-                            children: [
-                              !newGameState.isGameStart
-                                  ? Flexible(
-                                      child: FittedBox(
-                                        child: GameTitle(),
-                                      ),
-                                    )
-                                  : Flexible(
-                                      child: FittedBox(
-                                        child: PuzzlePage(),
-                                      ),
+                    GlassContainer(
+                      child: AnimatedCrossFade(
+                        crossFadeState: newGameState.isNewGameShow &&
+                                !newGameState.isPlayPressed
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: animationTwoSecondsDuration,
+                        firstChild: ImageChooser(),
+                        secondChild: RowColumnSolver(
+                          children: [
+                            !newGameState.isGameStart
+                                ? Flexible(
+                                    child: FittedBox(
+                                      child: GameTitle(),
                                     ),
-                            ],
-                          ),
+                                  )
+                                : Flexible(
+                                    child: FittedBox(
+                                      child: PuzzlePage(),
+                                    ),
+                                  ),
+                          ],
                         ),
                       ),
                     ),
-                    Flexible(
-                      child: GlassContainer(
-                        child: AnimatedCrossFade(
-                          crossFadeState: newGameState.isNewGameShow &&
-                                  !newGameState.isPlayPressed
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          duration: animationTwoSecondsDuration,
-                          firstChild: CropAndPlayButton(),
-                          secondChild: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              !newGameState.isGameStart
-                                  ? ButtonsGroupWidget()
-                                  : PuzzleBoardButtons(),
-                            ],
-                          ),
+                    GlassContainer(
+                      child: AnimatedCrossFade(
+                        crossFadeState: newGameState.isNewGameShow &&
+                                !newGameState.isPlayPressed
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: animationTwoSecondsDuration,
+                        firstChild: CropAndPlayButton(),
+                        secondChild: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            !newGameState.isGameStart
+                                ? ButtonsGroupWidget()
+                                : PuzzleBoardButtons(),
+                          ],
                         ),
                       ),
                     ),

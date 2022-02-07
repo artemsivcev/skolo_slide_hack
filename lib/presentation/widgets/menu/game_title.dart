@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
-import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
 
 import '../text_shadows.dart';
 

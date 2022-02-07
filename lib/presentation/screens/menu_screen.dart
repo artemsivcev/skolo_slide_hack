@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:animated_background/lines.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

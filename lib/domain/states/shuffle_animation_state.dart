@@ -1,8 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 
 part 'shuffle_animation_state.g.dart';
@@ -61,8 +59,8 @@ abstract class _ShuffleAnimationState with Store {
     shuffled = true;
   }
 
-  @action
-  void disposeControllers() {
-    animationShuffleController!.dispose();
+  void dispose() {
+    animationShuffleController?.dispose();
+    shuffled = false;
   }
 }

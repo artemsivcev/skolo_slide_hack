@@ -7,6 +7,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 import 'sound_state.dart';
 part 'new_game_state.g.dart';
@@ -96,6 +97,8 @@ abstract class _NewGameState with Store {
     isPlayPressed = !isPlayPressed;
     soundState.playForwardSound();
     if (croppedImage != null) imageMap = splitImage();
+    //need to generate new puzzle with image/not
+    injector<PuzzleState>().generatePuzzle();
   }
 
   // logic for splitting image, working really bad, but we can use loaders!!!

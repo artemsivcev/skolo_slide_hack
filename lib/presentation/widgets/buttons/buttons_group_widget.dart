@@ -62,6 +62,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                   childUnpressed: SvgPicture.asset(
                     'assets/images/exit.svg',
                     color: colorsPurpleBluePrimary,
+                    height: 40,
                   ),
                   btnText: 'Exit',
                   isPressed: menuState.exitBtnPressed,

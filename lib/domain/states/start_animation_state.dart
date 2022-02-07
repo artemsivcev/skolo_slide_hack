@@ -22,7 +22,29 @@ abstract class _StartAnimationState with Store {
 
   late Animation<double?> flipAnimationPart2;
 
-  late Tween<double> puzzleSpacingTween;
+  /// tween for puzzle spacing
+  final Tween<double> tweenForPuzzleSpacing = Tween<double>(
+    begin: startPuzzleBoardAxisPadding,
+    end: endPuzzleBoardAxisPadding,
+  );
+
+  /// tween for [borderRadiusAnimation]
+  final Tween<double> tweenForBorderRadius = Tween<double>(
+    begin: notInstalledTileCornerRadius,
+    end: setTileCornerRadius,
+  );
+
+  /// tween for [flipAnimationPart1]
+  final Tween<double> tweenFlipPart1 = Tween<double>(
+    begin: 0,
+    end: pi / 2,
+  );
+
+  /// tween for [flipAnimationPart2]
+  final Tween<double> tweenFlipPart2 = Tween<double>(
+    begin: pi,
+    end: 0,
+  );
 
   @observable
   double puzzlePadding = startPuzzleBoardAxisPadding;
@@ -59,12 +81,7 @@ abstract class _StartAnimationState with Store {
             startPuzzleBoardAxisPadding;
       });
 
-    puzzleSpacingTween = Tween<double>(
-      begin: startPuzzleBoardAxisPadding,
-      end: endPuzzleBoardAxisPadding,
-    );
-
-    puzzleBoardAxisPaddingAnimation = puzzleSpacingTween.animate(
+    puzzleBoardAxisPaddingAnimation = tweenForPuzzleSpacing.animate(
       CurvedAnimation(
         parent: startAnimationController!,
         curve: const Interval(
@@ -75,10 +92,7 @@ abstract class _StartAnimationState with Store {
       ),
     );
 
-    borderRadiusAnimation = Tween<double>(
-      begin: notInstalledTileCornerRadius,
-      end: setTileCornerRadius,
-    ).animate(
+    borderRadiusAnimation = tweenForBorderRadius.animate(
       CurvedAnimation(
         parent: startAnimationController!,
         curve: const Interval(
@@ -89,10 +103,7 @@ abstract class _StartAnimationState with Store {
       ),
     );
 
-    flipAnimationPart1 = Tween<double>(
-      begin: 0,
-      end: pi / 2,
-    ).animate(
+    flipAnimationPart1 = tweenFlipPart1.animate(
       CurvedAnimation(
         parent: startAnimationController!,
         curve: const Interval(
@@ -107,10 +118,7 @@ abstract class _StartAnimationState with Store {
         }
       });
 
-    flipAnimationPart2 = Tween<double>(
-      begin: pi,
-      end: 0,
-    ).animate(
+    flipAnimationPart2 = tweenFlipPart2.animate(
       CurvedAnimation(
         parent: startAnimationController!,
         curve: const Interval(

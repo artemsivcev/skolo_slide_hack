@@ -61,4 +61,10 @@ abstract class _WinAnimationState with Store {
   void animate() => isAnimCompleted
       ? animationController!.reset()
       : animationController!.forward();
+
+  void dispose() {
+    animationController?.dispose();
+    spacingValue = 4.0;
+    isAnimCompleted = false;
+  }
 }

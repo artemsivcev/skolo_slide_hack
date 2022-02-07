@@ -100,8 +100,9 @@ class AnimatedWidget extends StatelessWidget {
                     return PolymorphicContainer(
                       duration: const Duration(seconds: 0),
                       userInnerStyle: false,
-                      externalBorderRadius:
-                          _startAnimation.borderRadiusAnimation.value!,
+                      externalBorderRadius: !_startAnimation.isStartAnimPart1End
+                          ? _startAnimation.borderRadiusAnimation.value!
+                          : _startAnimation.tweenForBorderRadius.end!,
                       child: builderChild!,
                     );
                   },

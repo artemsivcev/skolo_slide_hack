@@ -28,8 +28,6 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    //need to generate new puzzle with image
-    puzzleState.generatePuzzle();
     var controller = AnimationController(
       duration: animationOneSecondDuration,
       vsync: this,
@@ -59,17 +57,9 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
     super.didChangeDependencies();
   }
 
-  // @override
-  // void dispose() {
-  //   winAnimationState.disposeControllers();
-  //   shuffleAnimationState.disposeControllers();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     startAnimationState.isFirstScreenEntry = false;
-
     return Observer(
       builder: (context) {
         final showCorrectOrder = !startAnimationState.isStartAnimPart1End;

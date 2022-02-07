@@ -24,9 +24,6 @@ abstract class _MenuState with Store {
   @observable
   bool exitBtnPressed = false;
 
-  @observable
-  bool isSoundPlay = false;
-
   ///Bools for checking if buttons are hovered
   @observable
   bool continueBtnHovered = false;
@@ -60,13 +57,6 @@ abstract class _MenuState with Store {
     } else {
       SystemNavigator.pop();
     }
-  }
-
-  @action
-  void toggleSoundBtn() {
-    isSoundPlay = !isSoundPlay;
-
-    soundState.toggleMainSound();
   }
 
   //change hover for buttons

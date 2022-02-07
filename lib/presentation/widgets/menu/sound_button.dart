@@ -4,12 +4,14 @@ import 'package:marquee/marquee.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
 
 class SoundButton extends StatelessWidget {
   SoundButton({Key? key}) : super(key: key);
 
   final menuState = injector<MenuState>();
+  final soundState = injector<SoundState>();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class SoundButton extends StatelessWidget {
             children: [
               ButtonGlass(
                 size: 25,
-                onTap: () => {menuState.toggleSoundBtn()},
+                onTap: () => {soundState.toggleSoundBtn()},
                 isHovered: menuState.isSoundHovered,
                 onHover: (value) {
                   menuState.toggleHoveredSound();
@@ -39,10 +41,10 @@ class SoundButton extends StatelessWidget {
                   Icons.music_note,
                   color: colorsPurpleBluePrimary,
                 ),
-                isPressed: menuState.isSoundPlay,
+                isPressed: soundState.isSoundPlay,
                 padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 8.0),
               ),
-              menuState.isSoundPlay
+              soundState.isSoundPlay
                   ? SizedBox(
                       height: 24,
                       width: 114,

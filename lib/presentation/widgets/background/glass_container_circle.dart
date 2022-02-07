@@ -16,20 +16,10 @@ class GlassContainerCircle extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.5),
+        color: Colors.white.withOpacity(0.4),
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),
         boxShadow: [
-          const BoxShadow(
-              color: colorsWhitePrimary,
-              offset: Offset(-10, -10),
-              blurRadius: 20,
-              spreadRadius: 0),
-          const BoxShadow(
-              color: colorsGreyDarkPrimary,
-              offset: Offset(10, 10),
-              blurRadius: 20,
-              spreadRadius: 0),
           isHovered
               ? BoxShadow(
                   color: colorsPurpleBluePrimary.withOpacity(0.7),

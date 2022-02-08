@@ -17,7 +17,7 @@ class MovementsCounter extends StatelessWidget {
         final moveAmount = injector<PuzzleState>().movementsCounter;
 
         return Semantics(
-          label: "number of moves is $moveAmount",
+          label: "Number of moves is $moveAmount",
           readOnly: true,
           child: Text(
             'Moves: $moveAmount',

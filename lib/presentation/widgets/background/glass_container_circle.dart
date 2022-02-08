@@ -6,15 +6,17 @@ class GlassContainerCircle extends StatelessWidget {
     Key? key,
     required this.child,
     this.isHovered = false,
+    this.padding,
   }) : super(key: key);
 
   final Widget child;
   final bool isHovered;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: padding ?? const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.4),
         shape: BoxShape.circle,

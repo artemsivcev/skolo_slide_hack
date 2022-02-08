@@ -20,12 +20,12 @@ class _NewGameWidgetsOrientationSolver extends State<RowColumnSolver> {
     return menuState.isPortrait(context)
         ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment:  CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: widget.children)
         : Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: widget.children);
   }

@@ -58,21 +58,25 @@ class ButtonsGroupWidget extends StatelessWidget {
 
           !kIsWeb ? const SizedBox(width: 32) : const SizedBox(),
           !kIsWeb
-              ? ButtonGlass(
-                  childUnpressed: SvgPicture.asset(
-                    'assets/images/exit.svg',
-                    color: colorsPurpleBluePrimary,
-                    height: 40,
+              ? Semantics(
+                  label: "Exit the game",
+                  enabled: true,
+                  child: ButtonGlass(
+                    childUnpressed: SvgPicture.asset(
+                      'assets/images/exit.svg',
+                      color: colorsPurpleBluePrimary,
+                      height: 40,
+                    ),
+                    btnText: 'Exit',
+                    isPressed: menuState.exitBtnPressed,
+                    onTap: () {
+                      menuState.toggleExitBtn();
+                    },
+                    isHovered: menuState.exitBtnHovered,
+                    onHover: (value) {
+                      menuState.toggleHoveredExitBtn();
+                    },
                   ),
-                  btnText: 'Exit',
-                  isPressed: menuState.exitBtnPressed,
-                  onTap: () {
-                    menuState.toggleExitBtn();
-                  },
-                  isHovered: menuState.exitBtnHovered,
-                  onHover: (value) {
-                    menuState.toggleHoveredExitBtn();
-                  },
                 )
               : const SizedBox(),
         ],

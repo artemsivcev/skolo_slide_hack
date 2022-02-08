@@ -134,9 +134,13 @@ class MenuScreen extends StatelessWidget {
 
               final screenSize = MediaQuery.of(context).size;
 
+              final isWebMobile = kIsWeb &&
+                  (defaultTargetPlatform == TargetPlatform.iOS ||
+                      defaultTargetPlatform == TargetPlatform.android);
+
               //rotate if a screen width < screen height. only for mobile devices
               final rotationQuarter = kIsWeb
-                  ? screenSize.width < screenSize.height
+                  ? screenSize.width < screenSize.height || isWebMobile
                       ? 1
                       : 0
                   : screenSize.width > screenSize.height
@@ -159,7 +163,7 @@ class MenuScreen extends StatelessWidget {
                             flex: 5,
                             child: GitHubIcon(),
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 12),
                           Flexible(
                             flex: usedSmallMobileVersion ? 5 : 40,
                             child: usedSmallMobileVersion
@@ -174,7 +178,7 @@ class MenuScreen extends StatelessWidget {
                             flex: 5,
                             child: GitHubIcon(),
                           ),
-                          SizedBox(width: 16),
+                          SizedBox(width: 12),
                           Flexible(
                             flex: usedSmallMobileVersion ? 5 : 40,
                             child: usedSmallMobileVersion

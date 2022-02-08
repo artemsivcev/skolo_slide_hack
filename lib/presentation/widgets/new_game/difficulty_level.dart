@@ -34,42 +34,43 @@ class DifficultyLevel extends StatelessWidget {
           ),
         ),
         Observer(
-          builder: (context) => Row(
-            children: [
-              DifficultyButton(
-                semanticLabel: 'Easy',
-                dimensions: '3x3',
-                isSelected:
-                    newGameState.difficultyLevel == DifficultyLevelEnum.EASY,
-                onTap: () =>
-                    newGameState.changeDifficulty(DifficultyLevelEnum.EASY),
-                isHovered: newGameState.isEasyLevelHovered,
-                onHover: (value) => newGameState.toggleHoveredEasyLevel(),
-              ),
-              const SizedBox(width: 12),
-              DifficultyButton(
-                semanticLabel: 'Middle',
-                dimensions: '4x4',
-                isSelected:
-                    newGameState.difficultyLevel == DifficultyLevelEnum.MIDDLE,
-                onTap: () =>
-                    newGameState.changeDifficulty(DifficultyLevelEnum.MIDDLE),
-                isHovered: newGameState.isMiddleLevelHovered,
-                onHover: (value) => newGameState.toggleHoveredMiddleLevel(),
-              ),
-              const SizedBox(width: 12),
-              DifficultyButton(
-                semanticLabel: 'Hard',
-                dimensions: '5x5',
-                isSelected:
-                    newGameState.difficultyLevel == DifficultyLevelEnum.HARD,
-                onTap: () =>
-                    newGameState.changeDifficulty(DifficultyLevelEnum.HARD),
-                isHovered: newGameState.isHardLevelHovered,
-                onHover: (value) => newGameState.toggleHoveredHardLevel(),
-              ),
-            ],
-          ),
+          builder: (context) {
+            var difficultyLevel = newGameState.difficultyLevel;
+
+            return Row(
+              children: [
+                DifficultyButton(
+                  semanticLabel: 'Easy',
+                  dimensions: '3x3',
+                  isSelected: difficultyLevel == DifficultyLevelEnum.EASY,
+                  onTap: () =>
+                      newGameState.changeDifficulty(DifficultyLevelEnum.EASY),
+                  isHovered: newGameState.isEasyLevelHovered,
+                  onHover: (value) => newGameState.toggleHoveredEasyLevel(),
+                ),
+                const SizedBox(width: 12),
+                DifficultyButton(
+                  semanticLabel: 'Middle',
+                  dimensions: '4x4',
+                  isSelected: difficultyLevel == DifficultyLevelEnum.MIDDLE,
+                  onTap: () =>
+                      newGameState.changeDifficulty(DifficultyLevelEnum.MIDDLE),
+                  isHovered: newGameState.isMiddleLevelHovered,
+                  onHover: (value) => newGameState.toggleHoveredMiddleLevel(),
+                ),
+                const SizedBox(width: 12),
+                DifficultyButton(
+                  semanticLabel: 'Hard',
+                  dimensions: '5x5',
+                  isSelected: difficultyLevel == DifficultyLevelEnum.HARD,
+                  onTap: () =>
+                      newGameState.changeDifficulty(DifficultyLevelEnum.HARD),
+                  isHovered: newGameState.isHardLevelHovered,
+                  onHover: (value) => newGameState.toggleHoveredHardLevel(),
+                ),
+              ],
+            );
+          },
         ),
       ],
     );

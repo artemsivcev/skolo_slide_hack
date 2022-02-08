@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:equatable/equatable.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 
@@ -31,6 +32,9 @@ class Puzzle extends Equatable {
     return true;
   }
 
+  /// Counts how many tile were moved by a [moveTiles] method by one time.
+  static int movementsCount = 0;
+
   /// Shifts one or many tiles and returns the modified puzzle.
   /// A list of all tiles that need to be moved is recursively stored and swapped by [swapTiles].
   Puzzle moveTiles(Tile tile, List<Tile> tilesToSwap) {
@@ -46,10 +50,13 @@ class Puzzle extends Equatable {
       final shiftY = tile.currentPosition.y + deltaY.sign;
       final tileToSwapWith = tiles.singleWhere((tile) =>
           tile.currentPosition.x == shiftX && tile.currentPosition.y == shiftY);
+
       tilesToSwap.add(tile);
+      movementsCount++;
       return moveTiles(tileToSwapWith, tilesToSwap);
     } else {
       tilesToSwap.add(tile);
+      movementsCount = tilesToSwap.length;
       return swapTiles(tilesToSwap);
     }
   }

@@ -22,6 +22,7 @@ import 'package:skolo_slide_hack/presentation/widgets/menu/scolo_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/small_skolo_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/sound_button.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/crop_and_play_buttons.dart';
+import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_level.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/image_chooser.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/puzzle_board_buttons.dart';
 
@@ -47,6 +48,19 @@ class MenuScreen extends StatelessWidget {
                 child: Observer(
                   builder: (context) => RowColumnSolver(
                     children: [
+                      AnimatedCrossFade(
+                        crossFadeState: newGameState.isNewGameShow &&
+                                !newGameState.isPlayPressed
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: animationTwoSecondsDuration,
+                        firstChild: FittedBox(
+                          child: GlassContainer(
+                            child: DifficultyLevel(),
+                          ),
+                        ),
+                        secondChild: Container(),
+                      ),
                       GlassContainer(
                         child: AnimatedCrossFade(
                           crossFadeState: newGameState.isNewGameShow &&
@@ -116,7 +130,9 @@ class MenuScreen extends StatelessWidget {
 
               //rotate if a screen width < screen height. only for mobile devices
               final rotationQuarter = kIsWeb
-                  ? 0
+                  ? screenSize.width < screenSize.height
+                      ? 1
+                      : 0
                   : screenSize.width > screenSize.height
                       ? 1
                       : 0;
@@ -137,7 +153,7 @@ class MenuScreen extends StatelessWidget {
                             flex: 5,
                             child: GitHubIcon(),
                           ),
-                          SizedBox(width: 16),
+                          SizedBox(height: 16),
                           Flexible(
                             flex: usedSmallMobileVersion ? 5 : 40,
                             child: usedSmallMobileVersion

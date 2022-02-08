@@ -6,23 +6,30 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import '../text_shadows.dart';
 
 class ButtonText extends StatelessWidget {
-  ButtonText({Key? key, required this.btnText}) : super(key: key);
+  ButtonText({
+    Key? key,
+    required this.btnText,
+    this.paddingSize = 32.0,
+    this.fontSize,
+  }) : super(key: key);
 
   final String btnText;
   final menuState = injector<MenuState>();
+  final double paddingSize;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
     var isPortrait = menuState.isPortrait(context);
     return Padding(
       padding: isPortrait
-          ? const EdgeInsets.fromLTRB(0.0, 32.0, 32.0, 32.0)
-          : const EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 32.0),
+          ? EdgeInsets.fromLTRB(0.0, paddingSize, paddingSize, paddingSize)
+          : EdgeInsets.fromLTRB(paddingSize, 0.0, paddingSize, paddingSize),
       child: Text(
         btnText,
         style: TextStyle(
           fontFamily: 'Montserrat',
-          fontSize: 24,
+          fontSize: fontSize ?? 24,
           fontWeight: FontWeight.w900,
           color: colorsPurpleBluePrimary,
           shadows: TextShadows.generateLongShadow(),

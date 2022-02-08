@@ -94,8 +94,8 @@ abstract class _PuzzleState with Store {
       soundState.playMoveSound();
       final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
+      movementsCounter += Puzzle.movementsCount;
       puzzle = puzzleWithMovedTiles.sort();
-      movementsCounter++;
     }
 
     /// todo add animation and sound when can not move
@@ -216,6 +216,10 @@ abstract class _PuzzleState with Store {
     return newPuzzle.sort();
   }
 
+  /// resets amount of the moves to 0
   @action
-  void resetMovementsCounter() => movementsCounter = 0;
+  void resetMovementsCounter() {
+    Puzzle.movementsCount = 0;
+    movementsCounter = 0;
+  }
 }

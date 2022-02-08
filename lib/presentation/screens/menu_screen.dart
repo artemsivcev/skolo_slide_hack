@@ -18,6 +18,7 @@ import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.d
 import 'package:skolo_slide_hack/presentation/widgets/menu/dash_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/game_title.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/github_icon.dart';
+import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/game_timer.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/movements_counter.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/scolo_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/small_skolo_icon.dart';
@@ -81,9 +82,10 @@ class MenuScreen extends StatelessWidget {
                                   : Flexible(
                                       child: FittedBox(
                                         child: Column(
-                                          children: const [
+                                          children: [
                                             MovementsCounter(),
                                             PuzzlePage(),
+                                            GameTimer(),
                                           ],
                                         ),
                                       ),

@@ -56,6 +56,10 @@ abstract class _PuzzleState with Store {
       .map((_) => DateTime.now())
       .asObservable();
 
+  ///final time result of the game
+  @observable
+  Duration? finalGameTime;
+
   @computed
   DateTime get now => _time.value ?? DateTime.now();
 
@@ -109,7 +113,20 @@ abstract class _PuzzleState with Store {
 
   ///seconds for the timer
   @computed
-  String get seconds => gameTimer.inSeconds.toString().padLeft(2, "0");
+  String get seconds =>
+      gameTimer.inSeconds.remainder(60).toString().padLeft(2, "0");
+
+  ///final minutes' result of the game
+  @computed
+  String get minutesFinal => finalGameTime != null
+      ? finalGameTime!.inMinutes.remainder(60).toString().padLeft(2, "0")
+      : '';
+
+  ///final seconds' result of the game
+  @computed
+  String get secondsFinal => finalGameTime != null
+      ? finalGameTime!.inSeconds.remainder(60).toString().padLeft(2, "0")
+      : '';
 
   /// [onTileTapped] stands for method that is invoked when any tile is tapped.
   /// Index of tapped tile need ti be passed.
@@ -125,6 +142,9 @@ abstract class _PuzzleState with Store {
       movementsCounter += Puzzle.movementsCount;
       if (movementsCounter == 1) {
         gameStartTime = DateTime.now();
+
+        print(now);
+        print(gameStartTime);
       }
       puzzle = puzzleWithMovedTiles.sort();
     }
@@ -133,6 +153,7 @@ abstract class _PuzzleState with Store {
 
     if (isComplete) {
       winAnimationState.animate();
+      setFinalTime();
       soundState.playWinSound();
     }
   }
@@ -259,5 +280,15 @@ abstract class _PuzzleState with Store {
   @action
   void resetTimer() {
     gameStartTime = null;
+    _time = Stream.periodic(Duration(seconds: 1))
+        .map((_) => DateTime.now())
+        .asObservable();
+  }
+
+  ///sets final time result of the game
+  @action
+  void setFinalTime() {
+    finalGameTime =
+        Duration(minutes: gameTimer.inMinutes, seconds: gameTimer.inSeconds);
   }
 }

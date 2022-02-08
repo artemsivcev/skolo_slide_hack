@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
@@ -40,6 +41,10 @@ abstract class _PuzzleState with Store {
   bool shuffleBtnPressed = false;
   @observable
   bool shuffleBtnHovered = false;
+
+  /// counter shows how many moves a user makes to solve puzzle.
+  @observable
+  int movementsCounter = 0;
 
   /// list of tiles
   @computed
@@ -90,6 +95,7 @@ abstract class _PuzzleState with Store {
       final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
       puzzle = puzzleWithMovedTiles.sort();
+      movementsCounter++;
     }
 
     /// todo add animation and sound when can not move
@@ -168,6 +174,7 @@ abstract class _PuzzleState with Store {
   /// on shuffle button tap
   @action
   Future<void> shuffleButtonTap() async {
+    resetMovementsCounter();
     toggleShuffleBtn();
     if (isComplete) winAnimationState.animate();
     generatePuzzle();
@@ -208,4 +215,7 @@ abstract class _PuzzleState with Store {
     }
     return newPuzzle.sort();
   }
+
+  @action
+  void resetMovementsCounter() => movementsCounter = 0;
 }

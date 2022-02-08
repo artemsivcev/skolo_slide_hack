@@ -46,6 +46,25 @@ abstract class _PuzzleState with Store {
   @observable
   int movementsCounter = 0;
 
+  /// game start time
+  @observable
+  DateTime? gameStartTime;
+
+  /// observable for checking time at the moment
+  @observable
+  ObservableStream<DateTime> _time = Stream.periodic(Duration(seconds: 1))
+      .map((_) => DateTime.now())
+      .asObservable();
+
+  @computed
+  DateTime get now => _time.value ?? DateTime.now();
+
+  /// timer for the game
+  @computed
+  Duration get gameTimer => gameStartTime != null
+      ? now.difference(gameStartTime!)
+      : const Duration(minutes: 0, seconds: 0);
+
   /// list of tiles
   @computed
   List<Tile> get tiles => puzzle == null ? [] : puzzle!.tiles;
@@ -83,6 +102,15 @@ abstract class _PuzzleState with Store {
   @computed
   bool get isComplete => puzzle == null ? false : puzzle!.isComplete;
 
+  ///minutes for the timer
+  @computed
+  String get minutes =>
+      gameTimer.inMinutes.remainder(60).toString().padLeft(2, "0");
+
+  ///seconds for the timer
+  @computed
+  String get seconds => gameTimer.inSeconds.toString().padLeft(2, "0");
+
   /// [onTileTapped] stands for method that is invoked when any tile is tapped.
   /// Index of tapped tile need ti be passed.
   /// Check if tile is movable and modifies puzzle board.
@@ -95,6 +123,9 @@ abstract class _PuzzleState with Store {
       final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
       movementsCounter += Puzzle.movementsCount;
+      if (movementsCounter == 1) {
+        gameStartTime = DateTime.now();
+      }
       puzzle = puzzleWithMovedTiles.sort();
     }
 
@@ -175,6 +206,7 @@ abstract class _PuzzleState with Store {
   @action
   Future<void> shuffleButtonTap() async {
     resetMovementsCounter();
+    resetTimer();
     toggleShuffleBtn();
     if (isComplete) winAnimationState.animate();
     generatePuzzle();
@@ -221,5 +253,11 @@ abstract class _PuzzleState with Store {
   void resetMovementsCounter() {
     Puzzle.movementsCount = 0;
     movementsCounter = 0;
+  }
+
+  /// resets timer to 0
+  @action
+  void resetTimer() {
+    gameStartTime = null;
   }
 }

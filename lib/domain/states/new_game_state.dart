@@ -7,6 +7,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/enums/difficulty_level_enum.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 import 'sound_state.dart';
@@ -35,6 +36,14 @@ abstract class _NewGameState with Store {
   @observable
   bool isCropHovered = false;
 
+  /// bools for difficulty levels hover
+  @observable
+  bool isEasyLevelHovered = false;
+  @observable
+  bool isMiddleLevelHovered = false;
+  @observable
+  bool isHardLevelHovered = false;
+
   /// fun for crop btn hover change
   @action
   void toggleHoveredCrop() {
@@ -44,6 +53,24 @@ abstract class _NewGameState with Store {
   /// bool for play hover
   @observable
   bool isPlayHovered = false;
+
+  /// easy level btn hover change
+  @action
+  void toggleHoveredEasyLevel() {
+    isEasyLevelHovered = !isEasyLevelHovered;
+  }
+
+  /// easy level btn hover change
+  @action
+  void toggleHoveredMiddleLevel() {
+    isMiddleLevelHovered = !isMiddleLevelHovered;
+  }
+
+  /// easy level btn hover change
+  @action
+  void toggleHoveredHardLevel() {
+    isHardLevelHovered = !isHardLevelHovered;
+  }
 
   /// fun for play btn hover change
   @action
@@ -66,8 +93,13 @@ abstract class _NewGameState with Store {
   /// image picker controller to get image from user space
   final ImagePicker _picker = ImagePicker();
 
+  /// selected difficulty level of the game
+  @observable
+  DifficultyLevelEnum difficultyLevel = DifficultyLevelEnum.EASY;
+
   /// size of board (if dimensions are 4x4, size is 4)
-  final int boardSize = 4;
+  @computed
+  int get boardSize => getBorderSizeDependingOnDifficulty(difficultyLevel);
 
   @observable
   bool isGameStart = false;
@@ -89,6 +121,10 @@ abstract class _NewGameState with Store {
       // User canceled the picker
     }
   }
+
+  /// change boarder size
+  @action
+  void changeDifficulty(DifficultyLevelEnum value) => difficultyLevel = value;
 
   /// logic for play btn. It changes btn state
   /// and calls [splitImage] function
@@ -211,8 +247,6 @@ abstract class _NewGameState with Store {
   void setScreenSize(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-    print("screenWidth = " + screenWidth.toString());
-    print("screenHeight = " + screenHeight.toString());
   }
 
   /// default eyes location (center)
@@ -242,5 +276,24 @@ abstract class _NewGameState with Store {
       /// from right of owl
       eyeX = 1.01;
     }
+  }
+
+  void dispose() {
+    difficultyLevel = DifficultyLevelEnum.EASY;
+    isBtnChooseImagePressed = false;
+    isCropPressed = false;
+    isPlayPressed = false;
+    isCropHovered = false;
+    isPlayHovered = false;
+    chosenImage = null;
+    croppedImage = null;
+    imageMap = null;
+    isGameStart = false;
+    isNewGameShow = false;
+    isEasyLevelHovered = false;
+    isMiddleLevelHovered = false;
+    isHardLevelHovered = false;
+    eyeX = 1.005;
+    eyeY = 1.005;
   }
 }

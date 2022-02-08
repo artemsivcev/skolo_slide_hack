@@ -10,6 +10,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 import 'sound_state.dart';
+
 part 'new_game_state.g.dart';
 
 class NewGameState = _NewGameState with _$NewGameState;
@@ -189,4 +190,57 @@ abstract class _NewGameState with Store {
   //bool to show new game or first screen
   @observable
   bool isNewGameShow = false;
+
+  /// update owl eyes location
+  ///
+  /// top left - 1.0 1.0
+  /// bottom left - 1.0 1.01
+  /// bottom right - 1.01 1.01
+  /// top right - 1.01 1.0
+  /// center - 1.005, 1.005
+
+  @observable
+  double eyeX = 1.005;
+  @observable
+  double eyeY = 1.005;
+
+  double screenWidth = 0;
+  double screenHeight = 0;
+
+  @action
+  void setScreenSize(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+    print("screenWidth = " + screenWidth.toString());
+    print("screenHeight = " + screenHeight.toString());
+  }
+
+  /// default eyes location (center)
+  @action
+  void resetEyesLocation(PointerEvent details) {
+    eyeX = 1.005;
+    eyeY = 1.005;
+  }
+
+  @action
+  void updateEyesLocation(PointerEvent details) {
+    var x = details.position.dx;
+    var y = details.position.dy;
+
+    if (y > screenHeight * 0.9) {
+      /// its below owl
+      eyeY = 1.01;
+    } else {
+      ///its upper owl
+      eyeY = 1.0;
+    }
+
+    if (x < screenWidth * 0.9) {
+      ///x left from owl
+      eyeX = 1.0;
+    } else {
+      /// from right of owl
+      eyeX = 1.01;
+    }
+  }
 }

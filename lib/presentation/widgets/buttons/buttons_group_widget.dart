@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -44,50 +45,96 @@ class ButtonsGroupWidget extends StatelessWidget {
             ),
             secondChild: Container(),
           ),
-          Semantics(
-            label: "Play with image",
-            enabled: true,
-            child: ButtonGlass(
-              childUnpressed: SvgPicture.asset(
-                'assets/images/puzzle-new-filled.svg',
-                color: colorsPurpleBluePrimary,
+          AnimatedCrossFade(
+            crossFadeState: newGameState.isBtnChooseImagePressed
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: animationOneSecondDuration,
+            firstChild: Semantics(
+              label: "Play with image",
+              enabled: true,
+              child: ButtonGlass(
+                childUnpressed: SvgPicture.asset(
+                  'assets/images/puzzle-new-filled.svg',
+                  color: colorsPurpleBluePrimary,
+                ),
+                btnText: 'Play with image',
+                isPressed: menuState.newGameBtnPressed,
+                onTap: () async {
+                  newGameState.isBtnChooseImagePressed = true;
+                  // await newGameState.chooseImagePress();
+                  // menuState.toggleNewGameBtn();
+                  // newGameState.isBtnChooseImagePressed = false;
+                  // await Future.delayed(const Duration(milliseconds: 450));
+                  // newGameState.isNewGameShow = true;
+                },
+                isHovered: menuState.newGameBtnHovered,
+                onHover: (value) {
+                  menuState.toggleHoveredNewGameBtn();
+                },
               ),
-              btnText: 'Play with image',
-              isPressed: menuState.newGameBtnPressed,
-              onTap: () async {
-                await newGameState.chooseImagePress();
-                menuState.toggleNewGameBtn();
-                //await Future.delayed(const Duration(milliseconds: 450));
-                newGameState.isBtnChooseImagePressed = false;
-                await Future.delayed(const Duration(milliseconds: 450));
-                newGameState.isNewGameShow = true;
-              },
-              isHovered: menuState.newGameBtnHovered,
-              onHover: (value) {
-                menuState.toggleHoveredNewGameBtn();
-              },
             ),
+            secondChild: const SizedBox(),
           ),
 
-          Semantics(
-            label: "Play without image",
-            enabled: true,
-            child: ButtonGlass(
-              childUnpressed: Icon(
-                Icons.view_comfortable,
-                size: 50.0,
+          AnimatedCrossFade(
+            crossFadeState: newGameState.isBtnChooseImagePressed
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: animationOneSecondDuration,
+            firstChild: Semantics(
+              label: "Play without image",
+              enabled: true,
+              child: ButtonGlass(
+                childUnpressed: Icon(
+                  Icons.view_comfortable,
+                  size: 50.0,
+                ),
+                btnText: 'Play without image',
+                isPressed: menuState.newGameBtnPressed,
+                onTap: () async {
+                  menuState.toggleNewGameBtn();
+                  await Future.delayed(const Duration(milliseconds: 450));
+                  newGameState.isNewGameShow = true;
+                },
+                isHovered: menuState.newGameBtnHovered,
+                onHover: (value) {
+                  menuState.toggleHoveredNewGameBtn();
+                },
               ),
-              btnText: 'Play without image',
-              isPressed: menuState.newGameBtnPressed,
-              onTap: () async {
-                menuState.toggleNewGameBtn();
-                await Future.delayed(const Duration(milliseconds: 450));
-                newGameState.isNewGameShow = true;
-              },
-              isHovered: menuState.newGameBtnHovered,
-              onHover: (value) {
-                menuState.toggleHoveredNewGameBtn();
-              },
+            ),
+            secondChild: Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: RowColumnSolver(
+                children: [
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      color: Colors.red,
+                    ),
+                  ),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    color: Colors.green,
+                  ),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    color: Colors.yellow,
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      color: Colors.indigo,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
 

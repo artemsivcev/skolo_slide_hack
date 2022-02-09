@@ -16,27 +16,19 @@ class GameTimer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        return puzzleState.isComplete
-            ? Text(
-                '${puzzleState.minutesFinal}:'
-                '${puzzleState.secondsFinal}',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: colorsPurpleBluePrimary,
-                ),
-              )
-            : Text(
-                '${puzzleState.minutes}:'
-                '${puzzleState.seconds}',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: colorsPurpleBluePrimary,
-                ),
-              );
+        return Text(
+          puzzleState.isComplete
+              ? '${puzzleState.minutesFinal}:'
+                  '${puzzleState.secondsFinal}'
+              : '${puzzleState.minutes}:'
+                  '${puzzleState.seconds}',
+          style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: colorsPurpleBluePrimary,
+          ),
+        );
       },
     );
   }

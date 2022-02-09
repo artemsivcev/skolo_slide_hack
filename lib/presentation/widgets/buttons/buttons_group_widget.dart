@@ -4,9 +4,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_level.dart';
 
 import 'button_glass.dart';
 
@@ -34,15 +36,48 @@ class ButtonsGroupWidget extends StatelessWidget {
           //   },
           // ),
           // const SizedBox(width: 32),
+          AnimatedCrossFade(
+            crossFadeState: CrossFadeState.showFirst,
+            duration: animationTwoSecondsDuration,
+            firstChild: FittedBox(
+              child: DifficultyLevel(),
+            ),
+            secondChild: Container(),
+          ),
           Semantics(
-            label: "Go to image chooser",
+            label: "Play with image",
             enabled: true,
             child: ButtonGlass(
               childUnpressed: SvgPicture.asset(
                 'assets/images/puzzle-new-filled.svg',
                 color: colorsPurpleBluePrimary,
               ),
-              btnText: 'New Game',
+              btnText: 'Play with image',
+              isPressed: menuState.newGameBtnPressed,
+              onTap: () async {
+                await newGameState.chooseImagePress();
+                menuState.toggleNewGameBtn();
+                //await Future.delayed(const Duration(milliseconds: 450));
+                newGameState.isBtnChooseImagePressed = false;
+                await Future.delayed(const Duration(milliseconds: 450));
+                newGameState.isNewGameShow = true;
+              },
+              isHovered: menuState.newGameBtnHovered,
+              onHover: (value) {
+                menuState.toggleHoveredNewGameBtn();
+              },
+            ),
+          ),
+
+          Semantics(
+            label: "Play without image",
+            enabled: true,
+            child: ButtonGlass(
+              childUnpressed: Icon(
+                Icons.view_comfortable,
+                size: 50.0,
+              ),
+              btnText: 'Play without image',
               isPressed: menuState.newGameBtnPressed,
               onTap: () async {
                 menuState.toggleNewGameBtn();

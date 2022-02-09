@@ -18,51 +18,58 @@ class ImagePreview extends StatelessWidget {
       var showChosen = chooseImageState.chosenImage != null;
       var showCropped = chooseImageState.croppedImage != null;
       var showPreview = !showChosen && !showCropped;
-      return Semantics(
-        label: "Choose our own image",
-        enabled: true,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(showCropped ? 16.0 : 8.0),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                if (showPreview)
-                  SvgPicture.asset(
-                    'assets/images/puzzle-continue.svg',
-                    color: colorsPurpleBluePrimary,
-                    height: chooseImageState.getImageMaxSize(context),
-                  )
-                else
-                  const SizedBox(),
-                AnimatedContainer(
-                  width: chooseImageState.getAnimatedContainerSize(context),
-                  height: chooseImageState.getAnimatedContainerSize(context),
-                  duration: animationTwoSecondsDuration,
-                  curve: Curves.fastOutSlowIn,
-                  child: showCropped
-                      ? Image.memory(
-                          chooseImageState.croppedImage!.buffer.asUint8List(),
-                          fit: BoxFit.scaleDown,
-                          width: 340,
-                          height: 340,
+      var showOthers = chooseImageState.croppedImage == null;
+
+      return showOthers
+          ? Semantics(
+              label: "Choose our own image",
+              enabled: true,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(showCropped ? 16.0 : 8.0),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      if (showPreview)
+                        SvgPicture.asset(
+                          'assets/images/puzzle-continue.svg',
+                          color: colorsPurpleBluePrimary,
+                          height: chooseImageState.getImageMaxSize(context),
                         )
-                      : showChosen
-                          ? Cropper(
-                              backgroundColor: Colors.white,
-                              cropperKey: chooseImageState.cropperKey,
-                              overlayType: OverlayType.rectangle,
-                              image:
-                                  Image.memory(chooseImageState.chosenImage!),
-                            )
-                          : const SizedBox(),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
+                      else
+                        const SizedBox(),
+                      AnimatedContainer(
+                        width: chooseImageState.getAnimatedContainerSize(
+                            context, showChosen),
+                        height: chooseImageState.getAnimatedContainerSize(
+                            context, showChosen),
+                        duration: animationTwoSecondsDuration,
+                        curve: Curves.fastOutSlowIn,
+                        child: showCropped
+                            ? Image.memory(
+                                chooseImageState.croppedImage!.buffer
+                                    .asUint8List(),
+                                fit: BoxFit.scaleDown,
+                                width: 340,
+                                height: 340,
+                              )
+                            : showChosen
+                                ? Cropper(
+                                    backgroundColor: Colors.white,
+                                    cropperKey: chooseImageState.cropperKey,
+                                    overlayType: OverlayType.rectangle,
+                                    image: Image.memory(
+                                        chooseImageState.chosenImage!),
+                                  )
+                                : const SizedBox(),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : const SizedBox();
     });
   }
 }

@@ -20,8 +20,8 @@ abstract class _MenuState with Store {
   @observable
   bool isShowGame = false;
 
-  /// logic for play btn. It changes btn state
-  /// and calls [splitImage] function
+  /// restore all bools and go back to menu
+  /// todo mb add dispose?
   @action
   Future<void> backToMenu() async {
     isShowImagePicker = false;

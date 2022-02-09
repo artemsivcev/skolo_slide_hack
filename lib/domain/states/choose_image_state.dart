@@ -3,12 +3,16 @@ import 'dart:typed_data';
 
 import 'package:cropperx/cropperx.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
-import 'package:image/image.dart' as img;
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 import 'difficulty_state.dart';
+import 'menu_state.dart';
+
 part 'choose_image_state.g.dart';
 
 class ChooseImageState = _ChooseImageState with _$ChooseImageState;
@@ -17,6 +21,9 @@ abstract class _ChooseImageState with Store {
   //state with board size
   final difficultyState = injector<DifficultyState>();
 
+  //state with board size
+  final menuState = injector<MenuState>();
+
   /// bool for crop image btn state
   @observable
   bool isCropPressed = false;
@@ -24,6 +31,10 @@ abstract class _ChooseImageState with Store {
   /// cropped image to preview on new game screen
   @observable
   Uint8List? chosenImage;
+
+  /// cropped image to preview on new game screen
+  @observable
+  int? chosenImageNumber = 3;
 
   /// cropped image to preview on new game screen
   @observable
@@ -59,6 +70,7 @@ abstract class _ChooseImageState with Store {
   final cropperKey = GlobalKey(debugLabel: 'cropperKey');
 
   //function to crop chose image
+  @action
   Future<void> cropImage() async {
     // Get the cropped image as bytes
     //todo
@@ -71,9 +83,26 @@ abstract class _ChooseImageState with Store {
     //todo call play after crop
   }
 
+  @action
+  Future<void> chooseImage(String imageName, int imageNumber) async {
+    chosenImageNumber = imageNumber;
+    var data = (await rootBundle.load('assets/images/default/$imageName.png'))
+        .buffer
+        .asUint8List();
+    croppedImage = data;
+  }
+
+  /// fun for split default image and start to play
+  @action
+  Future<void> splitDefaultImageAndPlay() async {
+    splitImage();
+    injector<PuzzleState>().generatePuzzle();
+    menuState.playGame();
+  }
 
   // logic for splitting image, working really bad, but we can use loaders!!!
-  HashMap<dynamic, dynamic> splitImage() {
+  @action
+  void splitImage() {
     print("start = " + DateTime.now().toString());
 
     //todo this is problem spot
@@ -104,19 +133,13 @@ abstract class _ChooseImageState with Store {
 
     print("\nend = " + DateTime.now().toString());
 
-    return output;
+    imageMap = output;
   }
-
 
   /// this function gets animated container size
   /// due to the state of image, selected by user
-  double getAnimatedContainerSize(BuildContext context) {
-    var showChosen = chosenImage != null;
-    var showCropped = croppedImage != null;
-
+  double getAnimatedContainerSize(BuildContext context, bool showChosen) {
     var size = showChosen
-        ? getImageMaxSize(context)
-        : showCropped
         ? getImageMaxSize(context, customMultiple: 0.5)
         : getImageMaxSize(context);
 

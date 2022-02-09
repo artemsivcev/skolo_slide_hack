@@ -4,6 +4,7 @@ import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 
 import '../text_shadows.dart';
+import 'default_preview.dart';
 import 'image_preview.dart';
 
 class ImageChooser extends StatefulWidget {
@@ -35,12 +36,23 @@ class _ImageChooserState extends State<ImageChooser> {
             ),
           ),
         ),
-        GridView.count(
-          shrinkWrap: true,
-            crossAxisCount: 2,
-            children: List.generate(4, (index) {
-              return ImagePreview();
-            }),
+        Row(
+          children: [
+            DefaultPreview(
+              imageIndex: 0,
+            ),
+            DefaultPreview(
+              imageIndex: 1,
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            DefaultPreview(
+              imageIndex: 2,
+            ),
+            ImagePreview()
+          ],
         ),
       ],
     );

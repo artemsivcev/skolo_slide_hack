@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
+import 'package:skolo_slide_hack/domain/states/bird_eye_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DashIcon extends StatelessWidget {
   DashIcon({Key? key}) : super(key: key);
-  final newGameState = injector<NewGameState>();
+  final birdEyeState = injector<BirdEyeState>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +15,11 @@ class DashIcon extends StatelessWidget {
       children: [
         Image.asset(
           'assets/images/dash_without_eyes.png',
-          width: 210,
+          width: 105,
         ),
         Observer(builder: (context) {
           return AnimatedAlign(
-            alignment: Alignment(newGameState.eyeX, newGameState.eyeY),
+            alignment: Alignment(birdEyeState.eyeX, birdEyeState.eyeY),
             duration: const Duration(seconds: 1),
             curve: Curves.easeInOutBack,
             child: Semantics(
@@ -33,7 +33,7 @@ class DashIcon extends StatelessWidget {
                 onTap: () async => {launch("https://flutter.com")},
                 child: Image.asset(
                   'assets/images/dash_eyes.png',
-                  width: 210,
+                  width: 105,
                 ),
               ),
             ),

@@ -9,7 +9,7 @@ class ButtonGlass extends StatelessWidget {
     Key? key,
     required this.childUnpressed,
     this.childPressed,
-    required this.isPressed,
+    this.isPressed = false,
     this.btnText = "",
     required this.onTap,
     required this.isHovered,
@@ -27,7 +27,7 @@ class ButtonGlass extends StatelessWidget {
   Widget? childPressed;
 
   ///Is button pressed
-  final bool isPressed;
+  bool isPressed = false;
 
   ///Button text
   String? btnText = "";

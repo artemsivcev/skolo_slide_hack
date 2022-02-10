@@ -32,6 +32,7 @@ class PuzzleBoardButtons extends StatelessWidget {
             btnText: 'Back',
             onTap: () async {
               menuState.backToMenu();
+              buttonsHoverState.isBackHover = false;
             },
             isHovered: buttonsHoverState.isBackHover,
             onHover: (value) {

@@ -23,9 +23,7 @@ abstract class _DifficultyState with Store {
   void dispose() {
     //todo move to back btn
     // difficultyLevel = DifficultyLevelEnum.EASY;
-    // isBtnChooseImagePressed = false;
     // isCropPressed = false;
-    // isPlayPressed = false;
     // isCropHovered = false;
     // isPlayHovered = false;
     // chosenImage = null;

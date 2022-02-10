@@ -22,12 +22,15 @@ class ImagePreview extends StatelessWidget {
       var showOthers = chooseImageState.croppedImage == null;
 
       return showOthers
-          ? GestureDetector(
+          ? InkWell(
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              focusColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onTap: () async {
                 await chooseImageState.chooseCustomImage();
                 await Future.delayed(const Duration(seconds: 2));
                 chooseImageState.splitImageAndPlay();
-                injector<MenuState>().playGame();
               },
               child: Semantics(
                 label: "Choose your own image",

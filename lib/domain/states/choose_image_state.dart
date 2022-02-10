@@ -8,6 +8,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 import 'difficulty_state.dart';
@@ -48,8 +49,6 @@ abstract class _ChooseImageState with Store {
   /// logic for choose image btn. It changes btn state, chooses image and returns it
   @action
   Future<void> chooseCustomImage() async {
-    //todo
-    // isBtnChooseImagePressed = !isBtnChooseImagePressed;
     final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
       maxWidth: 720,
@@ -94,7 +93,9 @@ abstract class _ChooseImageState with Store {
   @action
   Future<void> splitImageAndPlay() async {
     splitImage();
-    injector<PuzzleState>().generatePuzzle();
+
+    /// todo call cropImageAndPlay
+    injector<MenuState>().playGame();
   }
 
   /// logic for splitting image, working really bad, but we can use loaders!!!

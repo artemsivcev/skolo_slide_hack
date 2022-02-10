@@ -31,15 +31,8 @@ class ButtonsGroupWidget extends StatelessWidget {
                 color: colorsPurpleBluePrimary,
               ),
               btnText: 'Play with image',
-              //isPressed: menuState.newGameBtnPressed,
               onTap: () async {
                 menuState.playWithImagePress();
-                // newGameState.isBtnChooseImagePressed = true;
-                // await newGameState.chooseImagePress();
-                // menuState.toggleNewGameBtn();
-                // newGameState.isBtnChooseImagePressed = false;
-                // await Future.delayed(const Duration(milliseconds: 450));
-                // newGameState.isNewGameShow = true;
               },
               isHovered: buttonsHoverState.isPlayWithImageHovered,
               onHover: (value) {
@@ -57,11 +50,8 @@ class ButtonsGroupWidget extends StatelessWidget {
                 color: colorsPurpleBluePrimary,
               ),
               btnText: 'Play without image',
-              //isPressed: newGameState.isPlayPressed,
               onTap: () async {
-                menuState.playGame();
-                // newGameState.playPress();
-                // await Future.delayed(const Duration(milliseconds: 450));
+                menuState.playWithOutImagePress();
               },
               isHovered: buttonsHoverState.isPlayHovered,
               onHover: (value) {

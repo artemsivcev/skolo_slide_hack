@@ -16,15 +16,18 @@ part 'puzzle_state.g.dart';
 
 class PuzzleState = _PuzzleState with _$PuzzleState;
 
+/// State is used for manipulating with puzzles and their main features.
 abstract class _PuzzleState with Store {
   /// need to access to sounds
   final soundState = injector<SoundState>();
+
+  ///state with win animation
   final winAnimationState = injector<WinAnimationState>();
 
-  //state with board size
+  ///state with board size
   final difficultyState = injector<DifficultyState>();
 
-  //state with user image data
+  ///state with user image data
   final chooseImageState = injector<ChooseImageState>();
 
   /// [random] is used for randomly shuffling puzzle

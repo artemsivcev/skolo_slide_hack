@@ -4,31 +4,41 @@ part 'buttons_hover_state.g.dart';
 
 class ButtonsHoverState = _ButtonsHoverState with _$ButtonsHoverState;
 
+/// State is used for detecting when buttons are hovered or not.
+/// It is necessary for showing button border glow.
 abstract class _ButtonsHoverState with Store {
-  ///Bools for checking if buttons are hovered
-
+  /// bools for buttons hover
   @observable
   bool exitBtnHovered = false;
 
   @observable
   bool isSoundHovered = false;
 
-  /// bools for difficulty levels hover
   @observable
   bool isEasyLevelHovered = false;
+
   @observable
   bool isMiddleLevelHovered = false;
+
   @observable
   bool isHardLevelHovered = false;
 
-  /// bool for play hover
   @observable
   bool isPlayWithImageHovered = false;
 
-  /// bool for play hover
   @observable
   bool isPlayHovered = false;
 
+  @observable
+  bool isBackHover = false;
+
+  @observable
+  bool isCropHovered = false;
+
+  @observable
+  bool shuffleBtnHovered = false;
+
+  /// functions for changing button hover
   @action
   void toggleHoveredExitBtn() {
     exitBtnHovered = !exitBtnHovered;
@@ -44,56 +54,36 @@ abstract class _ButtonsHoverState with Store {
     isSoundHovered = !isSoundHovered;
   }
 
-  /// easy level btn hover change
   @action
   void toggleHoveredEasyLevel() {
     isEasyLevelHovered = !isEasyLevelHovered;
   }
 
-  /// easy level btn hover change
   @action
   void toggleHoveredMiddleLevel() {
     isMiddleLevelHovered = !isMiddleLevelHovered;
   }
 
-  /// easy level btn hover change
   @action
   void toggleHoveredHardLevel() {
     isHardLevelHovered = !isHardLevelHovered;
   }
 
-  /// fun for play btn hover change
   @action
   void toggleHoveredPlay() {
     isPlayHovered = !isPlayHovered;
   }
 
-  /// bool for crop hover
-  @observable
-  bool isBackHover = false;
-
-  /// fun for crop btn hover change
   @action
   void toggleBackHover() {
     isBackHover = !isBackHover;
   }
 
-  /// bool for crop hover
-  @observable
-  bool isCropHovered = false;
-
-  /// fun for crop btn hover change
   @action
   void toggleHoveredCrop() {
     isCropHovered = !isCropHovered;
   }
 
-  @observable
-  bool shuffleBtnHovered = false;
-
-
-
-  /// change hover for buttons
   @action
   void toggleHoveredShuffleBtn() => shuffleBtnHovered = !shuffleBtnHovered;
 }

@@ -5,6 +5,8 @@ part 'difficulty_state.g.dart';
 
 class DifficultyState = _DifficultyState with _$DifficultyState;
 
+/// State is used for choosing the level of difficulty. Depending on its value,
+/// we have a board size with the corresponding difficult.
 abstract class _DifficultyState with Store {
   /// selected difficulty level of the game
   @observable

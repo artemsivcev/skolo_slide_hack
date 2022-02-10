@@ -7,12 +7,13 @@ part 'bird_eye_state.g.dart';
 
 class BirdEyeState = _BirdEyeState with _$BirdEyeState;
 
+/// State is used for animating bird eyes
+/// when moving mouse cursor.
 abstract class _BirdEyeState with Store {
   /// need to access to sounds
   final screenState = injector<ScreenState>();
 
-  /// update owl eyes location
-  ///
+  /// todo update owl eyes location
   /// top left - 1.0 1.0
   /// bottom left - 1.0 1.01
   /// bottom right - 1.01 1.01

@@ -5,6 +5,7 @@ part 'sound_state.g.dart';
 
 class SoundState = _SoundState with _$SoundState;
 
+/// State is used for controlling sounds of the game
 abstract class _SoundState with Store {
   /// Common state to play or mute music
   @observable
@@ -12,6 +13,7 @@ abstract class _SoundState with Store {
 
   /// main audio controller class for surrounding
   final mainPlayer = AudioPlayer();
+
   /// secondary audio controller class for effect
   final effectsPlayer = AudioPlayer();
 
@@ -93,8 +95,8 @@ abstract class _SoundState with Store {
   }
 
   /// fun for check sound state and play some effect
-  play(AudioPlayer player){
-    if(isSoundPlay){
+  play(AudioPlayer player) {
+    if (isSoundPlay) {
       player.play();
     }
   }

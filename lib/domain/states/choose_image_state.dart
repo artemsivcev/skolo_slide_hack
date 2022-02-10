@@ -16,8 +16,10 @@ part 'choose_image_state.g.dart';
 
 class ChooseImageState = _ChooseImageState with _$ChooseImageState;
 
+/// State is used for choosing image for playing puzzle game.
+/// It is necessary for choosing, cropping, encoding and decoding images.
 abstract class _ChooseImageState with Store {
-  //state with board size
+  /// state with board size due to its difficulty
   final difficultyState = injector<DifficultyState>();
 
   /// bool for crop image btn state
@@ -61,10 +63,10 @@ abstract class _ChooseImageState with Store {
     }
   }
 
-  // Define a key for cropper
+  /// Define a key for cropper
   final cropperKey = GlobalKey(debugLabel: 'cropperKey');
 
-  //function to crop chose image
+  /// function to crop chose image
   @action
   Future<void> cropImage() async {
     // Get the cropped image as bytes
@@ -78,6 +80,7 @@ abstract class _ChooseImageState with Store {
     //todo call play after crop
   }
 
+  /// choosing default image if the user doesn't want to choose his own one.
   @action
   Future<void> chooseDefaultImage(String imageName, int imageNumber) async {
     chosenImageNumber = imageNumber;
@@ -94,14 +97,11 @@ abstract class _ChooseImageState with Store {
     injector<PuzzleState>().generatePuzzle();
   }
 
-  // logic for splitting image, working really bad, but we can use loaders!!!
+  /// logic for splitting image, working really bad, but we can use loaders!!!
   @action
   void splitImage() {
-    print("start = " + DateTime.now().toString());
-
     //todo this is problem spot
     img.Image image = img.decodeImage(croppedImage!.toList())!;
-    print("end decodeImage = " + DateTime.now().toString());
     int x = 0, y = 0;
     int width = (image.width / difficultyState.boardSize).floor();
     int height = (image.height / difficultyState.boardSize).floor();
@@ -118,14 +118,11 @@ abstract class _ChooseImageState with Store {
       y += height;
     }
 
-    print("start fill map = " + DateTime.now().toString());
     HashMap output = HashMap<int, Uint8List>();
     for (int i = 0; i < parts.length; i++) {
       output.putIfAbsent(
           i, () => Uint8List.fromList(img.encodeJpg(parts[i], quality: 25)));
     }
-
-    print("\nend = " + DateTime.now().toString());
 
     imageMap = output;
   }

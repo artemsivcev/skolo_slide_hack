@@ -9,13 +9,16 @@ part 'start_animation_state.g.dart';
 
 class StartAnimationState = _StartAnimationState with _$StartAnimationState;
 
+/// State is used for showing animation when the user starts the game.
 abstract class _StartAnimationState with Store {
   /// Animation controller for start animation
   /// when user come to the screen at the first time.
   AnimationController? startAnimationController;
 
+  /// animation for space between puzzle tiles.
   late Animation<double?> puzzleBoardAxisPaddingAnimation;
 
+  /// animation for border radius of puzzle tiles.
   late Animation<double?> borderRadiusAnimation;
 
   late Animation<double?> flipAnimationPart1;
@@ -53,6 +56,7 @@ abstract class _StartAnimationState with Store {
   @observable
   bool isFirstScreenEntry = true;
 
+  /// detect if start animation is completed
   @computed
   bool get isStartAnimationCompleted => startAnimationController != null
       ? startAnimationController!.status == AnimationStatus.completed
@@ -64,6 +68,7 @@ abstract class _StartAnimationState with Store {
   @observable
   bool isStartAnimPart2End = false;
 
+  /// init the controller and animations
   initStartAnimationController(TickerProvider tickerProvider) {
     startAnimationController = AnimationController(
       vsync: tickerProvider,
@@ -134,6 +139,7 @@ abstract class _StartAnimationState with Store {
       });
   }
 
+  /// reset animation
   @action
   void resetStartAnimation() {
     startAnimationController?.reset();

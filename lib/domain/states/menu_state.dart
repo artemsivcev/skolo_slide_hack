@@ -9,9 +9,11 @@ part 'menu_state.g.dart';
 
 class MenuState = _MenuState with _$MenuState;
 
+/// State is used for manipulating with main settings of the game.
+/// For example, when the user wants to go back or choosing
+/// to play the game with image or not.
 abstract class _MenuState with Store {
-  /// state represent some logic. like btn press, or sreen state
-  ///
+  /// state represent some logic. like btn press, or screen state
   @observable
   bool isShowImagePicker = false;
 
@@ -40,6 +42,7 @@ abstract class _MenuState with Store {
     // injector<PuzzleState>().generatePuzzle();
   }
 
+  /// crops the image and starts the game
   @action
   Future<void> cropImageAndPlay() async {
     isShowImagePicker = true;
@@ -52,6 +55,7 @@ abstract class _MenuState with Store {
     playGame();
   }
 
+  /// starts the game
   @action
   Future<void> playGame() async {
     isShowGame = true;
@@ -66,6 +70,7 @@ abstract class _MenuState with Store {
   @observable
   bool exitBtnPressed = false;
 
+  /// press exit button (for mobile)
   @action
   void toggleExitBtn() {
     exitBtnPressed = !exitBtnPressed;

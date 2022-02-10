@@ -5,8 +5,9 @@ part 'screen_state.g.dart';
 
 class ScreenState = _ScreenState with _$ScreenState;
 
+/// State is used for detecting screen dimensions (width and height)
 abstract class _ScreenState with Store {
-  //function help's to understand current user orientation by screen aspect ratio
+  /// function help's to understand current user orientation by screen aspect ratio
   bool isPortrait(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;

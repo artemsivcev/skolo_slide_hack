@@ -30,7 +30,6 @@ class _ImageChooserState extends State<ImageChooser> {
             style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 24,
-              shadows: TextShadows.generateLongShadow(),
               fontWeight: FontWeight.w900,
               color: colorsPurpleBluePrimary,
             ),

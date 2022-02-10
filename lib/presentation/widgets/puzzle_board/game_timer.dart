@@ -5,28 +5,25 @@ import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/text_shadows.dart';
 
-class MovementsCounter extends StatelessWidget {
-  const MovementsCounter({
+class GameTimer extends StatelessWidget {
+  GameTimer({
     Key? key,
   }) : super(key: key);
+
+  final puzzleState = injector<PuzzleState>();
 
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final moveAmount = injector<PuzzleState>().movementsCounter;
-
-        return Semantics(
-          label: "Amount of moves is $moveAmount",
-          readOnly: true,
-          child: Text(
-            'Moves: $moveAmount',
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 12,
-              fontWeight: FontWeight.w900,
-              color: colorsPurpleBluePrimary,
-            ),
+        return Text(
+          '${puzzleState.minutes}:'
+          '${puzzleState.seconds}',
+          style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: colorsPurpleBluePrimary,
           ),
         );
       },

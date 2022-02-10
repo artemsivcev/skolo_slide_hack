@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
+import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 
 class ImagePreview extends StatelessWidget {
   ImagePreview({Key? key}) : super(key: key);
@@ -26,6 +27,7 @@ class ImagePreview extends StatelessWidget {
                 await chooseImageState.chooseCustomImage();
                 await Future.delayed(const Duration(seconds: 2));
                 chooseImageState.splitImageAndPlay();
+                injector<MenuState>().playGame();
               },
               child: Semantics(
                 label: "Choose your own image",

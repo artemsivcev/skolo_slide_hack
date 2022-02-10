@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
-import 'package:skolo_slide_hack/domain/states/sound_state.dart';
+import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 
 part 'menu_state.g.dart';
 
@@ -26,6 +24,7 @@ abstract class _MenuState with Store {
   Future<void> backToMenu() async {
     isShowImagePicker = false;
     isShowGame = false;
+    injector<ChooseImageState>().resetChooseImageStateData();
   }
 
   /// logic for play btn. It changes btn state
@@ -39,7 +38,6 @@ abstract class _MenuState with Store {
     // // if (croppedImage != null) imageMap = splitImage();
     // //need to generate new puzzle with image/not
     // injector<PuzzleState>().generatePuzzle();
-
   }
 
   @action
@@ -77,5 +75,4 @@ abstract class _MenuState with Store {
       SystemNavigator.pop();
     }
   }
-
 }

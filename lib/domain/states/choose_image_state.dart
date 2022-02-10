@@ -11,7 +11,6 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 
 import 'difficulty_state.dart';
-import 'menu_state.dart';
 
 part 'choose_image_state.g.dart';
 
@@ -20,9 +19,6 @@ class ChooseImageState = _ChooseImageState with _$ChooseImageState;
 abstract class _ChooseImageState with Store {
   //state with board size
   final difficultyState = injector<DifficultyState>();
-
-  //state with board size
-  final menuState = injector<MenuState>();
 
   /// bool for crop image btn state
   @observable
@@ -96,7 +92,6 @@ abstract class _ChooseImageState with Store {
   Future<void> splitImageAndPlay() async {
     splitImage();
     injector<PuzzleState>().generatePuzzle();
-    menuState.playGame();
   }
 
   // logic for splitting image, working really bad, but we can use loaders!!!
@@ -164,5 +159,15 @@ abstract class _ChooseImageState with Store {
     }
 
     return maxSize;
+  }
+
+  @action
+  void resetChooseImageStateData() {
+    isCropPressed = false;
+    chosenImage = null;
+    chosenImageNumber = 3;
+    croppedImage = null;
+    imageMap = null;
+    injector<PuzzleState>().generatePuzzle();
   }
 }

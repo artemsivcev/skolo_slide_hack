@@ -40,10 +40,10 @@ class DefaultPreview extends StatelessWidget {
               focusColor: Colors.transparent,
               highlightColor: Colors.transparent,
               onTap: () async => {
-                await chooseImageState.chooseImage(
+                await chooseImageState.chooseDefaultImage(
                     defaultImageName, imageIndex),
                 await Future.delayed(const Duration(seconds: 2)),
-                chooseImageState.splitDefaultImageAndPlay(),
+                chooseImageState.splitImageAndPlay(),
               },
               child: Semantics(
                 label: "Choose $defaultImageName image",

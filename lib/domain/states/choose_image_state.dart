@@ -49,7 +49,7 @@ abstract class _ChooseImageState with Store {
 
   /// logic for choose image btn. It changes btn state, chooses image and returns it
   @action
-  Future<void> chooseImagePress() async {
+  Future<void> chooseCustomImage() async {
     //todo
     // isBtnChooseImagePressed = !isBtnChooseImagePressed;
     final XFile? image = await _picker.pickImage(
@@ -59,8 +59,7 @@ abstract class _ChooseImageState with Store {
     );
 
     if (image != null) {
-      croppedImage = null;
-      chosenImage = await image.readAsBytes();
+      croppedImage = await image.readAsBytes();
     } else {
       // User canceled the picker
     }
@@ -84,7 +83,7 @@ abstract class _ChooseImageState with Store {
   }
 
   @action
-  Future<void> chooseImage(String imageName, int imageNumber) async {
+  Future<void> chooseDefaultImage(String imageName, int imageNumber) async {
     chosenImageNumber = imageNumber;
     var data = (await rootBundle.load('assets/images/default/$imageName.png'))
         .buffer
@@ -94,7 +93,7 @@ abstract class _ChooseImageState with Store {
 
   /// fun for split default image and start to play
   @action
-  Future<void> splitDefaultImageAndPlay() async {
+  Future<void> splitImageAndPlay() async {
     splitImage();
     injector<PuzzleState>().generatePuzzle();
     menuState.playGame();

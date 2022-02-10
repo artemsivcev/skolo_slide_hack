@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:skolo_slide_hack/presentation/screens/menu_screen.dart';
+import 'package:skolo_slide_hack/presentation/screens/main_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: MenuScreen(),
+      home: MainScreen(),
     );
   }
 }

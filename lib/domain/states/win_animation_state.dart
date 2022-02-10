@@ -6,6 +6,7 @@ part 'win_animation_state.g.dart';
 
 class WinAnimationState = _WinAnimationState with _$WinAnimationState;
 
+/// State is used for showing animation when the user wins the game.
 abstract class _WinAnimationState with Store {
   /// tween for flipping tiles
   final Tween<double> tweenForFlipping = Tween(begin: pi, end: 0.0);
@@ -16,18 +17,22 @@ abstract class _WinAnimationState with Store {
   @observable
   AnimationController? animationController;
 
+  /// animation for fading
   @observable
   Animation<double>? fadeAnimation;
 
+  /// animation for space between puzzle tiles.
   @observable
   Animation<double>? spacingAnimation;
 
   @observable
   double spacingValue = 4.0;
 
+  /// bool for checking if the animation is completed
   @observable
   bool isAnimCompleted = false;
 
+  /// init the controller and animations
   @action
   void initAnimation(AnimationController controller) {
     animationController = controller
@@ -52,11 +57,7 @@ abstract class _WinAnimationState with Store {
       });
   }
 
-  @action
-  void disposeControllers() {
-    animationController!.dispose();
-  }
-
+  /// function for animating
   @action
   void animate() => isAnimCompleted
       ? animationController!.reset()

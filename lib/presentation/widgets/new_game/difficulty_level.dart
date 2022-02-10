@@ -3,12 +3,15 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/enums/difficulty_level_enum.dart';
-import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
+import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
+import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_button.dart';
+
 import '../text_shadows.dart';
 
 class DifficultyLevel extends StatelessWidget {
-  final newGameState = injector<NewGameState>();
+  final difficultyState = injector<DifficultyState>();
+  final buttonsHoverState = injector<ButtonsHoverState>();
 
   DifficultyLevel({Key? key}) : super(key: key);
 
@@ -35,7 +38,7 @@ class DifficultyLevel extends StatelessWidget {
         ),
         Observer(
           builder: (context) {
-            var difficultyLevel = newGameState.difficultyLevel;
+            var difficultyLevel = difficultyState.difficultyLevel;
 
             return Row(
               children: [
@@ -43,30 +46,33 @@ class DifficultyLevel extends StatelessWidget {
                   semanticLabel: 'Easy',
                   dimensions: '3x3',
                   isSelected: difficultyLevel == DifficultyLevelEnum.EASY,
-                  onTap: () =>
-                      newGameState.changeDifficulty(DifficultyLevelEnum.EASY),
-                  isHovered: newGameState.isEasyLevelHovered,
-                  onHover: (value) => newGameState.toggleHoveredEasyLevel(),
+                  onTap: () => difficultyState
+                      .changeDifficulty(DifficultyLevelEnum.EASY),
+                  isHovered: buttonsHoverState.isEasyLevelHovered,
+                  onHover: (value) =>
+                      buttonsHoverState.toggleHoveredEasyLevel(),
                 ),
                 const SizedBox(width: 12),
                 DifficultyButton(
                   semanticLabel: 'Middle',
                   dimensions: '4x4',
                   isSelected: difficultyLevel == DifficultyLevelEnum.MIDDLE,
-                  onTap: () =>
-                      newGameState.changeDifficulty(DifficultyLevelEnum.MIDDLE),
-                  isHovered: newGameState.isMiddleLevelHovered,
-                  onHover: (value) => newGameState.toggleHoveredMiddleLevel(),
+                  onTap: () => difficultyState
+                      .changeDifficulty(DifficultyLevelEnum.MIDDLE),
+                  isHovered: buttonsHoverState.isMiddleLevelHovered,
+                  onHover: (value) =>
+                      buttonsHoverState.toggleHoveredMiddleLevel(),
                 ),
                 const SizedBox(width: 12),
                 DifficultyButton(
                   semanticLabel: 'Hard',
                   dimensions: '5x5',
                   isSelected: difficultyLevel == DifficultyLevelEnum.HARD,
-                  onTap: () =>
-                      newGameState.changeDifficulty(DifficultyLevelEnum.HARD),
-                  isHovered: newGameState.isHardLevelHovered,
-                  onHover: (value) => newGameState.toggleHoveredHardLevel(),
+                  onTap: () => difficultyState
+                      .changeDifficulty(DifficultyLevelEnum.HARD),
+                  isHovered: buttonsHoverState.isHardLevelHovered,
+                  onHover: (value) =>
+                      buttonsHoverState.toggleHoveredHardLevel(),
                 ),
               ],
             );

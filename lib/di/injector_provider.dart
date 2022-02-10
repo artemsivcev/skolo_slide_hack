@@ -1,7 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:skolo_slide_hack/domain/states/bird_eye_state.dart';
+import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
+import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
+import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
@@ -13,12 +17,16 @@ final GetIt injector = GetIt.I;
 
 Future<void> setupInjection() async {
   injector.registerSingleton(SoundState());
+  injector.registerSingleton(ScreenState());
   injector.registerSingleton(WinAnimationState());
   injector.registerLazySingleton(() => StartAnimationState());
   injector.registerSingleton(ShuffleAnimationState());
-  injector.registerSingleton(NewGameState());
-  injector.registerSingleton(PuzzleState());
   injector.registerSingleton(MenuState());
+  injector.registerSingleton(DifficultyState());
+  injector.registerSingleton(ChooseImageState());
+  injector.registerSingleton(PuzzleState());
+  injector.registerSingleton(ButtonsHoverState());
+  injector.registerSingleton(BirdEyeState());
 
   await injector.allReady();
 }

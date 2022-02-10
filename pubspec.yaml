@@ -99,6 +99,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/images/
+    - assets/images/default/
     - assets/audio/
 
 

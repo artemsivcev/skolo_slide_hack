@@ -9,19 +9,26 @@ import 'package:skolo_slide_hack/domain/models/tile.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 
-import 'new_game_state.dart';
+import 'choose_image_state.dart';
+import 'difficulty_state.dart';
 
 part 'puzzle_state.g.dart';
 
 class PuzzleState = _PuzzleState with _$PuzzleState;
 
+/// State is used for manipulating with puzzles and their main features.
 abstract class _PuzzleState with Store {
   /// need to access to sounds
   final soundState = injector<SoundState>();
+
+  ///state with win animation
   final winAnimationState = injector<WinAnimationState>();
 
-  //state with user image data
-  final newGameState = injector<NewGameState>();
+  ///state with board size
+  final difficultyState = injector<DifficultyState>();
+
+  ///state with user image data
+  final chooseImageState = injector<ChooseImageState>();
 
   /// [random] is used for randomly shuffling puzzle
   /// as the main purpose of this game
@@ -39,8 +46,6 @@ abstract class _PuzzleState with Store {
   /// buttons tap and hover states
   @observable
   bool shuffleBtnPressed = false;
-  @observable
-  bool shuffleBtnHovered = false;
 
   /// counter shows how many moves a user makes to solve puzzle.
   @observable
@@ -95,11 +100,11 @@ abstract class _PuzzleState with Store {
   @computed
   List<int> get valuesCornerTiles => [
         1,
-        newGameState.boardSize,
-        (newGameState.boardSize * newGameState.boardSize) -
-            newGameState.boardSize +
+        difficultyState.boardSize,
+        (difficultyState.boardSize * difficultyState.boardSize) -
+            difficultyState.boardSize +
             1,
-        newGameState.boardSize * newGameState.boardSize,
+        difficultyState.boardSize * difficultyState.boardSize,
       ];
 
   /// if the user win the game
@@ -164,18 +169,18 @@ abstract class _PuzzleState with Store {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
     final emptyPos =
-        Position(x: newGameState.boardSize, y: newGameState.boardSize);
+        Position(x: difficultyState.boardSize, y: difficultyState.boardSize);
 
     // Create all possible board positions.
-    for (var y = 1; y <= newGameState.boardSize; y++) {
-      for (var x = 1; x <= newGameState.boardSize; x++) {
+    for (var y = 1; y <= difficultyState.boardSize; y++) {
+      for (var x = 1; x <= difficultyState.boardSize; x++) {
         final pos = Position(x: x, y: y);
         correctPositions.add(
-            x == newGameState.boardSize && y == newGameState.boardSize
+            x == difficultyState.boardSize && y == difficultyState.boardSize
                 ? emptyPos
                 : pos);
         currentPositions.add(
-            x == newGameState.boardSize && y == newGameState.boardSize
+            x == difficultyState.boardSize && y == difficultyState.boardSize
                 ? emptyPos
                 : pos);
       }
@@ -201,20 +206,21 @@ abstract class _PuzzleState with Store {
     required List<Position> currentPositions,
   }) {
     final emptyPosition =
-        Position(x: newGameState.boardSize, y: newGameState.boardSize);
+        Position(x: difficultyState.boardSize, y: difficultyState.boardSize);
 
     return List.generate(
-      newGameState.boardSize * newGameState.boardSize,
+      difficultyState.boardSize * difficultyState.boardSize,
       (index) => Tile(
         value: index + 1,
         correctPosition:
-            index + 1 == newGameState.boardSize * newGameState.boardSize
+            index + 1 == difficultyState.boardSize * difficultyState.boardSize
                 ? emptyPosition
                 : correctPositions[index],
         currentPosition: currentPositions[index],
-        isEmpty: index + 1 == newGameState.boardSize * newGameState.boardSize,
-        customImage: newGameState.imageMap != null
-            ? newGameState.imageMap![index]
+        isEmpty:
+            index + 1 == difficultyState.boardSize * difficultyState.boardSize,
+        customImage: chooseImageState.imageMap != null
+            ? chooseImageState.imageMap![index]
             : null,
         corner: setCorner(
           valuesCornerTiles.indexOf(index + 1),
@@ -237,10 +243,6 @@ abstract class _PuzzleState with Store {
   /// change press for buttons
   @action
   void toggleShuffleBtn() => shuffleBtnPressed = !shuffleBtnPressed;
-
-  /// change hover for buttons
-  @action
-  void toggleHoveredShuffleBtn() => shuffleBtnHovered = !shuffleBtnHovered;
 
   /// shuffle puzzle tiles with [random]
   Puzzle shufflePuzzle({

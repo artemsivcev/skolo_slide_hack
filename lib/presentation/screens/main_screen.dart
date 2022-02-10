@@ -29,6 +29,7 @@ class MainScreen extends StatelessWidget {
             ? LineDirection.Ttb
             : LineDirection.Btt,
         child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
             MenuWidget(),
             const GameTitle(),

@@ -27,7 +27,6 @@ class ImagePreview extends StatelessWidget {
                 await chooseImageState.chooseCustomImage();
                 await Future.delayed(const Duration(seconds: 2));
                 chooseImageState.splitImageAndPlay();
-                injector<MenuState>().playGame();
               },
               child: Semantics(
                 label: "Choose your own image",

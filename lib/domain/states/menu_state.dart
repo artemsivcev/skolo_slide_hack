@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
+import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 
 part 'menu_state.g.dart';
 
@@ -13,7 +15,8 @@ class MenuState = _MenuState with _$MenuState;
 /// For example, when the user wants to go back or choosing
 /// to play the game with image or not.
 abstract class _MenuState with Store {
-  /// state represent some logic. like btn press, or screen state
+  /// state for sound manipulating
+  final soundState = injector<SoundState>();
   @observable
   bool isShowImagePicker = false;
 
@@ -26,6 +29,7 @@ abstract class _MenuState with Store {
   Future<void> backToMenu() async {
     isShowImagePicker = false;
     isShowGame = false;
+    soundState.playBackwardSound();
     injector<ChooseImageState>().resetChooseImageStateData();
   }
 
@@ -34,19 +38,13 @@ abstract class _MenuState with Store {
   @action
   Future<void> playWithImagePress() async {
     isShowImagePicker = true;
-    // isPlayPressed = !isPlayPressed;
-    // soundState.playForwardSound();
-    // //todo call playGame
-    // // if (croppedImage != null) imageMap = splitImage();
-    // //need to generate new puzzle with image/not
-    // injector<PuzzleState>().generatePuzzle();
+    soundState.playForwardSound();
   }
 
   /// crops the image and starts the game
   @action
   Future<void> cropImageAndPlay() async {
     isShowImagePicker = true;
-    // isPlayPressed = !isPlayPressed;
     // soundState.playForwardSound();
     // //todo crop image and call play
     // // if (croppedImage != null) imageMap = splitImage();
@@ -55,16 +53,18 @@ abstract class _MenuState with Store {
     playGame();
   }
 
+  /// logic for play btn without image
+  @action
+  Future<void> playWithOutImagePress() async {
+    soundState.playForwardSound();
+    playGame();
+  }
+
   /// starts the game
   @action
   Future<void> playGame() async {
     isShowGame = true;
-    // isPlayPressed = !isPlayPressed;
-    // soundState.playForwardSound();
-    // //todo
-    // // if (croppedImage != null) imageMap = splitImage();
-    // //need to generate new puzzle with image/not
-    // injector<PuzzleState>().generatePuzzle();
+    injector<PuzzleState>().generatePuzzle();
   }
 
   @observable

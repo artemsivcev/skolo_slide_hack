@@ -3,20 +3,20 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:marquee/marquee.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
-import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
 
 class SoundButton extends StatelessWidget {
   SoundButton({Key? key}) : super(key: key);
 
-  final menuState = injector<MenuState>();
+  final buttonsHoverState = injector<ButtonsHoverState>();
   final soundState = injector<SoundState>();
 
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomLeft,
+      alignment: Alignment.topRight,
       child: Semantics(
         label: "Turn on/off sound",
         enabled: true,
@@ -29,9 +29,9 @@ class SoundButton extends StatelessWidget {
               ButtonGlass(
                 size: 25,
                 onTap: () => {soundState.toggleSoundBtn()},
-                isHovered: menuState.isSoundHovered,
+                isHovered: buttonsHoverState.isSoundHovered,
                 onHover: (value) {
-                  menuState.toggleHoveredSound();
+                  buttonsHoverState.toggleHoveredSound();
                 },
                 childPressed: const Icon(
                   Icons.music_off,

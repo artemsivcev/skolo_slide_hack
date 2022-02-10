@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/new_game_state.dart';
+import 'package:skolo_slide_hack/domain/states/bird_eye_state.dart';
 
 import 'custom_background_animation_behavior.dart';
 
@@ -25,17 +25,15 @@ class BackgroundWithBubbles extends StatefulWidget {
 
 class _BackgroundWithBubblesState extends State<BackgroundWithBubbles>
     with TickerProviderStateMixin {
-  final newGameState = injector<NewGameState>();
+  final birdEyeState = injector<BirdEyeState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.colorsBackground,
-      body: Builder(builder: (context) {
-        newGameState.setScreenSize(context);
-        return MouseRegion(
-          onExit: newGameState.resetEyesLocation,
-          onHover: newGameState.updateEyesLocation,
+        backgroundColor: widget.colorsBackground,
+        body: MouseRegion(
+          onExit: birdEyeState.resetEyesLocation,
+          onHover: birdEyeState.updateEyesLocation,
           child: AnimatedBackground(
             behaviour:
                 CustomBackgroundAnimationBehaviour(direction: widget.direction),
@@ -48,8 +46,6 @@ class _BackgroundWithBubblesState extends State<BackgroundWithBubbles>
               child: widget.child,
             ),
           ),
-        );
-      }),
-    );
+        ));
   }
 }

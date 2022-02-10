@@ -1,53 +1,70 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/sound_state.dart';
+import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 
 part 'menu_state.g.dart';
 
 class MenuState = _MenuState with _$MenuState;
 
 abstract class _MenuState with Store {
-  /// need to access to sounds
-  final soundState = injector<SoundState>();
-
-  ///Bools for checking if buttons are pressed
+  /// state represent some logic. like btn press, or sreen state
+  ///
   @observable
-  bool continueBtnPressed = false;
+  bool isShowImagePicker = false;
 
   @observable
-  bool newGameBtnPressed = false;
+  bool isShowGame = false;
+
+  /// restore all bools and go back to menu
+  /// todo mb add dispose?
+  @action
+  Future<void> backToMenu() async {
+    isShowImagePicker = false;
+    isShowGame = false;
+    injector<ChooseImageState>().resetChooseImageStateData();
+  }
+
+  /// logic for play btn. It changes btn state
+  /// and calls [splitImage] function
+  @action
+  Future<void> playWithImagePress() async {
+    isShowImagePicker = true;
+    // isPlayPressed = !isPlayPressed;
+    // soundState.playForwardSound();
+    // //todo call playGame
+    // // if (croppedImage != null) imageMap = splitImage();
+    // //need to generate new puzzle with image/not
+    // injector<PuzzleState>().generatePuzzle();
+  }
+
+  @action
+  Future<void> cropImageAndPlay() async {
+    isShowImagePicker = true;
+    // isPlayPressed = !isPlayPressed;
+    // soundState.playForwardSound();
+    // //todo crop image and call play
+    // // if (croppedImage != null) imageMap = splitImage();
+    // //need to generate new puzzle with image/not
+    // injector<PuzzleState>().generatePuzzle();
+    playGame();
+  }
+
+  @action
+  Future<void> playGame() async {
+    isShowGame = true;
+    // isPlayPressed = !isPlayPressed;
+    // soundState.playForwardSound();
+    // //todo
+    // // if (croppedImage != null) imageMap = splitImage();
+    // //need to generate new puzzle with image/not
+    // injector<PuzzleState>().generatePuzzle();
+  }
 
   @observable
   bool exitBtnPressed = false;
-
-  ///Bools for checking if buttons are hovered
-  @observable
-  bool continueBtnHovered = false;
-
-  @observable
-  bool newGameBtnHovered = false;
-
-  @observable
-  bool exitBtnHovered = false;
-
-  @observable
-  bool isSoundHovered = false;
-
-  ///Changes buttons' current state in the case of pressing
-  @action
-  void toggleContinueBtn() {
-    continueBtnPressed = !continueBtnPressed;
-  }
-
-  @action
-  void toggleNewGameBtn() {
-    newGameBtnPressed = !newGameBtnPressed;
-    soundState.playForwardSound();
-  }
 
   @action
   void toggleExitBtn() {
@@ -57,33 +74,5 @@ abstract class _MenuState with Store {
     } else {
       SystemNavigator.pop();
     }
-  }
-
-  //change hover for buttons
-  @action
-  void toggleHoveredContinueBtn() {
-    continueBtnHovered = !continueBtnHovered;
-  }
-
-  @action
-  void toggleHoveredNewGameBtn() {
-    newGameBtnHovered = !newGameBtnHovered;
-  }
-
-  @action
-  void toggleHoveredExitBtn() {
-    exitBtnHovered = !exitBtnHovered;
-  }
-
-  @action
-  void toggleHoveredSound() {
-    isSoundHovered = !isSoundHovered;
-  }
-
-  //function help's to understand current user orientation by screen aspect ratio
-  bool isPortrait(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    var height = MediaQuery.of(context).size.height;
-    return height > width;
   }
 }

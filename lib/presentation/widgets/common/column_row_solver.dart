@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 
 class ColumnRowSolver extends StatefulWidget {
   const ColumnRowSolver({Key? key, required this.children}) : super(key: key);
@@ -13,11 +13,11 @@ class ColumnRowSolver extends StatefulWidget {
 }
 
 class _NewGameWidgetsOrientationSolver extends State<ColumnRowSolver> {
-  final menuState = injector<MenuState>();
+  final screenState = injector<ScreenState>();
 
   @override
   Widget build(BuildContext context) {
-    return menuState.isPortrait(context)
+    return screenState.isPortrait(context)
         ? Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,

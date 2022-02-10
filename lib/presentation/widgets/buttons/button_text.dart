@@ -32,7 +32,6 @@ class ButtonText extends StatelessWidget {
           fontSize: fontSize ?? 24,
           fontWeight: FontWeight.w900,
           color: colorsPurpleBluePrimary,
-          shadows: TextShadows.generateLongShadow(),
         ),
       ),
     );

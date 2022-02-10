@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:mobx/mobx.dart';
@@ -61,17 +62,15 @@ abstract class _PuzzleState with Store {
       .map((_) => DateTime.now())
       .asObservable();
 
-  ///final time result of the game
-  @observable
-  Duration? finalGameTime;
+  late StreamSubscription _gameTimerSubscription;
 
-  @computed
-  DateTime get now => _time.value ?? DateTime.now();
+  @observable
+  DateTime? now;
 
   /// timer for the game
   @computed
-  Duration get gameTimer => gameStartTime != null
-      ? now.difference(gameStartTime!)
+  Duration get gameTimer => gameStartTime != null && now != null
+      ? now!.difference(gameStartTime!)
       : const Duration(minutes: 0, seconds: 0);
 
   /// list of tiles
@@ -121,18 +120,6 @@ abstract class _PuzzleState with Store {
   String get seconds =>
       gameTimer.inSeconds.remainder(60).toString().padLeft(2, "0");
 
-  ///final minutes' result of the game
-  @computed
-  String get minutesFinal => finalGameTime != null
-      ? finalGameTime!.inMinutes.remainder(60).toString().padLeft(2, "0")
-      : '';
-
-  ///final seconds' result of the game
-  @computed
-  String get secondsFinal => finalGameTime != null
-      ? finalGameTime!.inSeconds.remainder(60).toString().padLeft(2, "0")
-      : '';
-
   /// [onTileTapped] stands for method that is invoked when any tile is tapped.
   /// Index of tapped tile need ti be passed.
   /// Check if tile is movable and modifies puzzle board.
@@ -144,13 +131,16 @@ abstract class _PuzzleState with Store {
       soundState.playMoveSound();
       final mutablePuzzle = Puzzle(tiles: tiles);
       final puzzleWithMovedTiles = mutablePuzzle.moveTiles(tappedTile, []);
-      movementsCounter += Puzzle.movementsCount;
-      if (movementsCounter == 1) {
-        gameStartTime = DateTime.now();
 
-        print(now);
-        print(gameStartTime);
+      if (movementsCounter == 0) {
+        gameStartTime = DateTime.now();
+        now = DateTime.now();
+        _gameTimerSubscription = _time.listen((value) {
+          now = value;
+        });
       }
+      movementsCounter += Puzzle.movementsCount;
+
       puzzle = puzzleWithMovedTiles.sort();
     }
 
@@ -290,7 +280,6 @@ abstract class _PuzzleState with Store {
   ///sets final time result of the game
   @action
   void setFinalTime() {
-    finalGameTime =
-        Duration(minutes: gameTimer.inMinutes, seconds: gameTimer.inSeconds);
+    _gameTimerSubscription.cancel();
   }
 }

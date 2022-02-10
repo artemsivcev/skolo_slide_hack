@@ -24,7 +24,6 @@ class MovementsCounter extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12,
-              shadows: TextShadows.generateLongShadow(),
               fontWeight: FontWeight.w900,
               color: colorsPurpleBluePrimary,
             ),

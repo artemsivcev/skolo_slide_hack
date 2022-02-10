@@ -17,11 +17,8 @@ class GameTimer extends StatelessWidget {
     return Observer(
       builder: (_) {
         return Text(
-          puzzleState.isComplete
-              ? '${puzzleState.minutesFinal}:'
-                  '${puzzleState.secondsFinal}'
-              : '${puzzleState.minutes}:'
-                  '${puzzleState.seconds}',
+          '${puzzleState.minutes}:'
+          '${puzzleState.seconds}',
           style: TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 12,

@@ -29,7 +29,6 @@ class DifficultyLevel extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 24,
-              shadows: TextShadows.generateLongShadow(),
               fontWeight: FontWeight.w900,
               height: 1.4,
               color: colorsPurpleBluePrimary,

@@ -22,7 +22,6 @@ class GameTitle extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 32,
-              shadows: TextShadows.generateLongShadow(),
               fontWeight: FontWeight.w900,
               color: colorsPurpleBluePrimary,
             ),

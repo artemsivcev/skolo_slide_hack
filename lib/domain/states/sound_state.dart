@@ -40,6 +40,7 @@ abstract class _SoundState with Store {
   Future<void> toggleMainSound() async {
     if (mainPlayer.playing) {
       mainPlayer.pause();
+      effectsPlayer.pause();
     } else {
       preloadMainAudio();
       mainPlayer.play();

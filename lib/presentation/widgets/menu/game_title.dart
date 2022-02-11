@@ -13,8 +13,8 @@ class GameTitle extends StatelessWidget {
       child: Semantics(
         label: "Game title",
         readOnly: true,
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
+        child: const Padding(
+          padding: EdgeInsets.all(32.0),
           child: Text(
             '''Slide
           Puzzle

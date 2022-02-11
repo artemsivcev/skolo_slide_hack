@@ -118,6 +118,10 @@ abstract class _ChooseImageState with Store {
   /// logic for splitting image, working really bad, but we can use loaders!!!
   @action
   void splitImage() {
+    if (chosenCustomImage) {
+      croppedImage = chosenImage;
+    }
+
     //todo this is problem spot
     img.Image image = img.decodeImage(croppedImage!.toList())!;
     int x = 0, y = 0;

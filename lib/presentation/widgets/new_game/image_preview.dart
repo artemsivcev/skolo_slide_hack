@@ -28,8 +28,6 @@ class ImagePreview extends StatelessWidget {
               highlightColor: Colors.transparent,
               onTap: () async {
                 await chooseImageState.chooseCustomImage();
-                // await Future.delayed(const Duration(seconds: 2));
-                // chooseImageState.splitImageAndPlay();
               },
               child: Semantics(
                 label: "Choose your own image",

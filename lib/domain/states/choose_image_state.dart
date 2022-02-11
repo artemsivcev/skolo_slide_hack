@@ -51,7 +51,7 @@ abstract class _ChooseImageState with Store {
 
   ///chosen default image or not.
   ///null before choosing of an any kind of image.
-  ///false if chosen a custom image.
+  ///false if chosen a default image.
   @observable
   bool chosenCustomImage = false;
 

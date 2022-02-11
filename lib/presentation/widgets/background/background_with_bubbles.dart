@@ -13,11 +13,13 @@ class BackgroundWithBubbles extends StatefulWidget {
     required this.colorsBackground,
     required this.child,
     this.direction = LineDirection.Btt,
+    this.numLines = 20,
   }) : super(key: key);
 
   final Color colorsBackground;
   final Widget child;
   final LineDirection direction;
+  final int numLines;
 
   @override
   _BackgroundWithBubblesState createState() => _BackgroundWithBubblesState();
@@ -35,8 +37,8 @@ class _BackgroundWithBubblesState extends State<BackgroundWithBubbles>
           onExit: birdEyeState.resetEyesLocation,
           onHover: birdEyeState.updateEyesLocation,
           child: AnimatedBackground(
-            behaviour:
-                CustomBackgroundAnimationBehaviour(direction: widget.direction),
+            behaviour: CustomBackgroundAnimationBehaviour(
+                direction: widget.direction, numLines: widget.numLines),
             vsync: this,
             child: BackdropFilter(
               filter: ImageFilter.blur(

@@ -24,8 +24,7 @@ class CustomBackgroundAnimationBehaviour extends Behaviour {
 
   /// Creates a new racing lines behaviour
   CustomBackgroundAnimationBehaviour(
-      {this.direction = LineDirection.Btt, int numLines = 20})
-      : assert(numLines >= 0) {
+      {this.direction = LineDirection.Btt, int numLines = 20}) {
     _numLines = numLines;
   }
 

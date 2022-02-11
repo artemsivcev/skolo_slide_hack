@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
-import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 
 class DefaultPreview extends StatelessWidget {
   DefaultPreview({Key? key, required this.imageIndex}) : super(key: key);
@@ -44,7 +43,7 @@ class DefaultPreview extends StatelessWidget {
                 await chooseImageState.chooseDefaultImage(
                     defaultImageName, imageIndex),
                 await Future.delayed(const Duration(seconds: 2)),
-                chooseImageState.splitImageAndPlay(),
+                //chooseImageState.splitImageAndPlay(),
               },
               child: Semantics(
                 label: "Choose $defaultImageName image",

@@ -56,6 +56,7 @@ abstract class _ChooseImageState with Store {
     );
 
     if (image != null) {
+      chosenImage = croppedImage;
       croppedImage = await image.readAsBytes();
     } else {
       // User canceled the picker
@@ -87,6 +88,7 @@ abstract class _ChooseImageState with Store {
         .buffer
         .asUint8List();
     croppedImage = data;
+    chosenImage = data;
   }
 
   /// fun for split default image and start to play

@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
-import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 
 class DefaultPreview extends StatelessWidget {
   DefaultPreview({Key? key, required this.imageIndex}) : super(key: key);
@@ -26,15 +25,13 @@ class DefaultPreview extends StatelessWidget {
         defaultImageName = "cat";
       }
 
-      var isChosen = chooseImageState.chosenImageNumber == imageIndex;
-      var showOthers = true;
-      if (isChosen) {
-        showOthers = true;
-      } else {
-        showOthers = chooseImageState.croppedImage == null;
-      }
+      final anyImageNotChosenYet = !chooseImageState.chosenCustomImage &&
+          !chooseImageState.chosenDefaultImage;
 
-      return showOthers
+      final isChosen = chooseImageState.chosenImageNumber == imageIndex;
+      final showThisImage = isChosen || anyImageNotChosenYet;
+
+      return showThisImage
           ? InkWell(
               hoverColor: Colors.transparent,
               splashColor: Colors.transparent,
@@ -43,8 +40,8 @@ class DefaultPreview extends StatelessWidget {
               onTap: () async => {
                 await chooseImageState.chooseDefaultImage(
                     defaultImageName, imageIndex),
-                await Future.delayed(const Duration(seconds: 2)),
-                chooseImageState.splitImageAndPlay(),
+                // await Future.delayed(const Duration(seconds: 2)),
+                //chooseImageState.splitImageAndPlay(),
               },
               child: Semantics(
                 label: "Choose $defaultImageName image",

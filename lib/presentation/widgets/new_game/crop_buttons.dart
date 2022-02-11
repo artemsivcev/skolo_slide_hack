@@ -58,7 +58,8 @@ class _CropButtonsState extends State<CropButtons>
                 btnText: 'Crop & Play!',
                 //isPressed: newGameState.isCropPressed,
                 onTap: () async {
-                  chooseImageState.cropImage();
+                  //  chooseImageState.cropImage();
+                  chooseImageState.splitImageAndPlay();
                 },
                 isHovered: buttonsHoverState.isCropHovered,
                 onHover: (value) {

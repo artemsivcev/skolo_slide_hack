@@ -33,7 +33,7 @@ abstract class _ChooseImageState with Store {
 
   /// cropped image to preview on new game screen
   @observable
-  int? chosenImageNumber = 3;
+  int? chosenImageNumber;
 
   /// cropped image to preview on new game screen
   @observable
@@ -42,6 +42,18 @@ abstract class _ChooseImageState with Store {
   /// divided user image. first value in index and second is image in Unit8List format
   @observable
   HashMap<dynamic, dynamic>? imageMap;
+
+  ///chosen default image or not.
+  ///null before choosing of an any kind of image.
+  ///false if chosen a custom image.
+  @observable
+  bool chosenDefaultImage = false;
+
+  ///chosen default image or not.
+  ///null before choosing of an any kind of image.
+  ///false if chosen a custom image.
+  @observable
+  bool chosenCustomImage = false;
 
   /// image picker controller to get image from user space
   final ImagePicker _picker = ImagePicker();
@@ -56,7 +68,10 @@ abstract class _ChooseImageState with Store {
     );
 
     if (image != null) {
-      croppedImage = await image.readAsBytes();
+      chosenDefaultImage = false;
+      chosenCustomImage = true;
+      croppedImage = null;
+      chosenImage = await image.readAsBytes();
     } else {
       // User canceled the picker
     }
@@ -76,7 +91,6 @@ abstract class _ChooseImageState with Store {
     );
     chosenImage = null;
     croppedImage = imageBytes;
-    //todo call play after crop
   }
 
   /// choosing default image if the user doesn't want to choose his own one.
@@ -86,7 +100,10 @@ abstract class _ChooseImageState with Store {
     var data = (await rootBundle.load('assets/images/default/$imageName.png'))
         .buffer
         .asUint8List();
+    chosenDefaultImage = true;
+    chosenCustomImage = false;
     croppedImage = data;
+    chosenImage = data;
   }
 
   /// fun for split default image and start to play
@@ -101,6 +118,10 @@ abstract class _ChooseImageState with Store {
   /// logic for splitting image, working really bad, but we can use loaders!!!
   @action
   void splitImage() {
+    if (chosenCustomImage) {
+      croppedImage = chosenImage;
+    }
+
     //todo this is problem spot
     img.Image image = img.decodeImage(croppedImage!.toList())!;
     int x = 0, y = 0;
@@ -161,9 +182,11 @@ abstract class _ChooseImageState with Store {
 
   @action
   void resetChooseImageStateData() {
+    chosenDefaultImage = false;
+    chosenCustomImage = false;
     isCropPressed = false;
     chosenImage = null;
-    chosenImageNumber = 3;
+    chosenImageNumber = null;
     croppedImage = null;
     imageMap = null;
     injector<PuzzleState>().generatePuzzle();

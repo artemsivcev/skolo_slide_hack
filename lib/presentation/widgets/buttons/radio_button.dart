@@ -60,6 +60,7 @@ class RadioButton extends StatelessWidget {
             child: GlassContainerCircle(
               isHovered: isHovered,
               padding: EdgeInsets.zero,
+              blurRadius: 12,
               child: SizedBox(
                 height: size,
                 width: size,

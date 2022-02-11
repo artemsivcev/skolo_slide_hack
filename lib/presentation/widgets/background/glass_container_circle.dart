@@ -7,11 +7,13 @@ class GlassContainerCircle extends StatelessWidget {
     required this.child,
     this.isHovered = false,
     this.padding,
+    this.blurRadius,
   }) : super(key: key);
 
   final Widget child;
   final bool isHovered;
   final EdgeInsets? padding;
+  final double? blurRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class GlassContainerCircle extends StatelessWidget {
               ? BoxShadow(
                   color: colorsPurpleBluePrimary.withOpacity(0.7),
                   offset: const Offset(0, 0),
-                  blurRadius: 20,
+                  blurRadius: blurRadius ?? 20,
                   spreadRadius: 5)
               : const BoxShadow(color: Colors.transparent),
         ],

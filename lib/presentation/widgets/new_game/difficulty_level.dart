@@ -21,8 +21,8 @@ class DifficultyLevel extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(16, 12, 16, 22),
           child: Text(
             'Difficulty level',
             textAlign: TextAlign.center,
@@ -77,6 +77,7 @@ class DifficultyLevel extends StatelessWidget {
             );
           },
         ),
+        const SizedBox(height: 16),
       ],
     );
   }

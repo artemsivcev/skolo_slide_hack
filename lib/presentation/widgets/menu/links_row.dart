@@ -10,26 +10,24 @@ class LinksRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 16.0,
-            ),
-            child: Row(
-              children: const [
-                const GitHubIcon(),
-                const SizedBox(width: 12),
-                const SkoloIcon(),
-              ],
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 16.0,
           ),
-          DashIcon(),
-        ],
-      ),
+          child: Row(
+            children: const [
+              const GitHubIcon(),
+              const SizedBox(width: 12),
+              const SkoloIcon(),
+            ],
+          ),
+        ),
+        DashIcon(),
+      ],
     );
   }
 }

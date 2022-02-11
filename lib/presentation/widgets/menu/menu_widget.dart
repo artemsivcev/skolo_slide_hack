@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/buttons_group_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/menu/game_title.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/crop_buttons.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_level.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/image_chooser.dart';
@@ -21,38 +22,41 @@ class MenuWidget extends StatelessWidget {
     return Center(
       child: FittedBox(
         child: Observer(
-          builder: (context) => RowColumnSolver(
-            children: [
-              GlassContainer(
-                child: AnimatedCrossFade(
-                  crossFadeState:
-                      !menuState.isShowGame && !menuState.isShowImagePicker
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                  duration: animationTwoSecondsDuration,
-                  firstChild: DifficultyLevel(),
-                  secondChild: menuState.isShowGame
-                      ? const PuzzlePage()
-                      : const ImageChooser(),
-                ),
-              ),
-              FittedBox(
-                child: GlassContainer(
+          builder: (context) {
+            var isStart = !menuState.isShowGame && !menuState.isShowImagePicker;
+
+            return RowColumnSolver(
+              children: [
+                GlassContainer(
+                  innerPadding: isStart ? EdgeInsets.zero : null,
                   child: AnimatedCrossFade(
-                    crossFadeState:
-                        !menuState.isShowGame && !menuState.isShowImagePicker
-                            ? CrossFadeState.showFirst
-                            : CrossFadeState.showSecond,
+                    crossFadeState: isStart
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                     duration: animationTwoSecondsDuration,
-                    firstChild: ButtonsGroupWidget(),
+                    firstChild: DifficultyLevel(),
                     secondChild: menuState.isShowGame
-                        ? PuzzleBoardButtons()
-                        : const CropButtons(),
+                        ? const PuzzlePage()
+                        : const ImageChooser(),
                   ),
                 ),
-              ),
-            ],
-          ),
+                FittedBox(
+                  child: GlassContainer(
+                    child: AnimatedCrossFade(
+                      crossFadeState: isStart
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
+                      duration: animationTwoSecondsDuration,
+                      firstChild: ButtonsGroupWidget(),
+                      secondChild: menuState.isShowGame
+                          ? PuzzleBoardButtons()
+                          : const CropButtons(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

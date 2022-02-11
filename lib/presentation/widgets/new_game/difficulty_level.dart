@@ -17,68 +17,70 @@ class DifficultyLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(16, 12, 16, 22),
-          child: Text(
-            'Difficulty level',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
-              height: 1.4,
-              color: colorsPurpleBluePrimary,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 12, 16, 22),
+            child: Text(
+              'Difficulty level',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                height: 1.4,
+                color: colorsPurpleBluePrimary,
+              ),
             ),
           ),
-        ),
-        Observer(
-          builder: (context) {
-            var difficultyLevel = difficultyState.difficultyLevel;
+          Observer(
+            builder: (context) {
+              var difficultyLevel = difficultyState.difficultyLevel;
 
-            return Row(
-              children: [
-                DifficultyButton(
-                  semanticLabel: 'Easy',
-                  dimensions: '3x3',
-                  isSelected: difficultyLevel == DifficultyLevelEnum.EASY,
-                  onTap: () => difficultyState
-                      .changeDifficulty(DifficultyLevelEnum.EASY),
-                  isHovered: buttonsHoverState.isEasyLevelHovered,
-                  onHover: (value) =>
-                      buttonsHoverState.toggleHoveredEasyLevel(),
-                ),
-                const SizedBox(width: 12),
-                DifficultyButton(
-                  semanticLabel: 'Middle',
-                  dimensions: '4x4',
-                  isSelected: difficultyLevel == DifficultyLevelEnum.MIDDLE,
-                  onTap: () => difficultyState
-                      .changeDifficulty(DifficultyLevelEnum.MIDDLE),
-                  isHovered: buttonsHoverState.isMiddleLevelHovered,
-                  onHover: (value) =>
-                      buttonsHoverState.toggleHoveredMiddleLevel(),
-                ),
-                const SizedBox(width: 12),
-                DifficultyButton(
-                  semanticLabel: 'Hard',
-                  dimensions: '5x5',
-                  isSelected: difficultyLevel == DifficultyLevelEnum.HARD,
-                  onTap: () => difficultyState
-                      .changeDifficulty(DifficultyLevelEnum.HARD),
-                  isHovered: buttonsHoverState.isHardLevelHovered,
-                  onHover: (value) =>
-                      buttonsHoverState.toggleHoveredHardLevel(),
-                ),
-              ],
-            );
-          },
-        ),
-        const SizedBox(height: 16),
-      ],
+              return Row(
+                children: [
+                  DifficultyButton(
+                    semanticLabel: 'Easy',
+                    dimensions: '3x3',
+                    isSelected: difficultyLevel == DifficultyLevelEnum.EASY,
+                    onTap: () => difficultyState
+                        .changeDifficulty(DifficultyLevelEnum.EASY),
+                    isHovered: buttonsHoverState.isEasyLevelHovered,
+                    onHover: (value) =>
+                        buttonsHoverState.toggleHoveredEasyLevel(),
+                  ),
+                  const SizedBox(width: 12),
+                  DifficultyButton(
+                    semanticLabel: 'Middle',
+                    dimensions: '4x4',
+                    isSelected: difficultyLevel == DifficultyLevelEnum.MIDDLE,
+                    onTap: () => difficultyState
+                        .changeDifficulty(DifficultyLevelEnum.MIDDLE),
+                    isHovered: buttonsHoverState.isMiddleLevelHovered,
+                    onHover: (value) =>
+                        buttonsHoverState.toggleHoveredMiddleLevel(),
+                  ),
+                  const SizedBox(width: 12),
+                  DifficultyButton(
+                    semanticLabel: 'Hard',
+                    dimensions: '5x5',
+                    isSelected: difficultyLevel == DifficultyLevelEnum.HARD,
+                    onTap: () => difficultyState
+                        .changeDifficulty(DifficultyLevelEnum.HARD),
+                    isHovered: buttonsHoverState.isHardLevelHovered,
+                    onHover: (value) =>
+                        buttonsHoverState.toggleHoveredHardLevel(),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

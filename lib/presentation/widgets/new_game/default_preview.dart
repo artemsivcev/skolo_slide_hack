@@ -25,15 +25,13 @@ class DefaultPreview extends StatelessWidget {
         defaultImageName = "cat";
       }
 
-      var isChosen = chooseImageState.chosenImageNumber == imageIndex;
-      var showOthers = true;
-      if (isChosen) {
-        showOthers = true;
-      } else {
-        showOthers = chooseImageState.croppedImage == null;
-      }
+      final anyImageNotChosenYet = !chooseImageState.chosenCustomImage &&
+          !chooseImageState.chosenDefaultImage;
 
-      return showOthers
+      final isChosen = chooseImageState.chosenImageNumber == imageIndex;
+      final showThisImage = isChosen || anyImageNotChosenYet;
+
+      return showThisImage
           ? InkWell(
               hoverColor: Colors.transparent,
               splashColor: Colors.transparent,
@@ -42,7 +40,7 @@ class DefaultPreview extends StatelessWidget {
               onTap: () async => {
                 await chooseImageState.chooseDefaultImage(
                     defaultImageName, imageIndex),
-                await Future.delayed(const Duration(seconds: 2)),
+                // await Future.delayed(const Duration(seconds: 2)),
                 //chooseImageState.splitImageAndPlay(),
               },
               child: Semantics(

@@ -51,7 +51,7 @@ class RadioButton extends StatelessWidget {
           btnText.isNotEmpty
               ? ButtonText(
                   btnText: btnText,
-                  paddingSize: 8.0,
+                  paddingSize: 10,
                   fontSize: 18,
                 )
               : const SizedBox(),

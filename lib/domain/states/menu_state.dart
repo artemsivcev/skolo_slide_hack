@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
@@ -23,11 +24,6 @@ abstract class _MenuState with Store {
 
   /// state for sound manipulating
   final soundState = injector<SoundState>();
-  @observable
-  bool isShowImagePicker = false;
-
-  @observable
-  bool isShowGame = false;
 
   @action
   changeCurrentGameState(GameState state) {
@@ -40,10 +36,10 @@ abstract class _MenuState with Store {
   /// todo mb add dispose?
   @action
   Future<void> backToMenu() async {
-    isShowImagePicker = false;
     changeCurrentGameState(GameState.MAIN_MENU);
     soundState.playBackwardSound();
     injector<ChooseImageState>().resetChooseImageStateData();
+    injector<ButtonsHoverState>().setAllHoveredToFalse();
   }
 
   /// logic for play btn. It changes btn state
@@ -54,30 +50,11 @@ abstract class _MenuState with Store {
     soundState.playForwardSound();
   }
 
-  /// crops the image and starts the game
-  @action
-  Future<void> cropImageAndPlay() async {
-    isShowImagePicker = true;
-    // soundState.playForwardSound();
-    // //todo crop image and call play
-    // // if (croppedImage != null) imageMap = splitImage();
-    // //need to generate new puzzle with image/not
-    // injector<PuzzleState>().generatePuzzle();
-    playGame();
-  }
-
   /// logic for play btn without image
   @action
   Future<void> playWithOutImagePress() async {
     soundState.playForwardSound();
     changeCurrentGameState(GameState.WITHOUT_IMAGE_PLAY);
-    injector<PuzzleState>().generatePuzzle();
-  }
-
-  /// starts the game
-  @action
-  Future<void> playGame() async {
-    isShowGame = true;
     injector<PuzzleState>().generatePuzzle();
   }
 

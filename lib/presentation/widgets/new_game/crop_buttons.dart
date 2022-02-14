@@ -34,13 +34,9 @@ class _CropButtonsState extends State<CropButtons>
               color: colorsPurpleBluePrimary,
             ),
             btnText: 'Back',
-            onTap: () async {
-              menuState.backToMenu();
-            },
+            onTap: () async => menuState.backToMenu(),
             isHovered: buttonsHoverState.isBackHover,
-            onHover: (value) {
-              buttonsHoverState.toggleBackHover();
-            },
+            onHover: (value) => buttonsHoverState.toggleBackHover(),
           ),
           AnimatedCrossFade(
             crossFadeState: chooseImageState.chosenImage != null
@@ -56,7 +52,6 @@ class _CropButtonsState extends State<CropButtons>
                   color: colorsPurpleBluePrimary,
                 ),
                 btnText: 'Crop & Play!',
-                //isPressed: newGameState.isCropPressed,
                 onTap: () async {
                   chooseImageState.splitImageAndPlay();
                 },

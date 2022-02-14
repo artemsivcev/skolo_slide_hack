@@ -32,6 +32,8 @@ class MenuWidget extends StatelessWidget {
                 break;
 
               case GameState.WITHOUT_IMAGE_PLAY:
+              case GameState.DEFAULT_IMAGE_PLAY:
+              case GameState.CUSTOM_IMAGE_PLAY:
                 firstWidgetToShow = const PuzzlePage();
                 secondWidgetToShow = PuzzleBoardButtons();
                 break;

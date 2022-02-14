@@ -22,10 +22,7 @@ class ChooseImageState = _ChooseImageState with _$ChooseImageState;
 abstract class _ChooseImageState with Store {
   /// state with board size due to its difficulty
   final difficultyState = injector<DifficultyState>();
-
-  /// bool for crop image btn state
-  @observable
-  bool isCropPressed = false;
+  final menuState = injector<MenuState>();
 
   /// cropped image to preview on new game screen
   @observable
@@ -84,11 +81,8 @@ abstract class _ChooseImageState with Store {
   @action
   Future<void> cropImage() async {
     // Get the cropped image as bytes
-    //todo
-    // isCropPressed = !isCropPressed;
-    final imageBytes = await Cropper.crop(
-      cropperKey: cropperKey, // Reference it through the key
-    );
+    // Reference it through the key
+    final imageBytes = await Cropper.crop(cropperKey: cropperKey);
     chosenImage = null;
     croppedImage = imageBytes;
   }
@@ -109,17 +103,18 @@ abstract class _ChooseImageState with Store {
   /// fun for split default image and start to play
   @action
   Future<void> splitImageAndPlay() async {
-    splitImage();
-
-    /// todo call cropImageAndPlay
-    injector<MenuState>().playGame();
+    await splitImage();
+    menuState.changeCurrentGameState(chosenDefaultImage
+        ? GameState.DEFAULT_IMAGE_PLAY
+        : GameState.CUSTOM_IMAGE_PLAY);
+    injector<PuzzleState>().generatePuzzle();
   }
 
   /// logic for splitting image, working really bad, but we can use loaders!!!
   @action
-  void splitImage() {
+  Future<void> splitImage() async {
     if (chosenCustomImage) {
-      croppedImage = chosenImage;
+      await cropImage();
     }
 
     //todo this is problem spot
@@ -145,7 +140,6 @@ abstract class _ChooseImageState with Store {
       output.putIfAbsent(
           i, () => Uint8List.fromList(img.encodeJpg(parts[i], quality: 25)));
     }
-
     imageMap = output;
   }
 
@@ -184,7 +178,6 @@ abstract class _ChooseImageState with Store {
   void resetChooseImageStateData() {
     chosenDefaultImage = false;
     chosenCustomImage = false;
-    isCropPressed = false;
     chosenImage = null;
     chosenImageNumber = null;
     croppedImage = null;

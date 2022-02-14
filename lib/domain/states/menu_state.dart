@@ -31,6 +31,7 @@ abstract class _MenuState with Store {
     isShowGame = false;
     soundState.playBackwardSound();
     injector<ChooseImageState>().resetChooseImageStateData();
+    injector<PuzzleState>().resetTimer();
   }
 
   /// logic for play btn. It changes btn state

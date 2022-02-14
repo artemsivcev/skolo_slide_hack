@@ -26,7 +26,7 @@ abstract class _WinAnimationState with Store {
   Animation<double>? spacingAnimation;
 
   @observable
-  double spacingValue = 4.0;
+  double spacingValue = 2.0;
 
   /// bool for checking if the animation is completed
   @observable

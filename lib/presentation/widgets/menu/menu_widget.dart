@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/buttons_group_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/new_game/crop_buttons.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_level.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/image_chooser.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/puzzle_board_buttons.dart';
@@ -27,7 +28,7 @@ class MenuWidget extends StatelessWidget {
             switch (menuState.currentGameState) {
               case GameState.CHOSE_IMAGE:
                 firstWidgetToShow = const ImageChooser();
-                secondWidgetToShow = PuzzleBoardButtons();
+                secondWidgetToShow = const CropButtons();
                 break;
 
               case GameState.WITHOUT_IMAGE_PLAY:

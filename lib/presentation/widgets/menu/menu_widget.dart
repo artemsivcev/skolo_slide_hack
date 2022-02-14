@@ -6,8 +6,6 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/buttons_group_widget.dart';
-import 'package:skolo_slide_hack/presentation/widgets/menu/game_title.dart';
-import 'package:skolo_slide_hack/presentation/widgets/new_game/crop_buttons.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_level.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/image_chooser.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/puzzle_board_buttons.dart';
@@ -23,34 +21,43 @@ class MenuWidget extends StatelessWidget {
       child: FittedBox(
         child: Observer(
           builder: (context) {
-            var isStart = !menuState.isShowGame && !menuState.isShowImagePicker;
+            Widget firstWidgetToShow = const SizedBox();
+            Widget secondWidgetToShow = const SizedBox();
+
+            switch (menuState.currentGameState) {
+              case GameState.CHOSE_IMAGE:
+                firstWidgetToShow = const ImageChooser();
+                secondWidgetToShow = PuzzleBoardButtons();
+                break;
+
+              case GameState.WITHOUT_IMAGE_PLAY:
+                firstWidgetToShow = const PuzzlePage();
+                secondWidgetToShow = PuzzleBoardButtons();
+                break;
+
+              // as for GameState.MAIN_MENU
+              default:
+                firstWidgetToShow = DifficultyLevel();
+                secondWidgetToShow = ButtonsGroupWidget();
+            }
 
             return RowColumnSolver(
               children: [
                 GlassContainer(
-                  innerPadding: isStart ? EdgeInsets.zero : null,
                   child: AnimatedCrossFade(
-                    crossFadeState: isStart
-                        ? CrossFadeState.showFirst
-                        : CrossFadeState.showSecond,
+                    crossFadeState: CrossFadeState.showFirst,
                     duration: animationTwoSecondsDuration,
-                    firstChild: DifficultyLevel(),
-                    secondChild: menuState.isShowGame
-                        ? const PuzzlePage()
-                        : const ImageChooser(),
+                    firstChild: firstWidgetToShow,
+                    secondChild: secondWidgetToShow,
                   ),
                 ),
                 FittedBox(
                   child: GlassContainer(
                     child: AnimatedCrossFade(
-                      crossFadeState: isStart
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
+                      crossFadeState: CrossFadeState.showFirst,
                       duration: animationTwoSecondsDuration,
-                      firstChild: ButtonsGroupWidget(),
-                      secondChild: menuState.isShowGame
-                          ? PuzzleBoardButtons()
-                          : const CropButtons(),
+                      firstChild: secondWidgetToShow,
+                      secondChild: secondWidgetToShow,
                     ),
                   ),
                 ),

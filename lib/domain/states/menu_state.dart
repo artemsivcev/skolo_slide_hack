@@ -15,6 +15,12 @@ class MenuState = _MenuState with _$MenuState;
 /// For example, when the user wants to go back or choosing
 /// to play the game with image or not.
 abstract class _MenuState with Store {
+  @observable
+  GameState currentGameState = GameState.MAIN_MENU;
+
+  @observable
+  GameState? previousGameState;
+
   /// state for sound manipulating
   final soundState = injector<SoundState>();
   @observable
@@ -23,12 +29,19 @@ abstract class _MenuState with Store {
   @observable
   bool isShowGame = false;
 
+  @action
+  changeCurrentGameState(GameState state) {
+    previousGameState = currentGameState;
+
+    currentGameState = state;
+  }
+
   /// restore all bools and go back to menu
   /// todo mb add dispose?
   @action
   Future<void> backToMenu() async {
     isShowImagePicker = false;
-    isShowGame = false;
+    changeCurrentGameState(GameState.MAIN_MENU);
     soundState.playBackwardSound();
     injector<ChooseImageState>().resetChooseImageStateData();
   }
@@ -37,7 +50,7 @@ abstract class _MenuState with Store {
   /// and calls [splitImage] function
   @action
   Future<void> playWithImagePress() async {
-    isShowImagePicker = true;
+    changeCurrentGameState(GameState.CHOSE_IMAGE);
     soundState.playForwardSound();
   }
 
@@ -57,7 +70,8 @@ abstract class _MenuState with Store {
   @action
   Future<void> playWithOutImagePress() async {
     soundState.playForwardSound();
-    playGame();
+    changeCurrentGameState(GameState.WITHOUT_IMAGE_PLAY);
+    injector<PuzzleState>().generatePuzzle();
   }
 
   /// starts the game
@@ -80,4 +94,15 @@ abstract class _MenuState with Store {
       SystemNavigator.pop();
     }
   }
+}
+
+enum GameState {
+  MAIN_MENU,
+  CHOSE_IMAGE,
+  WITHOUT_IMAGE_PLAY,
+  DEFAULT_IMAGE_PLAY,
+  CUSTOM_IMAGE_PLAY,
+  SHUFFLE,
+  WIN,
+  EXIT_GAME,
 }

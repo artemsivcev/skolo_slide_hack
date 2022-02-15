@@ -7,7 +7,7 @@ import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 class DefaultPreview extends StatelessWidget {
   DefaultPreview({Key? key, required this.imageIndex}) : super(key: key);
 
-  int imageIndex = 0;
+  final int imageIndex;
 
   final chooseImageState = injector<ChooseImageState>();
 

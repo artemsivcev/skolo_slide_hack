@@ -139,6 +139,12 @@ abstract class _StartAnimationState with Store {
       });
   }
 
+  @action
+  Future<void> startAnimation() async {
+    await Future.delayed(animationOneSecondDuration);
+    startAnimationController!.forward();
+  }
+
   /// reset animation
   @action
   void resetStartAnimation() {
@@ -146,6 +152,7 @@ abstract class _StartAnimationState with Store {
     puzzlePadding = startPuzzleBoardAxisPadding;
     isFirstScreenEntry = false;
     isStartAnimPart1End = false;
+    isStartAnimPart2End = false;
   }
 
   void dispose() {

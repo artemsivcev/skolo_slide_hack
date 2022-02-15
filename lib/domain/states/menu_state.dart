@@ -7,6 +7,7 @@ import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
+import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 
 part 'menu_state.g.dart';
 
@@ -42,6 +43,7 @@ abstract class _MenuState with Store {
     injector<ButtonsHoverState>().setAllHoveredToFalse();
     injector<PuzzleState>().resetTimer();
     injector<PuzzleState>().resetMovementsCounter();
+    injector<StartAnimationState>().resetStartAnimation();
   }
 
   /// logic for play btn. It changes btn state

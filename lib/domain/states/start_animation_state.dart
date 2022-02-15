@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/dimensions.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
+import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 
 part 'start_animation_state.g.dart';
 
@@ -11,6 +13,8 @@ class StartAnimationState = _StartAnimationState with _$StartAnimationState;
 
 /// State is used for showing animation when the user starts the game.
 abstract class _StartAnimationState with Store {
+  TileAnimationState tileAnimationState = injector<TileAnimationState>();
+
   /// Animation controller for start animation
   /// when user come to the screen at the first time.
   AnimationController? startAnimationController;
@@ -79,7 +83,7 @@ abstract class _StartAnimationState with Store {
       ),
     )..addListener(() {
         if (startAnimationController!.status == AnimationStatus.completed) {
-          isFirstScreenEntry = false;
+          tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
         }
 
         puzzlePadding = puzzleBoardAxisPaddingAnimation.value ??

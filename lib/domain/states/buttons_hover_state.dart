@@ -86,4 +86,18 @@ abstract class _ButtonsHoverState with Store {
 
   @action
   void toggleHoveredShuffleBtn() => shuffleBtnHovered = !shuffleBtnHovered;
+
+  @action
+  void setAllHoveredToFalse() {
+    exitBtnHovered = false;
+    isSoundHovered = false;
+    isEasyLevelHovered = false;
+    isMiddleLevelHovered = false;
+    isHardLevelHovered = false;
+    isPlayWithImageHovered = false;
+    isPlayHovered = false;
+    isBackHover = false;
+    isCropHovered = false;
+    shuffleBtnHovered = false;
+  }
 }

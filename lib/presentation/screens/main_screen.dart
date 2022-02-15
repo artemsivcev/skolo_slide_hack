@@ -23,23 +23,26 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     soundState.preloadMainAudio();
     screenState.setScreenSize(context);
-    return Observer(
-      builder: (context) {
-        return BackgroundWithBubbles(
-            colorsBackground: colorsBackgroundGame,
-            direction:
-                menuState.isShowImagePicker ? LineDirection.Ttb : LineDirection.Btt,
-            numLines: menuState.isShowGame ? 0 : 20,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                MenuWidget(),
-                const GameTitle(),
-                const LinksRow(),
-                SoundButton(),
-              ],
-            ));
-      }
-    );
+    return Observer(builder: (context) {
+      final mainMenuIsShowing =
+          menuState.currentGameState == GameState.MAIN_MENU;
+      final chooseImageIsShowing =
+          menuState.currentGameState == GameState.CHOSE_IMAGE;
+
+      //todo try to extract the BackgroundWithBubbles to the background stack
+      return BackgroundWithBubbles(
+          colorsBackground: colorsBackgroundGame,
+          direction: mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
+          numLines: mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              MenuWidget(),
+              const GameTitle(),
+              const LinksRow(),
+              SoundButton(),
+            ],
+          ));
+    });
   }
 }

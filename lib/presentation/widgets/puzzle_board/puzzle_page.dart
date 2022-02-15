@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
@@ -36,7 +35,12 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
       vsync: this,
     );
     winAnimationState.initAnimation(controller);
-    startAnimationState.initStartAnimationController(this);
+
+    if (startAnimationState.startAnimationController == null) {
+      startAnimationState.initStartAnimationController(this);
+    }
+
+    startAnimationState.startAnimation();
 
     var controllerShuffle = AnimationController(
       duration: animationOneSecondDuration,
@@ -48,21 +52,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   }
 
   @override
-  void didChangeDependencies() {
-    reaction<bool>((_) => startAnimationState.isFirstScreenEntry,
-        (value) async {
-      if (!value) {
-        await Future.delayed(animationOneSecondDuration);
-        startAnimationState.startAnimationController!.forward();
-      }
-    });
-
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    startAnimationState.isFirstScreenEntry = false;
     return Observer(
       builder: (context) {
         final showCorrectOrder = !startAnimationState.isStartAnimPart1End;

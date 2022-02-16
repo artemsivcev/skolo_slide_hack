@@ -17,8 +17,7 @@ class GameTitle extends StatelessWidget {
         label: "Game title",
         readOnly: true,
         child: Padding(
-          padding:
-              EdgeInsets.all(screenState.isPortrait(context) ? 15.0 : 32.0),
+          padding: EdgeInsets.fromLTRB(20.0, 32.0, 32.0, 8.0),
           child: Text(
             screenState.isPortrait(context)
                 ? 'Slide Puzzle\n      Game'

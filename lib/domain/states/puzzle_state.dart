@@ -8,6 +8,7 @@ import 'package:skolo_slide_hack/domain/models/position.dart';
 import 'package:skolo_slide_hack/domain/models/puzzle.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
+import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 
 import 'choose_image_state.dart';
@@ -21,6 +22,9 @@ class PuzzleState = _PuzzleState with _$PuzzleState;
 abstract class _PuzzleState with Store {
   /// need to access to sounds
   final soundState = injector<SoundState>();
+
+  /// for animating tiles
+  final TileAnimationState tileAnimationState = injector<TileAnimationState>();
 
   ///state with win animation
   final winAnimationState = injector<WinAnimationState>();
@@ -147,6 +151,7 @@ abstract class _PuzzleState with Store {
     /// todo add animation and sound when can not move
 
     if (isComplete) {
+      tileAnimationState.currentAnimationPhase = TileAnimationPhase.WIN;
       winAnimationState.animate();
       setFinalTime();
       soundState.playWinSound();
@@ -225,7 +230,10 @@ abstract class _PuzzleState with Store {
     resetMovementsCounter();
     resetTimer();
     toggleShuffleBtn();
-    if (isComplete) winAnimationState.animate();
+    if (isComplete) {
+      winAnimationState.animate();
+      tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
+    }
     generatePuzzle();
     toggleShuffleBtn();
   }

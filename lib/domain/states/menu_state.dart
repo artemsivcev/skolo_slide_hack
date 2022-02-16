@@ -9,6 +9,7 @@ import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
+import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 
 part 'menu_state.g.dart';
 
@@ -47,6 +48,7 @@ abstract class _MenuState with Store {
     injector<PuzzleState>().resetTimer();
     injector<PuzzleState>().resetMovementsCounter();
     injector<StartAnimationState>().resetStartAnimation();
+    injector<WinAnimationState>().resetAnimation();
     _tileAnimationState.currentAnimationPhase = null;
   }
 

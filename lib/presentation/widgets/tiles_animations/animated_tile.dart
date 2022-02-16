@@ -6,13 +6,24 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
+import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container_pure.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_start_play_animator.dart';
+import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_win_animator.dart';
 
 class AnimatedTile extends StatelessWidget {
-  AnimatedTile({Key? key, required this.tile}) : super(key: key);
+  AnimatedTile({
+    Key? key,
+    required this.tile,
+    required this.onTap,
+    required this.fraction,
+  }) : super(key: key);
 
   final Tile tile;
+
+  final VoidCallback onTap;
+
+  final double fraction;
 
   final TileAnimationState _animatedTileState = injector<TileAnimationState>();
 
@@ -26,8 +37,12 @@ class AnimatedTile extends StatelessWidget {
           return SizedBox();
         }
 
-        final animationController;
+        final AnimationController? animationController;
         switch (animationPhase) {
+          case TileAnimationPhase.WIN:
+            animationController =
+                injector<WinAnimationState>().animationController;
+            break;
 
           /// for TileAnimationPhase.START_ANIMATION
           default:
@@ -39,14 +54,27 @@ class AnimatedTile extends StatelessWidget {
           animation: animationController!,
           builder: (_, child) {
             if (animationPhase == TileAnimationPhase.START_ANIMATION) {
-              return TileStartAnimator(child: child!);
+              return tile.isEmpty
+                  ? const SizedBox()
+                  : TileStartAnimator(child: child!);
+            }
+
+            if (animationPhase == TileAnimationPhase.WIN) {
+              return TileWinAnimator(
+                child: child!,
+                tweenStart: fraction,
+                tile: tile,
+              );
             }
 
             // for TileAnimationPhase.NORMAL
-            return PolymorphicContainerPure(child: child!);
+            return tile.isEmpty
+                ? const SizedBox()
+                : PolymorphicContainerPure(child: child!);
           },
           child: TileToShow(
             tile: tile,
+            onTap: onTap,
           ),
         );
       },
@@ -58,9 +86,11 @@ class TileToShow extends StatelessWidget {
   const TileToShow({
     Key? key,
     required this.tile,
+    required this.onTap,
   }) : super(key: key);
 
   final Tile tile;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +102,15 @@ class TileToShow extends StatelessWidget {
             customImage: tile.customImage,
           );
 
-    return Center(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          tileWidget,
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            tileWidget,
+          ],
+        ),
       ),
     );
   }

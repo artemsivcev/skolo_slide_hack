@@ -13,6 +13,10 @@ class PolymorphicContainerPure extends StatelessWidget {
     this.lightShadowBlurRadius = 7.0,
     this.backgroundColor,
     this.userInnerStyle = false,
+    this.topLeftCorner = true,
+    this.topRightCorner = true,
+    this.bottomLeftCorner = true,
+    this.bottomRightCorner = true,
   }) : super(key: key);
 
   final Widget child;
@@ -33,6 +37,12 @@ class PolymorphicContainerPure extends StatelessWidget {
 
   /// If true, then the container will have a "press in" effect.
   final bool userInnerStyle;
+
+  /// Corners radius of the inner shadows of the polymorphic container.
+  final bool topRightCorner;
+  final bool topLeftCorner;
+  final bool bottomRightCorner;
+  final bool bottomLeftCorner;
 
   Color _modifyBackGroundColor(
       Color backGroundColor, double lightnessModifier) {
@@ -59,7 +69,14 @@ class PolymorphicContainerPure extends StatelessWidget {
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(externalBorderRadius),
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(topRightCorner ? externalBorderRadius : 0),
+          topLeft: Radius.circular(topLeftCorner ? externalBorderRadius : 0),
+          bottomLeft:
+              Radius.circular(bottomLeftCorner ? externalBorderRadius : 0),
+          bottomRight:
+              Radius.circular(bottomRightCorner ? externalBorderRadius : 0),
+        ),
       ),
       child: Container(
         decoration: BoxDecoration(

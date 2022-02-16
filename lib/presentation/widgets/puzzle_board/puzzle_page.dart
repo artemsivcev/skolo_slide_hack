@@ -67,6 +67,8 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
               tiles.length,
               (index) => AnimatedTile(
                 tile: tiles[index],
+                fraction: index / tiles.length,
+                onTap: () => puzzleState.onTileTapped(index),
               ),
             ),
           ),

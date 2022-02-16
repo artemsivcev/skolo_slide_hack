@@ -22,8 +22,8 @@ Future<void> setupInjection() async {
   injector.registerSingleton(WinAnimationState());
   injector.registerLazySingleton(() => StartAnimationState());
   injector.registerSingleton(ShuffleAnimationState());
-  injector.registerSingleton(MenuState());
   injector.registerSingleton(TileAnimationState());
+  injector.registerSingleton(MenuState());
   injector.registerSingleton(DifficultyState());
   injector.registerSingleton(ChooseImageState());
   injector.registerSingleton(PuzzleState());

@@ -9,9 +9,9 @@ import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/animated_tile.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/game_timer.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/animated_tile.dart';
 
 import 'movements_counter.dart';
 

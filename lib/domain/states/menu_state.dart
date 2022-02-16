@@ -8,6 +8,7 @@ import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
+import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 
 part 'menu_state.g.dart';
 
@@ -17,6 +18,8 @@ class MenuState = _MenuState with _$MenuState;
 /// For example, when the user wants to go back or choosing
 /// to play the game with image or not.
 abstract class _MenuState with Store {
+  final TileAnimationState _tileAnimationState = injector<TileAnimationState>();
+
   @observable
   GameState currentGameState = GameState.MAIN_MENU;
 
@@ -44,6 +47,7 @@ abstract class _MenuState with Store {
     injector<PuzzleState>().resetTimer();
     injector<PuzzleState>().resetMovementsCounter();
     injector<StartAnimationState>().resetStartAnimation();
+    _tileAnimationState.currentAnimationPhase = null;
   }
 
   /// logic for play btn. It changes btn state
@@ -52,6 +56,8 @@ abstract class _MenuState with Store {
   Future<void> playWithImagePress() async {
     changeCurrentGameState(GameState.CHOSE_IMAGE);
     soundState.playForwardSound();
+    _tileAnimationState.currentAnimationPhase =
+        TileAnimationPhase.START_ANIMATION;
   }
 
   /// logic for play btn without image
@@ -60,6 +66,8 @@ abstract class _MenuState with Store {
     soundState.playForwardSound();
     changeCurrentGameState(GameState.WITHOUT_IMAGE_PLAY);
     injector<PuzzleState>().generatePuzzle();
+    _tileAnimationState.currentAnimationPhase =
+        TileAnimationPhase.START_ANIMATION;
   }
 
   @observable

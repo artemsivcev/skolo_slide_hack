@@ -67,6 +67,9 @@ abstract class _StartAnimationState with Store {
       : false;
 
   @observable
+  bool isStartAnimBorderEnd = false;
+
+  @observable
   bool isStartAnimPart1End = false;
 
   @observable
@@ -110,7 +113,11 @@ abstract class _StartAnimationState with Store {
           curve: Curves.linear,
         ),
       ),
-    );
+    )..addListener(() {
+        if (borderRadiusAnimation.status == AnimationStatus.completed) {
+          isStartAnimBorderEnd = true;
+        }
+      });
 
     flipAnimationPart1 = tweenFlipPart1.animate(
       CurvedAnimation(
@@ -157,6 +164,7 @@ abstract class _StartAnimationState with Store {
     isFirstScreenEntry = false;
     isStartAnimPart1End = false;
     isStartAnimPart2End = false;
+    isStartAnimBorderEnd = false;
   }
 
   void dispose() {

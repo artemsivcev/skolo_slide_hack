@@ -9,6 +9,7 @@ import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
+import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 
 /// It is necessary to register a file in the "injector"
@@ -21,6 +22,7 @@ Future<void> setupInjection() async {
   injector.registerSingleton(WinAnimationState());
   injector.registerLazySingleton(() => StartAnimationState());
   injector.registerSingleton(ShuffleAnimationState());
+  injector.registerSingleton(TileAnimationState());
   injector.registerSingleton(MenuState());
   injector.registerSingleton(DifficultyState());
   injector.registerSingleton(ChooseImageState());

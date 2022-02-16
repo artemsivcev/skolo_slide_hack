@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 
 import '../text_shadows.dart';
 
 class GameTitle extends StatelessWidget {
-  const GameTitle({Key? key}) : super(key: key);
+  GameTitle({Key? key}) : super(key: key);
+  final screenState = injector<ScreenState>();
 
   @override
   Widget build(BuildContext context) {
@@ -13,15 +16,18 @@ class GameTitle extends StatelessWidget {
       child: Semantics(
         label: "Game title",
         readOnly: true,
-        child: const Padding(
-          padding: EdgeInsets.all(32.0),
+        child: Padding(
+          padding:
+              EdgeInsets.all(screenState.isPortrait(context) ? 15.0 : 32.0),
           child: Text(
-            '''Slide
+            screenState.isPortrait(context)
+                ? 'Slide Puzzle\n      Game'
+                : '''Slide
           Puzzle
                     Game''',
             style: TextStyle(
               fontFamily: 'Montserrat',
-              fontSize: 32,
+              fontSize: screenState.isPortrait(context) ? 14 : 32,
               fontWeight: FontWeight.w900,
               color: colorsPurpleBluePrimary,
             ),

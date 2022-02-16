@@ -38,7 +38,7 @@ class MainScreen extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               MenuWidget(),
-              const GameTitle(),
+              GameTitle(),
               const LinksRow(),
               SoundButton(),
             ],

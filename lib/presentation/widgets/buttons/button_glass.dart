@@ -45,7 +45,7 @@ class ButtonGlass extends StatelessWidget {
   final double size;
 
   ///btn custom padding
-  EdgeInsetsGeometry? padding = const EdgeInsets.all(18.0);
+  EdgeInsetsGeometry? padding = const EdgeInsets.all(21.0);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class ButtonGlass extends StatelessWidget {
       child: ColumnRowSolver(
         children: [
           Padding(
-            padding: padding ?? const EdgeInsets.all(18.0),
+            padding: padding ?? const EdgeInsets.all(21.0),
             child: GlassContainerCircle(
               isHovered: isHovered,
               child: SizedBox(

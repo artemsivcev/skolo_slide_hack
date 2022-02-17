@@ -33,10 +33,9 @@ class ImagePreview extends StatelessWidget {
                 label: "Choose your own image",
                 enabled: true,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(showCropped ? 16.0 : 8.0),
+                    borderRadius: BorderRadius.circular(8.0),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [

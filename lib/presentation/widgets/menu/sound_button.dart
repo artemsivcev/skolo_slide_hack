@@ -23,11 +23,11 @@ class SoundButton extends StatelessWidget {
         child: Observer(builder: (context) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ButtonGlass(
-                size: 25,
+                size: 18,
                 onTap: () => {soundState.toggleSoundBtn()},
                 isHovered: buttonsHoverState.isSoundHovered,
                 onHover: (value) {
@@ -35,26 +35,31 @@ class SoundButton extends StatelessWidget {
                 },
                 childPressed: const Icon(
                   Icons.music_off,
+                  size: 18,
                   color: colorsPurpleBluePrimary,
                 ),
                 childUnpressed: const Icon(
                   Icons.music_note,
+                  size: 18,
                   color: colorsPurpleBluePrimary,
                 ),
                 isPressed: soundState.isSoundPlay,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
               ),
               soundState.isSoundPlay
                   ? SizedBox(
-                      height: 24,
-                      width: 114,
+                      height: 16,
+                      width: 84,
                       child: Marquee(
                         text: 'Now Playing: Lush World by Tabletop Audio',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: colorsPurpleBluePrimary,
+                          fontSize: 10,
+                        ),
                         scrollAxis: Axis.horizontal,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        blankSpace: 20.0,
+                        blankSpace: 10.0,
                         velocity: 100.0,
                         pauseAfterRound: const Duration(seconds: 1),
                         startPadding: 10.0,
@@ -65,7 +70,8 @@ class SoundButton extends StatelessWidget {
                       ),
                     )
                   : const SizedBox(
-                      height: 24,
+                      height: 16,
+                      width: 84,
                     ),
             ],
           );

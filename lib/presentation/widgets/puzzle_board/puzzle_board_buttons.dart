@@ -29,7 +29,7 @@ class PuzzleBoardButtons extends StatelessWidget {
             child: ButtonGlass(
               childUnpressed: const Icon(
                 Icons.arrow_back,
-                size: 50.0,
+                size: 46.0,
                 color: colorsPurpleBluePrimary,
               ),
               btnText: 'Back',
@@ -37,6 +37,7 @@ class PuzzleBoardButtons extends StatelessWidget {
                 menuState.backToMenu();
                 buttonsHoverState.isBackHover = false;
               },
+              size: 46,
               isHovered: buttonsHoverState.isBackHover,
               onHover: (value) {
                 buttonsHoverState.toggleBackHover();
@@ -50,9 +51,10 @@ class PuzzleBoardButtons extends StatelessWidget {
               childUnpressed: SvgPicture.asset(
                 'assets/images/restart.svg',
                 color: colorsPurpleBluePrimary,
-                height: 40,
+                height: 36,
               ),
               btnText: 'Shuffle',
+              size: 46,
               // isPressed: puzzleState.shuffleBtnPressed,
               onTap: () async {
                 shuffleAnimationState.shuffledPressed();

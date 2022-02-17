@@ -71,14 +71,14 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
             AnimatedBuilder(
                 animation: shuffleAnimationState.shakeAnimation!,
                 child: AnimatedContainer(
-                  width: isCompleted ? 318 : 288,
-                  height: isCompleted ? 318 : 288,
+                  width: isCompleted ? 320 : 292,
+                  height: isCompleted ? 320 : 292,
                   duration: animationOneSecondDuration,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
-                      width: 288,
-                      height: 288,
+                      width: 292,
+                      height: 292,
                       child: PuzzleBoard(
                         size: difficultyState.boardSize,
                         spacing: 0,

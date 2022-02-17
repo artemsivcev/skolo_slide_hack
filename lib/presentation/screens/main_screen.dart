@@ -8,6 +8,7 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
+import 'package:skolo_slide_hack/presentation/widgets/menu/dash_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/game_title.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/links_row.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/menu_widget.dart';
@@ -41,10 +42,24 @@ class MainScreen extends StatelessWidget {
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                MenuWidget(),
-                GameTitle(),
-                LinksRow(),
-                SoundButton(),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: SoundButton(),
+                ),
+                Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: GameTitle(),
+                    ),
+                    MenuWidget(),
+                    LinksRow(),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: DashIcon(),
+                ),
               ],
             ),
           ));

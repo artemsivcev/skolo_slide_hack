@@ -30,19 +30,19 @@ class LinksRow extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-            bottom: 20.0,
+            bottom: 14.0,
           ),
           child: Row(
             children: [
-              GitHubIcon(height: !usedMobileVersion ? 48 : 36),
+              GitHubIcon(height: !usedMobileVersion ? 48 : 34),
               const SizedBox(width: 12),
               usedMobileVersion
-                  ? const SmallSkoloIcon(height: 36)
-                  : SkoloIcon(height: !usedMobileVersion ? 48 : 36),
+                  ? const SmallSkoloIcon(height: 34)
+                  : SkoloIcon(height: !usedMobileVersion ? 48 : 34),
             ],
           ),
         ),
-        DashIcon(),
+        const SizedBox(width: 108),
       ],
     );
   }

@@ -19,31 +19,23 @@ class GameTitle extends StatelessWidget {
         ? screenState.screenWidth < screenState.screenHeight
         : true;
 
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Semantics(
-        label: "Game title",
-        readOnly: true,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
-          child: Text(
-            usedMobileVersion
-                ? !screenState.isPortrait(context)
-                    ? 'Slide\nPuzzle\nGame'
-                    : 'Slide Puzzle\n      Game'
-                : '''Slide
-        Puzzle
-                   Game''',
-            textAlign: !screenState.isPortrait(context) && usedMobileVersion
-                ? TextAlign.center
-                : null,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: usedMobileVersion ? 20 : 32,
-              fontWeight: FontWeight.w900,
-              height: 1.4,
-              color: colorsPurpleBluePrimary,
-            ),
+    return Semantics(
+      label: "Game title",
+      readOnly: true,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+        child: Text(
+          usedMobileVersion
+              ? 'Slide Puzzle\n      Game'
+              : '''Slide
+      Puzzle
+                 Game''',
+          style: TextStyle(
+            fontFamily: 'Montserrat',
+            fontSize: usedMobileVersion ? 20 : 30,
+            fontWeight: FontWeight.w900,
+            height: 1.3,
+            color: colorsPurpleBluePrimary,
           ),
         ),
       ),

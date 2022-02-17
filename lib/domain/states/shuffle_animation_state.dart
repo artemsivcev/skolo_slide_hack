@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
+import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 
 part 'shuffle_animation_state.g.dart';
 
@@ -10,8 +11,10 @@ class ShuffleAnimationState = _ShuffleAnimationState
 
 /// State is used for showing animation when the user taps a shuffle button.
 abstract class _ShuffleAnimationState with Store {
+  TileAnimationState tileAnimationState = injector<TileAnimationState>();
+
   @observable
-  AnimationController? animationShuffleController;
+  AnimationController? animationController;
 
   /// animation for shaking puzzle tiles.
   @observable
@@ -31,15 +34,16 @@ abstract class _ShuffleAnimationState with Store {
   /// init the controller and animations
   @action
   void initAnimation(AnimationController controller) {
-    animationShuffleController = controller;
+    animationController = controller;
 
     shakeAnimation = tweenForShake
         .chain(CurveTween(curve: Curves.elasticIn))
-        .animate(animationShuffleController!)
+        .animate(animationController!)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          animationShuffleController!.reverse();
+          animationController!.reverse();
           shuffled = false;
+          tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
         }
       });
 
@@ -48,10 +52,10 @@ abstract class _ShuffleAnimationState with Store {
       end: 0,
     ).animate(
       CurvedAnimation(
-        parent: animationShuffleController!,
+        parent: animationController!,
         curve: const Interval(
           0.0,
-          0.5,
+          0.7,
           curve: Curves.bounceOut,
         ),
       ),
@@ -61,12 +65,15 @@ abstract class _ShuffleAnimationState with Store {
   /// function for pressing shuffle button and turning on the sound
   @action
   void shuffledPressed() {
+    tileAnimationState.currentAnimationPhase = TileAnimationPhase.SHAFFLE;
     injector<SoundState>().playShuffleSound();
     shuffled = true;
   }
 
-  void dispose() {
-    animationShuffleController?.dispose();
+  /// reset animation
+  @action
+  void resetAnimation() {
+    animationController?.dispose();
     shuffled = false;
   }
 }

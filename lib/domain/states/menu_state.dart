@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
@@ -49,6 +50,7 @@ abstract class _MenuState with Store {
     injector<PuzzleState>().resetMovementsCounter();
     injector<StartAnimationState>().resetStartAnimation();
     injector<WinAnimationState>().resetAnimation();
+    injector<ShuffleAnimationState>().resetAnimation();
     _tileAnimationState.currentAnimationPhase = null;
   }
 

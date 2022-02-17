@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
+import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container_pure.dart';
+import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_shuffle_animator.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_start_play_animator.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_win_animator.dart';
 
@@ -43,6 +45,10 @@ class AnimatedTile extends StatelessWidget {
             animationController =
                 injector<WinAnimationState>().animationController;
             break;
+          case TileAnimationPhase.SHAFFLE:
+            animationController =
+                injector<ShuffleAnimationState>().animationController;
+            break;
 
           /// for TileAnimationPhase.START_ANIMATION
           default:
@@ -65,6 +71,12 @@ class AnimatedTile extends StatelessWidget {
                 tweenStart: fraction,
                 tile: tile,
               );
+            }
+
+            if (animationPhase == TileAnimationPhase.SHAFFLE) {
+              return tile.isEmpty
+                  ? const SizedBox()
+                  : TileShuffleAnimator(child: child!);
             }
 
             // for TileAnimationPhase.NORMAL

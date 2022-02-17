@@ -23,21 +23,25 @@ class PuzzleBoardButtons extends StatelessWidget {
     return Observer(builder: (context) {
       return RowColumnSolver(
         children: [
-          ButtonGlass(
-            childUnpressed: const Icon(
-              Icons.arrow_back,
-              size: 50.0,
-              color: colorsPurpleBluePrimary,
+          Semantics(
+            label: "Go back to the menu",
+            enabled: true,
+            child: ButtonGlass(
+              childUnpressed: const Icon(
+                Icons.arrow_back,
+                size: 50.0,
+                color: colorsPurpleBluePrimary,
+              ),
+              btnText: 'Back',
+              onTap: () async {
+                menuState.backToMenu();
+                buttonsHoverState.isBackHover = false;
+              },
+              isHovered: buttonsHoverState.isBackHover,
+              onHover: (value) {
+                buttonsHoverState.toggleBackHover();
+              },
             ),
-            btnText: 'Back',
-            onTap: () async {
-              menuState.backToMenu();
-              buttonsHoverState.isBackHover = false;
-            },
-            isHovered: buttonsHoverState.isBackHover,
-            onHover: (value) {
-              buttonsHoverState.toggleBackHover();
-            },
           ),
           Semantics(
             label: "Shuffle puzzle boarder",

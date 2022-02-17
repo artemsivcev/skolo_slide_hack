@@ -3,13 +3,11 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 
-import '../text_shadows.dart';
-
 class ButtonText extends StatelessWidget {
   ButtonText({
     Key? key,
     required this.btnText,
-    this.paddingSize = 32.0,
+    this.paddingSize = 20.0,
     this.fontSize,
   }) : super(key: key);
 

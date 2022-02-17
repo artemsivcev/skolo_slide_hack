@@ -34,14 +34,19 @@ class MainScreen extends StatelessWidget {
           colorsBackground: colorsBackgroundGame,
           direction: mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
           numLines: mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              MenuWidget(),
-              GameTitle(),
-              const LinksRow(),
-              SoundButton(),
-            ],
+          child: SafeArea(
+            bottom: false,
+            left: false,
+            right: false,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                MenuWidget(),
+                GameTitle(),
+                LinksRow(),
+                SoundButton(),
+              ],
+            ),
           ));
     });
   }

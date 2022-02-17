@@ -42,7 +42,8 @@ class SoundButton extends StatelessWidget {
                   color: colorsPurpleBluePrimary,
                 ),
                 isPressed: soundState.isSoundPlay,
-                padding: const EdgeInsets.fromLTRB(20.0, 32.0, 32.0, 8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
               ),
               soundState.isSoundPlay
                   ? SizedBox(

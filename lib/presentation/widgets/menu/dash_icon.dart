@@ -11,7 +11,7 @@ class DashIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120,
+      width: 108,
       child: Stack(
         alignment: Alignment.bottomRight,
         children: [

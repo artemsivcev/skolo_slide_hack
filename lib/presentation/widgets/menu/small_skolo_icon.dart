@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SmallSkoloIcon extends StatelessWidget {
-  const SmallSkoloIcon({Key? key}) : super(key: key);
+  const SmallSkoloIcon({
+    Key? key,
+    this.height = 48,
+  }) : super(key: key);
+
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class SmallSkoloIcon extends StatelessWidget {
         child: Image.asset(
           'assets/images/skolo_small_icon.png',
           color: Colors.black,
-          height: 50,
+          height: height,
         ),
       ),
     );

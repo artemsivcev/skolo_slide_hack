@@ -21,7 +21,7 @@ class MovementsCounter extends StatelessWidget {
           readOnly: true,
           child: Text(
             'Moves: $moveAmount',
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12,
               fontWeight: FontWeight.w900,

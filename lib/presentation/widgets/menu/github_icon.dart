@@ -3,7 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GitHubIcon extends StatelessWidget {
-  const GitHubIcon({Key? key}) : super(key: key);
+  const GitHubIcon({
+    Key? key,
+    this.height = 48,
+  }) : super(key: key);
+
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class GitHubIcon extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/images/github.svg',
           color: Colors.black,
-          height: 50,
+          height: height,
         ),
       ),
     );

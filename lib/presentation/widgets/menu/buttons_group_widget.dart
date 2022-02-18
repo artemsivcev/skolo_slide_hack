@@ -59,7 +59,6 @@ class ButtonsGroupWidget extends StatelessWidget {
               },
             ),
           ),
-          !kIsWeb ? const SizedBox(width: 32) : const SizedBox(),
           !kIsWeb
               ? Semantics(
                   label: "Exit the game",

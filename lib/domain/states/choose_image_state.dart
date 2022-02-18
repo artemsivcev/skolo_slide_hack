@@ -157,7 +157,7 @@ abstract class _ChooseImageState with Store {
   /// for adaptive layout
   double getImageMaxSize(BuildContext context, {double? customMultiple}) {
     double maxSize = 100.0;
-    double multiple = 0.1;
+    double multiple = 0.14;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 

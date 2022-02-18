@@ -8,6 +8,7 @@ import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
 
 class CropButtons extends StatefulWidget {
   const CropButtons({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class _CropButtonsState extends State<CropButtons>
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
-      return Row(
+      return RowColumnSolver(
         children: [
           ButtonGlass(
             childUnpressed: const Icon(

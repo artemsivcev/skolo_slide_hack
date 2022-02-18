@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
@@ -28,6 +29,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   final winAnimationState = injector<WinAnimationState>();
   final startAnimationState = injector<StartAnimationState>();
   final shuffleAnimationState = injector<ShuffleAnimationState>();
+  final screenState = injector<ScreenState>();
 
   @override
   void initState() {
@@ -56,6 +58,8 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Observer(
       builder: (context) {
+        var usedMobileVersion = screenState.usedMobileVersion;
+
         var tiles = puzzleState.tiles;
 
         return Container(
@@ -85,20 +89,23 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
             ? startAnimationState.flipAnimationPart1
             : startAnimationState.flipAnimationPart2;
 
+        double biggerSize = usedMobileVersion ? 310 : 350;
+        double smallerSize = usedMobileVersion ? 282 : 322;
+
         return Column(
           children: [
             const MovementsCounter(),
             AnimatedBuilder(
                 animation: shuffleAnimationState.shakeAnimation!,
                 child: AnimatedContainer(
-                  width: isCompleted ? 310 : 282,
-                  height: isCompleted ? 310 : 282,
+                  width: isCompleted ? biggerSize : smallerSize,
+                  height: isCompleted ? biggerSize : smallerSize,
                   duration: animationOneSecondDuration,
                   child: Padding(
                     padding: const EdgeInsets.all(10),
                     child: SizedBox(
-                      width: 282,
-                      height: 282,
+                      width: smallerSize,
+                      height: smallerSize,
                       child: PuzzleBoard(
                         size: difficultyState.boardSize,
                         spacing: 0,

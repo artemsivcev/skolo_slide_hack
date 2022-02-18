@@ -11,6 +11,7 @@ import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/game_timer.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
+import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/animated_tile.dart';
 
 import 'movements_counter.dart';
 
@@ -55,10 +56,28 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Observer(
       builder: (context) {
+        var tiles = puzzleState.tiles;
+
+        return SizedBox(
+          width: 300,
+          height: 300,
+          child: PuzzleBoard(
+            size: difficultyState.boardSize,
+            tiles: List.generate(
+              tiles.length,
+              (index) => AnimatedTile(
+                tile: tiles[index],
+                fraction: index / tiles.length,
+                onTap: () => puzzleState.onTileTapped(index),
+              ),
+            ),
+          ),
+        );
+
         final showCorrectOrder = !startAnimationState.isStartAnimPart1End;
 
-        var tiles =
-            showCorrectOrder ? puzzleState.correctTiles : puzzleState.tiles;
+        // var tiles =
+        //     showCorrectOrder ? puzzleState.correctTiles : puzzleState.tiles;
         var isCompleted = puzzleState.isComplete;
 
         final startFlipAnimation = showCorrectOrder
@@ -128,7 +147,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                   final sineValue = sin(3 *
                       2 *
                       pi *
-                      shuffleAnimationState.animationShuffleController!.value);
+                      shuffleAnimationState.animationController!.value);
                   return Transform.translate(
                     // 4. apply a translation as a function of the animation value
                     offset: Offset(sineValue * 9, 0),

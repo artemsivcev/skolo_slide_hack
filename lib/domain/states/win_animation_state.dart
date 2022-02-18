@@ -14,6 +14,9 @@ abstract class _WinAnimationState with Store {
   /// tween for spacing between elements in [PuzzleBoard]
   final Tween<double> tweenForSpacing = Tween(begin: 2.0, end: 0.0);
 
+  /// tween for fading in/out empty tile
+  final Tween<double> tweenForFade = Tween(begin: 0, end: 1);
+
   @observable
   AnimationController? animationController;
 
@@ -46,9 +49,15 @@ abstract class _WinAnimationState with Store {
         }
       });
 
-    fadeAnimation = CurvedAnimation(
-      parent: animationController!,
-      curve: Curves.ease,
+    fadeAnimation = tweenForFade.animate(
+      CurvedAnimation(
+        parent: animationController!,
+        curve: const Interval(
+          0.0,
+          1.0,
+          curve: Curves.easeIn,
+        ),
+      ),
     );
 
     spacingAnimation = tweenForSpacing.animate(animationController!)
@@ -59,13 +68,17 @@ abstract class _WinAnimationState with Store {
 
   /// function for animating
   @action
-  void animate() => isAnimCompleted
-      ? animationController!.reset()
-      : animationController!.forward();
+  void animate() {
+    isAnimCompleted
+        ? animationController!.reset()
+        : animationController!.forward();
+  }
 
-  void dispose() {
-    animationController?.dispose();
-    spacingValue = 2.0;
+  /// reset animation
+  @action
+  void resetAnimation() {
+    animationController?.reset();
     isAnimCompleted = false;
+    spacingValue = 2.0;
   }
 }

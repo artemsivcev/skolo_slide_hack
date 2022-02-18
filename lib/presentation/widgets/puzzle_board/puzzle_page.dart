@@ -58,9 +58,10 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
       builder: (context) {
         var tiles = puzzleState.tiles;
 
-        return SizedBox(
-          width: 300,
-          height: 300,
+        return Container(
+          padding: const EdgeInsets.all(10),
+          width: 282,
+          height: 282,
           child: PuzzleBoard(
             size: difficultyState.boardSize,
             tiles: List.generate(

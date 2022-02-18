@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
@@ -36,7 +37,7 @@ class AnimatedTile extends StatelessWidget {
         final animationPhase = _animatedTileState.currentAnimationPhase;
 
         if (animationPhase == null) {
-          return SizedBox();
+          return const SizedBox();
         }
 
         final AnimationController? animationController;
@@ -138,7 +139,15 @@ class TextTileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(title);
+    return Text(
+      title,
+      style: const TextStyle(
+        fontFamily: 'Montserrat',
+        fontSize: 16,
+        fontWeight: FontWeight.w900,
+        color: colorsPurpleBluePrimary,
+      ),
+    );
   }
 }
 

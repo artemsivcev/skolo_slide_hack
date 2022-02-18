@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
@@ -15,21 +16,24 @@ class PuzzleBoardButtons extends StatelessWidget {
   final menuState = injector<MenuState>();
   final puzzleState = injector<PuzzleState>();
   final shuffleAnimationState = injector<ShuffleAnimationState>();
+  final screenState = injector<ScreenState>();
 
   PuzzleBoardButtons({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
+      var usedMobileVersion = screenState.usedMobileVersion;
+
       return RowColumnSolver(
         children: [
           Semantics(
             label: "Go back to the menu",
             enabled: true,
             child: ButtonGlass(
-              childUnpressed: const Icon(
+              childUnpressed: Icon(
                 Icons.arrow_back,
-                size: 46.0,
+                size: usedMobileVersion ? 32 : 44,
                 color: colorsPurpleBluePrimary,
               ),
               btnText: 'Back',
@@ -37,7 +41,7 @@ class PuzzleBoardButtons extends StatelessWidget {
                 menuState.backToMenu();
                 buttonsHoverState.isBackHover = false;
               },
-              size: 46,
+              size: usedMobileVersion ? 30 : 44,
               isHovered: buttonsHoverState.isBackHover,
               onHover: (value) {
                 buttonsHoverState.toggleBackHover();
@@ -51,11 +55,10 @@ class PuzzleBoardButtons extends StatelessWidget {
               childUnpressed: SvgPicture.asset(
                 'assets/images/restart.svg',
                 color: colorsPurpleBluePrimary,
-                height: 36,
+                height: usedMobileVersion ? 26 : 34,
               ),
               btnText: 'Shuffle',
-              size: 46,
-              // isPressed: puzzleState.shuffleBtnPressed,
+              size: usedMobileVersion ? 30 : 44,
               onTap: () async {
                 shuffleAnimationState.shuffledPressed();
                 shuffleAnimationState.animationShuffleController!.forward();

@@ -27,7 +27,7 @@ class ButtonText extends StatelessWidget {
         btnText,
         style: TextStyle(
           fontFamily: 'Montserrat',
-          fontSize: fontSize ?? 24,
+          fontSize: fontSize ?? 23,
           fontWeight: FontWeight.w900,
           color: colorsPurpleBluePrimary,
         ),

@@ -60,12 +60,15 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
       builder: (context) {
         var usedMobileVersion = screenState.usedMobileVersion;
 
+        double biggerSize = usedMobileVersion ? 310 : 350;
+        double smallerSize = usedMobileVersion ? 282 : 322;
+
         var tiles = puzzleState.tiles;
 
         return Container(
           padding: const EdgeInsets.all(10),
-          width: 282,
-          height: 282,
+          width: smallerSize,
+          height: smallerSize,
           child: PuzzleBoard(
             size: difficultyState.boardSize,
             tiles: List.generate(
@@ -88,9 +91,6 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
         final startFlipAnimation = showCorrectOrder
             ? startAnimationState.flipAnimationPart1
             : startAnimationState.flipAnimationPart2;
-
-        double biggerSize = usedMobileVersion ? 310 : 350;
-        double smallerSize = usedMobileVersion ? 282 : 322;
 
         return Column(
           children: [

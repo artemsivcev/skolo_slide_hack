@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 
 part 'screen_state.g.dart';
@@ -14,12 +15,25 @@ abstract class _ScreenState with Store {
     return height > width;
   }
 
+  @observable
   double screenWidth = 0;
+
+  @observable
   double screenHeight = 0;
 
   @action
   void setScreenSize(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
+  }
+
+  @computed
+  bool get usedMobileVersion {
+    final isWebMobile = kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.iOS ||
+            defaultTargetPlatform == TargetPlatform.android);
+
+    //rotate if a screen width < screen height. only for mobile devices
+    return kIsWeb && !isWebMobile ? screenWidth < screenHeight : true;
   }
 }

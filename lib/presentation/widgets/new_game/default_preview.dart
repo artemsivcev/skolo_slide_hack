@@ -45,9 +45,9 @@ class DefaultPreview extends StatelessWidget {
                 label: "Choose $defaultImageName image",
                 enabled: true,
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
+                      borderRadius: BorderRadius.circular(8.0),
                       child: AnimatedContainer(
                         width: chooseImageState.getAnimatedContainerSize(
                             context, isChosen),

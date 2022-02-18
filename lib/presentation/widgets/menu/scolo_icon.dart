@@ -3,7 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SkoloIcon extends StatelessWidget {
-  const SkoloIcon({Key? key}) : super(key: key);
+  const SkoloIcon({
+    Key? key,
+    this.height = 48,
+  }) : super(key: key);
+
+  final double height;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class SkoloIcon extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/images/skolo.svg',
           color: Colors.black,
-          height: 50,
+          height: height,
         ),
       ),
     );

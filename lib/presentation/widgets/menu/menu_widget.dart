@@ -18,55 +18,57 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FittedBox(
-        child: Observer(
-          builder: (context) {
-            Widget firstWidgetToShow = const SizedBox();
-            Widget secondWidgetToShow = const SizedBox();
+    return Expanded(
+      child: Center(
+        child: FittedBox(
+          child: Observer(
+            builder: (context) {
+              Widget firstWidgetToShow = const SizedBox();
+              Widget secondWidgetToShow = const SizedBox();
 
-            switch (menuState.currentGameState) {
-              case GameState.CHOSE_IMAGE:
-                firstWidgetToShow = const ImageChooser();
-                secondWidgetToShow = const CropButtons();
-                break;
+              switch (menuState.currentGameState) {
+                case GameState.CHOSE_IMAGE:
+                  firstWidgetToShow = const ImageChooser();
+                  secondWidgetToShow = const CropButtons();
+                  break;
 
-              case GameState.WITHOUT_IMAGE_PLAY:
-              case GameState.DEFAULT_IMAGE_PLAY:
-              case GameState.CUSTOM_IMAGE_PLAY:
-                firstWidgetToShow = const PuzzlePage();
-                secondWidgetToShow = PuzzleBoardButtons();
-                break;
+                case GameState.WITHOUT_IMAGE_PLAY:
+                case GameState.DEFAULT_IMAGE_PLAY:
+                case GameState.CUSTOM_IMAGE_PLAY:
+                  firstWidgetToShow = const PuzzlePage();
+                  secondWidgetToShow = PuzzleBoardButtons();
+                  break;
 
-              // as for GameState.MAIN_MENU
-              default:
-                firstWidgetToShow = DifficultyLevel();
-                secondWidgetToShow = ButtonsGroupWidget();
-            }
+                // as for GameState.MAIN_MENU
+                default:
+                  firstWidgetToShow = DifficultyLevel();
+                  secondWidgetToShow = ButtonsGroupWidget();
+              }
 
-            return RowColumnSolver(
-              children: [
-                GlassContainer(
-                  child: AnimatedCrossFade(
-                    crossFadeState: CrossFadeState.showFirst,
-                    duration: animationTwoSecondsDuration,
-                    firstChild: firstWidgetToShow,
-                    secondChild: secondWidgetToShow,
-                  ),
-                ),
-                FittedBox(
-                  child: GlassContainer(
+              return RowColumnSolver(
+                children: [
+                  GlassContainer(
                     child: AnimatedCrossFade(
                       crossFadeState: CrossFadeState.showFirst,
                       duration: animationTwoSecondsDuration,
-                      firstChild: secondWidgetToShow,
+                      firstChild: firstWidgetToShow,
                       secondChild: secondWidgetToShow,
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                  FittedBox(
+                    child: GlassContainer(
+                      child: AnimatedCrossFade(
+                        crossFadeState: CrossFadeState.showFirst,
+                        duration: animationTwoSecondsDuration,
+                        firstChild: secondWidgetToShow,
+                        secondChild: secondWidgetToShow,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:marquee/marquee.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
 
@@ -12,6 +13,7 @@ class SoundButton extends StatelessWidget {
 
   final buttonsHoverState = injector<ButtonsHoverState>();
   final soundState = injector<SoundState>();
+  final screenState = injector<ScreenState>();
 
   @override
   Widget build(BuildContext context) {
@@ -21,39 +23,48 @@ class SoundButton extends StatelessWidget {
         label: "Turn on/off sound",
         enabled: true,
         child: Observer(builder: (context) {
+          var usedMobileVersion = screenState.usedMobileVersion;
+
           return Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ButtonGlass(
-                size: 25,
+                size: usedMobileVersion ? 14 : 20,
                 onTap: () => {soundState.toggleSoundBtn()},
                 isHovered: buttonsHoverState.isSoundHovered,
                 onHover: (value) {
                   buttonsHoverState.toggleHoveredSound();
                 },
-                childPressed: const Icon(
+                childPressed: Icon(
                   Icons.music_off,
+                  size: usedMobileVersion ? 16 : 20,
                   color: colorsPurpleBluePrimary,
                 ),
-                childUnpressed: const Icon(
+                childUnpressed: Icon(
                   Icons.music_note,
+                  size: usedMobileVersion ? 16 : 20,
                   color: colorsPurpleBluePrimary,
                 ),
                 isPressed: soundState.isSoundPlay,
-                padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 8.0),
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 2),
               ),
               soundState.isSoundPlay
-                  ? SizedBox(
-                      height: 24,
-                      width: 114,
+                  ? Container(
+                      height: usedMobileVersion ? 12 : 20,
+                      width: 82,
+                      padding: const EdgeInsets.only(right: 4),
                       child: Marquee(
                         text: 'Now Playing: Lush World by Tabletop Audio',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: colorsPurpleBluePrimary,
+                          fontSize: usedMobileVersion ? 9 : 14,
+                        ),
                         scrollAxis: Axis.horizontal,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        blankSpace: 20.0,
+                        blankSpace: 10.0,
                         velocity: 100.0,
                         pauseAfterRound: const Duration(seconds: 1),
                         startPadding: 10.0,
@@ -63,8 +74,9 @@ class SoundButton extends StatelessWidget {
                         decelerationCurve: Curves.easeOut,
                       ),
                     )
-                  : const SizedBox(
-                      height: 24,
+                  : SizedBox(
+                      height: usedMobileVersion ? 12 : 20,
+                      width: 82,
                     ),
             ],
           );

@@ -28,8 +28,8 @@ class GlassContainerCircle extends StatelessWidget {
               ? BoxShadow(
                   color: colorsPurpleBluePrimary.withOpacity(0.7),
                   offset: const Offset(0, 0),
-                  blurRadius: blurRadius ?? 20,
-                  spreadRadius: 5)
+                  blurRadius: blurRadius ?? 18,
+                  spreadRadius: 4)
               : const BoxShadow(color: Colors.transparent),
         ],
       ),

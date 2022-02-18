@@ -19,10 +19,10 @@ final GetIt injector = GetIt.I;
 Future<void> setupInjection() async {
   injector.registerSingleton(SoundState());
   injector.registerSingleton(ScreenState());
+  injector.registerSingleton(TileAnimationState());
   injector.registerSingleton(WinAnimationState());
   injector.registerLazySingleton(() => StartAnimationState());
   injector.registerSingleton(ShuffleAnimationState());
-  injector.registerSingleton(TileAnimationState());
   injector.registerSingleton(MenuState());
   injector.registerSingleton(DifficultyState());
   injector.registerSingleton(ChooseImageState());

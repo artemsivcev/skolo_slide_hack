@@ -147,7 +147,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
                   final sineValue = sin(3 *
                       2 *
                       pi *
-                      shuffleAnimationState.animationShuffleController!.value);
+                      shuffleAnimationState.animationController!.value);
                   return Transform.translate(
                     // 4. apply a translation as a function of the animation value
                     offset: Offset(sineValue * 9, 0),

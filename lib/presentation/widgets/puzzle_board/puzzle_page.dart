@@ -8,7 +8,9 @@ import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
+import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/board_animations/board_shuffle_animator.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/game_timer.dart';
 import 'package:skolo_slide_hack/presentation/widgets/simple_tile_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/animated_tile.dart';
@@ -58,21 +60,42 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
       builder: (context) {
         var tiles = puzzleState.tiles;
 
-        return SizedBox(
-          width: 300,
-          height: 300,
-          child: PuzzleBoard(
-            size: difficultyState.boardSize,
-            tiles: List.generate(
-              tiles.length,
-              (index) => AnimatedTile(
-                tile: tiles[index],
-                fraction: index / tiles.length,
-                onTap: () => puzzleState.onTileTapped(index),
+        final TileAnimationState _animatedTileState =
+            injector<TileAnimationState>();
+        final animationPhase = _animatedTileState.currentAnimationPhase;
+        final AnimationController? animationController;
+
+        if (animationPhase == TileAnimationPhase.SHAFFLE) {
+          animationController =
+              injector<ShuffleAnimationState>().animationController;
+        } else {
+          animationController =
+              injector<StartAnimationState>().startAnimationController;
+        }
+
+        return AnimatedBuilder(
+            animation: animationController!,
+            builder: (_, child) {
+              //todo when other animations come, do if/else or switch
+              // if (animationPhase == TileAnimationPhase.SHAFFLE) {
+              return BoardShuffleAnimator(child: child!);
+              // }
+            },
+            child: SizedBox(
+              width: 300,
+              height: 300,
+              child: PuzzleBoard(
+                size: difficultyState.boardSize,
+                tiles: List.generate(
+                  tiles.length,
+                  (index) => AnimatedTile(
+                    tile: tiles[index],
+                    fraction: index / tiles.length,
+                    onTap: () => puzzleState.onTileTapped(index),
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
+            ));
 
         final showCorrectOrder = !startAnimationState.isStartAnimPart1End;
 

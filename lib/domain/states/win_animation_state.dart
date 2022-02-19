@@ -12,7 +12,7 @@ abstract class _WinAnimationState with Store {
   final Tween<double> tweenForFlipping = Tween(begin: pi, end: 0.0);
 
   /// tween for spacing between elements in [PuzzleBoard]
-  final Tween<double> tweenForSpacing = Tween(begin: 2.0, end: 0.0);
+  final Tween<double> tweenForSpacing = Tween(begin: 3.0, end: 0.0);
 
   /// tween for fading in/out empty tile
   final Tween<double> tweenForFade = Tween(begin: 0, end: 1);
@@ -29,7 +29,7 @@ abstract class _WinAnimationState with Store {
   Animation<double>? spacingAnimation;
 
   @observable
-  double spacingValue = 2.0;
+  double spacingValue = 3.0;
 
   /// bool for checking if the animation is completed
   @observable
@@ -79,6 +79,6 @@ abstract class _WinAnimationState with Store {
   void resetAnimation() {
     animationController?.reset();
     isAnimCompleted = false;
-    spacingValue = 2.0;
+    spacingValue = 3.0;
   }
 }

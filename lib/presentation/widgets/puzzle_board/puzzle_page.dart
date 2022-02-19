@@ -9,6 +9,8 @@ import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/game_timer.dart';
+import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/movements_counter.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/animated_tile.dart';
 
 class PuzzlePage extends StatefulWidget {
@@ -55,18 +57,19 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
       builder: (context) {
         var usedMobileVersion = screenState.usedMobileVersion;
 
-        //double biggerSize = usedMobileVersion ? 310 : 350;
-        double smallerSize = usedMobileVersion ? 282 : 322;
+        double biggerSize = usedMobileVersion ? 310 : 350;
+        double smallerSize = usedMobileVersion ? 280 : 320;
 
-        //var tiles = puzzleState.tiles;
-
-        return Container(
-          padding: const EdgeInsets.all(10),
-          width: smallerSize,
-          height: smallerSize,
-          child: PuzzleBoard(
-            size: difficultyState.boardSize,
-          ),
+        return Column(
+          children: [
+            const MovementsCounter(),
+            PuzzleBoard(
+              smallerSize: smallerSize,
+              biggerSize: biggerSize,
+              size: difficultyState.boardSize,
+            ),
+            GameTimer(),
+          ],
         );
 
         // final showCorrectOrder = !startAnimationState.isStartAnimPart1End;
@@ -79,10 +82,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
         //     ? startAnimationState.flipAnimationPart1
         //     : startAnimationState.flipAnimationPart2;
         //
-        // return Column(
-        //   children: [
-        //     const MovementsCounter(),
-        //     AnimatedBuilder(
+        // return AnimatedBuilder(
         //         animation: shuffleAnimationState.shakeAnimation!,
         //         child: AnimatedContainer(
         //           width: isCompleted ? biggerSize : smallerSize,
@@ -149,10 +149,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
         //             // 5. use the child widget
         //             child: child,
         //           );
-        //         }),
-        //     GameTimer(),
-        //   ],
-        // );
+        //         });
       },
     );
   }
@@ -164,9 +161,16 @@ class PuzzleBoard extends StatelessWidget {
     Key? key,
     required this.size,
     this.spacing = 8,
+    required this.biggerSize,
+    required this.smallerSize,
   }) : super(key: key);
 
-  /// The size of the board.
+  /// height and width of the board
+  final double biggerSize;
+
+  final double smallerSize;
+
+  /// The dimension of the board.
   final int size;
 
   /// The spacing between each tile from [tiles].
@@ -185,17 +189,25 @@ class PuzzleBoard extends StatelessWidget {
 
       final animationPhase = _animatedTileState.currentAnimationPhase;
 
+      final isCompleted = _puzzleState.isComplete;
+
       if (animationPhase == null) {
         return const SizedBox();
       }
 
-      var usedAnimationValue;
+      double? usedAnimationValue;
 
       switch (animationPhase) {
         //todo add another cases
         case TileAnimationPhase.START_ANIMATION:
-          usedAnimationValue = _startAnimation.puzzleBoardAxisPaddingAnimation;
+          usedAnimationValue =
+              _startAnimation.puzzleBoardAxisPaddingAnimation.value;
           tiles = _puzzleState.correctTiles;
+          break;
+
+        default:
+          usedAnimationValue = winAnimationState.spacingValue;
+          tiles = _puzzleState.tiles;
           break;
       }
 
@@ -211,18 +223,21 @@ class PuzzleBoard extends StatelessWidget {
       return AnimatedBuilder(
         animation: _startAnimation.startAnimationController!,
         builder: (_, __) {
-          return GridView.count(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: size,
-            mainAxisSpacing: usedAnimationValue != null
-                ? usedAnimationValue.value
-                : winAnimationState.spacingValue,
-            crossAxisSpacing: usedAnimationValue != null
-                ? usedAnimationValue.value
-                : winAnimationState.spacingValue,
-            children: tilesList,
+          return AnimatedContainer(
+            duration: animationOneThirdSecondDuration,
+            width: isCompleted ? biggerSize : smallerSize,
+            height: isCompleted ? biggerSize : smallerSize,
+            curve: Curves.fastOutSlowIn,
+            padding: const EdgeInsets.all(10),
+            child: GridView.count(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: size,
+              mainAxisSpacing: usedAnimationValue!,
+              crossAxisSpacing: usedAnimationValue,
+              children: tilesList,
+            ),
           );
         },
       );

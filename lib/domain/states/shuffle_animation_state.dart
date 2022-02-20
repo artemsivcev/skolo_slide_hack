@@ -24,10 +24,6 @@ abstract class _ShuffleAnimationState with Store {
   @observable
   Animation<double?>? appearDisappearAnimation;
 
-  /// detect if puzzle are shuffled
-  @observable
-  bool shuffled = false;
-
   ///Tween for shaking puzzle board
   final Tween<double> tweenForShake = Tween(begin: 0.0, end: 7.0);
 
@@ -42,7 +38,6 @@ abstract class _ShuffleAnimationState with Store {
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           animationController!.reverse();
-          shuffled = false;
           tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
         }
       });
@@ -55,7 +50,7 @@ abstract class _ShuffleAnimationState with Store {
         parent: animationController!,
         curve: const Interval(
           0.0,
-          0.7,
+          0.1,
           curve: Curves.bounceOut,
         ),
       ),
@@ -65,15 +60,13 @@ abstract class _ShuffleAnimationState with Store {
   /// function for pressing shuffle button and turning on the sound
   @action
   void shuffledPressed() {
-    tileAnimationState.currentAnimationPhase = TileAnimationPhase.SHAFFLE;
+    tileAnimationState.currentAnimationPhase = TileAnimationPhase.SHUFFLE;
     injector<SoundState>().playShuffleSound();
-    shuffled = true;
   }
 
   /// reset animation
   @action
   void resetAnimation() {
     animationController?.dispose();
-    shuffled = false;
   }
 }

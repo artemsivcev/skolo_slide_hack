@@ -1,11 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/constants/durations.dart';
-import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
-import 'package:skolo_slide_hack/domain/models/tile.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
-import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container_pure.dart';
 
 class TileShuffleAnimator extends StatelessWidget {
@@ -21,10 +16,9 @@ class TileShuffleAnimator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedPadding(
-      duration: animationOneSecondDuration,
-      padding: EdgeInsets.all(shuffleAnimationState.shuffled
-          ? shuffleAnimationState.appearDisappearAnimation!.value!
-          : 2.0),
+      duration: const Duration(milliseconds: 800),
+      padding: EdgeInsets.all(
+          shuffleAnimationState.appearDisappearAnimation!.value!),
       child: PolymorphicContainerPure(
         userInnerStyle: false,
         child: child,

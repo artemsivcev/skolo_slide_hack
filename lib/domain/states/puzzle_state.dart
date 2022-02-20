@@ -232,7 +232,6 @@ abstract class _PuzzleState with Store {
     toggleShuffleBtn();
     if (isComplete) {
       winAnimationState.animate();
-      tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
     }
     generatePuzzle();
     toggleShuffleBtn();

@@ -12,10 +12,9 @@ abstract class _TileAnimationState with Store {
 enum TileAnimationPhase {
   START_ANIMATION,
   WIN,
-  SHAFFLE,
+  SHUFFLE,
 
   /// Without any animation. Normal game made.
   NORMAL,
-
   // add exit?
 }

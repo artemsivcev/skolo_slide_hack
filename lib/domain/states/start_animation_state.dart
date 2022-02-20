@@ -17,7 +17,7 @@ abstract class _StartAnimationState with Store {
 
   /// Animation controller for start animation
   /// when user come to the screen at the first time.
-  AnimationController? startAnimationController;
+  AnimationController? animationController;
 
   /// animation for space between puzzle tiles.
   late Animation<double?> puzzleBoardAxisPaddingAnimation;
@@ -62,8 +62,8 @@ abstract class _StartAnimationState with Store {
 
   /// detect if start animation is completed
   @computed
-  bool get isStartAnimationCompleted => startAnimationController != null
-      ? startAnimationController!.status == AnimationStatus.completed
+  bool get isStartAnimationCompleted => animationController != null
+      ? animationController!.status == AnimationStatus.completed
       : false;
 
   @observable
@@ -77,7 +77,7 @@ abstract class _StartAnimationState with Store {
 
   /// init the controller and animations
   initStartAnimationController(TickerProvider tickerProvider) {
-    startAnimationController = AnimationController(
+    animationController = AnimationController(
       vsync: tickerProvider,
       duration: const Duration(
         milliseconds: startShiftTilesAnimationDuration +
@@ -85,7 +85,7 @@ abstract class _StartAnimationState with Store {
             startFlipAnimationDuration,
       ),
     )..addListener(() {
-        if (startAnimationController!.status == AnimationStatus.completed) {
+        if (animationController!.status == AnimationStatus.completed) {
           tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
         }
 
@@ -95,7 +95,7 @@ abstract class _StartAnimationState with Store {
 
     puzzleBoardAxisPaddingAnimation = tweenForPuzzleSpacing.animate(
       CurvedAnimation(
-        parent: startAnimationController!,
+        parent: animationController!,
         curve: const Interval(
           0.0,
           0.2,
@@ -106,7 +106,7 @@ abstract class _StartAnimationState with Store {
 
     borderRadiusAnimation = tweenForBorderRadius.animate(
       CurvedAnimation(
-        parent: startAnimationController!,
+        parent: animationController!,
         curve: const Interval(
           0.2,
           0.5,
@@ -121,7 +121,7 @@ abstract class _StartAnimationState with Store {
 
     flipAnimationPart1 = tweenFlipPart1.animate(
       CurvedAnimation(
-        parent: startAnimationController!,
+        parent: animationController!,
         curve: const Interval(
           0.5,
           0.8,
@@ -136,7 +136,7 @@ abstract class _StartAnimationState with Store {
 
     flipAnimationPart2 = tweenFlipPart2.animate(
       CurvedAnimation(
-        parent: startAnimationController!,
+        parent: animationController!,
         curve: const Interval(
           0.8,
           1,
@@ -153,13 +153,13 @@ abstract class _StartAnimationState with Store {
   @action
   Future<void> startAnimation() async {
     await Future.delayed(animationOneSecondDuration);
-    startAnimationController!.forward();
+    animationController!.forward();
   }
 
   /// reset animation
   @action
   void resetStartAnimation() {
-    startAnimationController?.reset();
+    animationController?.reset();
     puzzlePadding = startPuzzleBoardAxisPadding;
     isFirstScreenEntry = false;
     isStartAnimPart1End = false;
@@ -168,7 +168,7 @@ abstract class _StartAnimationState with Store {
   }
 
   void dispose() {
-    startAnimationController?.dispose();
+    animationController?.dispose();
     puzzlePadding = startPuzzleBoardAxisPadding;
     isFirstScreenEntry = false;
   }

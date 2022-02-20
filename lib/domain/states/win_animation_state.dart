@@ -54,7 +54,7 @@ abstract class _WinAnimationState with Store {
         parent: animationController!,
         curve: const Interval(
           0.0,
-          1.0,
+          0.55,
           curve: Curves.easeIn,
         ),
       ),

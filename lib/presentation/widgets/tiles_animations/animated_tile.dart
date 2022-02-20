@@ -46,7 +46,7 @@ class AnimatedTile extends StatelessWidget {
             animationController =
                 injector<WinAnimationState>().animationController;
             break;
-          case TileAnimationPhase.SHAFFLE:
+          case TileAnimationPhase.SHUFFLE:
             animationController =
                 injector<ShuffleAnimationState>().animationController;
             break;
@@ -54,7 +54,7 @@ class AnimatedTile extends StatelessWidget {
           /// for TileAnimationPhase.START_ANIMATION
           default:
             animationController =
-                injector<StartAnimationState>().startAnimationController;
+                injector<StartAnimationState>().animationController;
         }
 
         return AnimatedBuilder(
@@ -74,7 +74,7 @@ class AnimatedTile extends StatelessWidget {
               );
             }
 
-            if (animationPhase == TileAnimationPhase.SHAFFLE) {
+            if (animationPhase == TileAnimationPhase.SHUFFLE) {
               return tile.isEmpty
                   ? const SizedBox()
                   : TileShuffleAnimator(child: child!);

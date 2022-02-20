@@ -9,6 +9,7 @@ import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/board_animations/board_shuffle_animator.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/game_timer.dart';
 import 'package:skolo_slide_hack/presentation/widgets/puzzle_board/movements_counter.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/animated_tile.dart';
@@ -36,7 +37,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
     );
     winAnimationState.initAnimation(controller);
 
-    if (startAnimationState.startAnimationController == null) {
+    if (startAnimationState.animationController == null) {
       startAnimationState.initStartAnimationController(this);
     }
 
@@ -177,70 +178,74 @@ class PuzzleBoard extends StatelessWidget {
   final double spacing;
 
   final _startAnimation = injector<StartAnimationState>();
-  final winAnimationState = injector<WinAnimationState>();
+  final _winAnimationState = injector<WinAnimationState>();
   final _animatedTileState = injector<TileAnimationState>();
   final _puzzleState = injector<PuzzleState>();
+  final _shuffleAnimationState = injector<ShuffleAnimationState>();
 
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (_) {
-      /// The tiles to be displayed on the board.
-      var tiles = _puzzleState.tiles;
+    return Observer(
+      builder: (_) {
+        /// The tiles to be displayed on the board.
+        var tiles = _puzzleState.tiles;
 
-      final animationPhase = _animatedTileState.currentAnimationPhase;
+        final animationPhase = _animatedTileState.currentAnimationPhase;
 
-      final isCompleted = _puzzleState.isComplete;
+        final isCompleted = _puzzleState.isComplete;
 
-      if (animationPhase == null) {
-        return const SizedBox();
-      }
+        if (animationPhase == null) {
+          return const SizedBox();
+        }
 
-      double? usedAnimationValue;
+        double? usedAnimationValue;
 
-      switch (animationPhase) {
-        //todo add another cases
-        case TileAnimationPhase.START_ANIMATION:
+        final AnimationController? animationController;
+
+        if (animationPhase == TileAnimationPhase.START_ANIMATION) {
           usedAnimationValue =
               _startAnimation.puzzleBoardAxisPaddingAnimation.value;
           tiles = _puzzleState.correctTiles;
-          break;
-
-        default:
-          usedAnimationValue = winAnimationState.spacingValue;
+          animationController = _startAnimation.animationController;
+        } else {
+          usedAnimationValue = _winAnimationState.spacingValue;
           tiles = _puzzleState.tiles;
-          break;
-      }
+          animationController = _shuffleAnimationState.animationController;
+        }
 
-      final tilesList = List.generate(
-        tiles.length,
-        (index) => AnimatedTile(
-          tile: tiles[index],
-          fraction: index / tiles.length,
-          onTap: () => _puzzleState.onTileTapped(index),
-        ),
-      );
+        final tilesList = List.generate(
+          tiles.length,
+          (index) => AnimatedTile(
+            tile: tiles[index],
+            fraction: index / tiles.length,
+            onTap: () => _puzzleState.onTileTapped(index),
+          ),
+        );
 
-      return AnimatedBuilder(
-        animation: _startAnimation.startAnimationController!,
-        builder: (_, __) {
-          return AnimatedContainer(
-            duration: animationOneThirdSecondDuration,
-            width: isCompleted ? biggerSize : smallerSize,
-            height: isCompleted ? biggerSize : smallerSize,
-            curve: Curves.fastOutSlowIn,
-            padding: const EdgeInsets.all(10),
-            child: GridView.count(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: size,
-              mainAxisSpacing: usedAnimationValue!,
-              crossAxisSpacing: usedAnimationValue,
-              children: tilesList,
-            ),
-          );
-        },
-      );
-    });
+        return AnimatedBuilder(
+          animation: animationController!,
+          builder: (_, child) {
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 900),
+              curve: Curves.fastOutSlowIn,
+              height: isCompleted ? biggerSize : smallerSize,
+              width: isCompleted ? biggerSize : smallerSize,
+              padding: const EdgeInsets.all(10),
+              child: BoardShuffleAnimator(
+                child: GridView.count(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  crossAxisCount: size,
+                  physics: const NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: usedAnimationValue!,
+                  crossAxisSpacing: usedAnimationValue,
+                  children: tilesList,
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

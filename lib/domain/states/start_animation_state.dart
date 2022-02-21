@@ -25,9 +25,7 @@ abstract class _StartAnimationState with Store {
   /// animation for border radius of puzzle tiles.
   late Animation<double?> borderRadiusAnimation;
 
-  late Animation<double?> flipAnimationPart1;
-
-  late Animation<double?> flipAnimationPart2;
+  late Animation<double?> flipAnimation;
 
   /// tween for puzzle spacing
   final Tween<double> tweenForPuzzleSpacing = Tween<double>(
@@ -41,39 +39,20 @@ abstract class _StartAnimationState with Store {
     end: setTileCornerRadius,
   );
 
-  /// tween for [flipAnimationPart1]
-  final Tween<double> tweenFlipPart1 = Tween<double>(
+  /// tween for [flipAnimation]
+  final Tween<double> tweenFlip = Tween<double>(
     begin: 0,
     end: pi / 2,
-  );
-
-  /// tween for [flipAnimationPart2]
-  final Tween<double> tweenFlipPart2 = Tween<double>(
-    begin: pi,
-    end: 0,
   );
 
   @observable
   double puzzlePadding = startPuzzleBoardAxisPadding;
 
-  /// User enter to the screen at the first time.
-  @observable
-  bool isFirstScreenEntry = true;
-
-  /// detect if start animation is completed
-  @computed
-  bool get isStartAnimationCompleted => animationController != null
-      ? animationController!.status == AnimationStatus.completed
-      : false;
-
   @observable
   bool isStartAnimBorderEnd = false;
 
   @observable
-  bool isStartAnimPart1End = false;
-
-  @observable
-  bool isStartAnimPart2End = false;
+  bool isStartAnimEnd = false;
 
   /// init the controller and animations
   initStartAnimationController(TickerProvider tickerProvider) {
@@ -98,7 +77,7 @@ abstract class _StartAnimationState with Store {
         parent: animationController!,
         curve: const Interval(
           0.0,
-          0.2,
+          0.1,
           curve: Curves.linear,
         ),
       ),
@@ -108,8 +87,8 @@ abstract class _StartAnimationState with Store {
       CurvedAnimation(
         parent: animationController!,
         curve: const Interval(
-          0.2,
-          0.5,
+          0.1,
+          0.6,
           curve: Curves.linear,
         ),
       ),
@@ -119,33 +98,18 @@ abstract class _StartAnimationState with Store {
         }
       });
 
-    flipAnimationPart1 = tweenFlipPart1.animate(
+    flipAnimation = tweenFlip.animate(
       CurvedAnimation(
         parent: animationController!,
         curve: const Interval(
-          0.5,
+          0.6,
           0.8,
           curve: Curves.linear,
         ),
       ),
     )..addListener(() {
-        if (flipAnimationPart1.status == AnimationStatus.completed) {
-          isStartAnimPart1End = true;
-        }
-      });
-
-    flipAnimationPart2 = tweenFlipPart2.animate(
-      CurvedAnimation(
-        parent: animationController!,
-        curve: const Interval(
-          0.8,
-          1,
-          curve: Curves.linear,
-        ),
-      ),
-    )..addListener(() {
-        if (flipAnimationPart2.status == AnimationStatus.completed) {
-          isStartAnimPart2End = true;
+        if (flipAnimation.status == AnimationStatus.completed) {
+          isStartAnimEnd = true;
         }
       });
   }
@@ -161,15 +125,12 @@ abstract class _StartAnimationState with Store {
   void resetStartAnimation() {
     animationController?.reset();
     puzzlePadding = startPuzzleBoardAxisPadding;
-    isFirstScreenEntry = false;
-    isStartAnimPart1End = false;
-    isStartAnimPart2End = false;
+    isStartAnimEnd = false;
     isStartAnimBorderEnd = false;
   }
 
   void dispose() {
     animationController?.dispose();
     puzzlePadding = startPuzzleBoardAxisPadding;
-    isFirstScreenEntry = false;
   }
 }

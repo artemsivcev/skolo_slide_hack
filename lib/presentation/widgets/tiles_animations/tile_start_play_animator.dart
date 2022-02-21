@@ -14,7 +14,7 @@ class TileStartAnimator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Transform(
       alignment: Alignment.center,
-      transform: Matrix4.rotationX(_startAnimation.flipAnimationPart1.value!),
+      transform: Matrix4.rotationX(_startAnimation.flipAnimation.value!),
       child: PolymorphicContainerPure(
         externalBorderRadius: _startAnimation.borderRadiusAnimation.value!,
         child: child,

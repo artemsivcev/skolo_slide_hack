@@ -96,7 +96,7 @@ class AnimatedTile extends StatelessWidget {
 }
 
 class TileToShow extends StatelessWidget {
-  const TileToShow({
+  TileToShow({
     Key? key,
     required this.tile,
     required this.onTap,
@@ -104,6 +104,8 @@ class TileToShow extends StatelessWidget {
 
   final Tile tile;
   final VoidCallback onTap;
+
+  final TileAnimationState animatedTileState = injector<TileAnimationState>();
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +116,11 @@ class TileToShow extends StatelessWidget {
         : ImageTileContent(
             customImage: tile.customImage,
           );
+    var isTileActive =
+        animatedTileState.currentAnimationPhase == TileAnimationPhase.NORMAL;
 
     return InkWell(
-      onTap: onTap,
+      onTap: isTileActive ? onTap : () {},
       child: Center(
         child: Stack(
           alignment: Alignment.center,

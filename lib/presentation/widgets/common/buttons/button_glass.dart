@@ -16,6 +16,7 @@ class ButtonGlass extends StatelessWidget {
     this.size = 50,
     this.onHover,
     this.padding,
+    this.isDisabled,
   }) : super(
           key: key,
         );
@@ -47,6 +48,8 @@ class ButtonGlass extends StatelessWidget {
   ///btn custom padding
   EdgeInsetsGeometry? padding = const EdgeInsets.all(20.0);
 
+  final bool? isDisabled;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -62,6 +65,7 @@ class ButtonGlass extends StatelessWidget {
             padding: padding ?? const EdgeInsets.all(20.0),
             child: GlassContainerCircle(
               isHovered: isHovered,
+              isDisabled: isDisabled ?? false,
               child: SizedBox(
                 height: size,
                 width: size,
@@ -85,7 +89,9 @@ class ButtonGlass extends StatelessWidget {
             ),
           ),
           btnText!.isNotEmpty
-              ? ButtonText(btnText: btnText!)
+              ? ButtonText(
+                  btnText: btnText!,
+                )
               : const SizedBox(),
         ],
       ),

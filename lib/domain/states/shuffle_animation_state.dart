@@ -35,9 +35,10 @@ abstract class _ShuffleAnimationState with Store {
     shakeAnimation = tweenForShake
         .chain(CurveTween(curve: Curves.elasticIn))
         .animate(animationController!)
-      ..addStatusListener((status) {
+      ..addStatusListener((status) async {
         if (status == AnimationStatus.completed) {
           animationController!.reverse();
+          await Future.delayed(const Duration(milliseconds: 690));
           tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
         }
       });

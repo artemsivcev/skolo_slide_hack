@@ -8,12 +8,14 @@ class GlassContainerCircle extends StatelessWidget {
     this.isHovered = false,
     this.padding,
     this.blurRadius,
+    this.isDisabled = false,
   }) : super(key: key);
 
   final Widget child;
   final bool isHovered;
   final EdgeInsets? padding;
   final double? blurRadius;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class GlassContainerCircle extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),
         boxShadow: [
-          isHovered
+          isHovered && !isDisabled
               ? BoxShadow(
                   color: colorsPurpleBluePrimary.withOpacity(0.7),
                   offset: const Offset(0, 0),

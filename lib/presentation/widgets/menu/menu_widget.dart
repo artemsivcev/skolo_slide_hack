@@ -4,7 +4,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/buttons_group_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/crop_buttons.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_level.dart';

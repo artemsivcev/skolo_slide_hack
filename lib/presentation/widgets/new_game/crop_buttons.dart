@@ -7,8 +7,8 @@ import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
 
 class CropButtons extends StatefulWidget {
   const CropButtons({Key? key}) : super(key: key);

@@ -8,8 +8,8 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
 
 class PuzzleBoardButtons extends StatelessWidget {
   final buttonsHoverState = injector<ButtonsHoverState>();

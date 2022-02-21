@@ -3,7 +3,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 
-import '../text_shadows.dart';
+import '../common/text/text_shadows.dart';
 import 'default_preview.dart';
 import 'image_preview.dart';
 

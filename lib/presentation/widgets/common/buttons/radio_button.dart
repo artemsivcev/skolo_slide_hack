@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container_circle.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/column_row_solver.dart';
 
 import 'button_text.dart';
 
-class ButtonGlass extends StatelessWidget {
-  ButtonGlass({
+class RadioButton extends StatelessWidget {
+  RadioButton({
     Key? key,
-    required this.childUnpressed,
-    this.childPressed,
-    this.isPressed = false,
+    required this.child,
+    required this.isPressed,
     this.btnText = "",
     required this.onTap,
     required this.isHovered,
-    this.size = 50,
-    this.onHover,
-    this.padding,
-  }) : super(
-          key: key,
-        );
+    this.size = 24,
+    required this.onHover,
+  }) : super(key: key);
 
-  ///Widget for unpressed button
-  final Widget childUnpressed;
-
-  ///Widget for pressed button
-  Widget? childPressed;
+  /// child widget
+  final Widget child;
 
   ///Is button pressed
-  bool isPressed = false;
+  final bool isPressed;
 
   ///Button text
-  String? btnText = "";
+  final String btnText;
 
   ///OnTap function
   final VoidCallback onTap;
@@ -39,13 +32,10 @@ class ButtonGlass extends StatelessWidget {
   final bool isHovered;
 
   ///OnHover function
-  ValueChanged<bool>? onHover = (value) {};
+  final ValueChanged<bool> onHover;
 
   ///btn custom size
   final double size;
-
-  ///btn custom padding
-  EdgeInsetsGeometry? padding = const EdgeInsets.all(20.0);
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +48,19 @@ class ButtonGlass extends StatelessWidget {
       onHover: onHover,
       child: ColumnRowSolver(
         children: [
+          btnText.isNotEmpty
+              ? ButtonText(
+                  btnText: btnText,
+                  paddingSize: 10,
+                  fontSize: 18,
+                )
+              : const SizedBox(),
           Padding(
-            padding: padding ?? const EdgeInsets.all(20.0),
+            padding: EdgeInsets.zero,
             child: GlassContainerCircle(
               isHovered: isHovered,
+              padding: EdgeInsets.zero,
+              blurRadius: 12,
               child: SizedBox(
                 height: size,
                 width: size,
@@ -69,24 +68,18 @@ class ButtonGlass extends StatelessWidget {
                   child: AnimatedOpacity(
                     opacity: isHovered ? 1.0 : 0.7,
                     duration: const Duration(milliseconds: 170),
-                    child: AnimatedCrossFade(
+                    child: AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      firstCurve: Curves.easeInQuint,
-                      secondCurve: Curves.easeInQuint,
-                      firstChild: childUnpressed,
-                      secondChild: childPressed ?? childUnpressed,
-                      crossFadeState: isPressed
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
+                      curve: Curves.easeIn,
+                      child: child,
+                      height: isPressed && size - 4 >= 0 ? size - 4 : 0,
+                      width: isPressed && size - 4 >= 0 ? size - 4 : 0,
                     ),
                   ),
                 ),
               ),
             ),
           ),
-          btnText!.isNotEmpty
-              ? ButtonText(btnText: btnText!)
-              : const SizedBox(),
         ],
       ),
     );

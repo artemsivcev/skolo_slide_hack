@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/radio_button.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/radio_button.dart';
 
 class DifficultyButton extends StatelessWidget {
   const DifficultyButton({

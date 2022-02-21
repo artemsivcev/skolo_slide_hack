@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container_circle.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/column_row_solver.dart';
 
 import 'button_text.dart';
 
-class RadioButton extends StatelessWidget {
-  RadioButton({
+class ButtonGlass extends StatelessWidget {
+  ButtonGlass({
     Key? key,
-    required this.child,
-    required this.isPressed,
+    required this.childUnpressed,
+    this.childPressed,
+    this.isPressed = false,
     this.btnText = "",
     required this.onTap,
     required this.isHovered,
-    this.size = 24,
-    required this.onHover,
-  }) : super(key: key);
+    this.size = 50,
+    this.onHover,
+    this.padding,
+  }) : super(
+          key: key,
+        );
 
-  /// child widget
-  final Widget child;
+  ///Widget for unpressed button
+  final Widget childUnpressed;
+
+  ///Widget for pressed button
+  Widget? childPressed;
 
   ///Is button pressed
-  final bool isPressed;
+  bool isPressed = false;
 
   ///Button text
-  final String btnText;
+  String? btnText = "";
 
   ///OnTap function
   final VoidCallback onTap;
@@ -32,10 +39,13 @@ class RadioButton extends StatelessWidget {
   final bool isHovered;
 
   ///OnHover function
-  final ValueChanged<bool> onHover;
+  ValueChanged<bool>? onHover = (value) {};
 
   ///btn custom size
   final double size;
+
+  ///btn custom padding
+  EdgeInsetsGeometry? padding = const EdgeInsets.all(20.0);
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +58,10 @@ class RadioButton extends StatelessWidget {
       onHover: onHover,
       child: ColumnRowSolver(
         children: [
-          btnText.isNotEmpty
-              ? ButtonText(
-                  btnText: btnText,
-                  paddingSize: 10,
-                  fontSize: 18,
-                )
-              : const SizedBox(),
           Padding(
-            padding: EdgeInsets.zero,
+            padding: padding ?? const EdgeInsets.all(20.0),
             child: GlassContainerCircle(
               isHovered: isHovered,
-              padding: EdgeInsets.zero,
-              blurRadius: 12,
               child: SizedBox(
                 height: size,
                 width: size,
@@ -68,18 +69,24 @@ class RadioButton extends StatelessWidget {
                   child: AnimatedOpacity(
                     opacity: isHovered ? 1.0 : 0.7,
                     duration: const Duration(milliseconds: 170),
-                    child: AnimatedContainer(
+                    child: AnimatedCrossFade(
                       duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeIn,
-                      child: child,
-                      height: isPressed && size - 4 >= 0 ? size - 4 : 0,
-                      width: isPressed && size - 4 >= 0 ? size - 4 : 0,
+                      firstCurve: Curves.easeInQuint,
+                      secondCurve: Curves.easeInQuint,
+                      firstChild: childUnpressed,
+                      secondChild: childPressed ?? childUnpressed,
+                      crossFadeState: isPressed
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
                     ),
                   ),
                 ),
               ),
             ),
           ),
+          btnText!.isNotEmpty
+              ? ButtonText(btnText: btnText!)
+              : const SizedBox(),
         ],
       ),
     );

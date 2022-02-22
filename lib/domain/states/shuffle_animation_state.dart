@@ -70,4 +70,8 @@ abstract class _ShuffleAnimationState with Store {
   void resetAnimation() {
     animationController?.dispose();
   }
+
+  dispose() {
+    animationController?.dispose();
+  }
 }

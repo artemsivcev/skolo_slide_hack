@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -79,8 +80,10 @@ abstract class _MenuState with Store {
 
   /// press exit button (for mobile)
   @action
-  void toggleExitBtn() {
+  void toggleExitBtn(BuildContext context) {
     exitBtnPressed = !exitBtnPressed;
+    //Popping the screen to enforce the dispose() of the screen work.
+    Navigator.of(context).pop();
     if (Platform.isIOS) {
       exit(0);
     } else {

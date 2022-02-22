@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
@@ -80,5 +81,9 @@ abstract class _WinAnimationState with Store {
     animationController?.reset();
     isAnimCompleted = false;
     spacingValue = 3.0;
+  }
+
+  void dispose() {
+    animationController?.dispose();
   }
 }

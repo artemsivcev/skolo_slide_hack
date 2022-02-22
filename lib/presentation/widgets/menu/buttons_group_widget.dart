@@ -6,8 +6,8 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 
 class ButtonsGroupWidget extends StatelessWidget {
   final menuState = injector<MenuState>();
@@ -70,7 +70,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                     btnText: 'Exit',
                     isPressed: menuState.exitBtnPressed,
                     onTap: () {
-                      menuState.toggleExitBtn();
+                      menuState.toggleExitBtn(context);
                     },
                     isHovered: buttonsHoverState.exitBtnHovered,
                     onHover: (value) {

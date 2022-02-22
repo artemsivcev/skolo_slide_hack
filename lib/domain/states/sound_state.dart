@@ -101,4 +101,9 @@ abstract class _SoundState with Store {
       player.play();
     }
   }
+
+  dispose() {
+    mainPlayer.dispose();
+    effectsPlayer.dispose();
+  }
 }

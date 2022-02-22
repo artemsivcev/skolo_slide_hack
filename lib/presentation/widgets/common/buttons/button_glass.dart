@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skolo_slide_hack/presentation/widgets/background/glass_container_circle.dart';
+import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/column_row_solver.dart';
 
 import 'button_text.dart';
@@ -13,7 +13,7 @@ class ButtonGlass extends StatelessWidget {
     this.btnText = "",
     required this.onTap,
     required this.isHovered,
-    this.size = 50,
+    this.size = 70,
     this.onHover,
     this.padding,
     this.isDisabled,
@@ -52,48 +52,124 @@ class ButtonGlass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onTap: onTap,
-      onHover: onHover,
-      child: ColumnRowSolver(
-        children: [
-          Padding(
-            padding: padding ?? const EdgeInsets.all(20.0),
-            child: GlassContainerCircle(
-              isHovered: isHovered,
-              isDisabled: isDisabled ?? false,
-              child: SizedBox(
-                height: size,
-                width: size,
-                child: Center(
-                  child: AnimatedOpacity(
-                    opacity: isHovered ? 1.0 : 0.7,
-                    duration: const Duration(milliseconds: 170),
-                    child: AnimatedCrossFade(
-                      duration: const Duration(milliseconds: 300),
-                      firstCurve: Curves.easeInQuint,
-                      secondCurve: Curves.easeInQuint,
-                      firstChild: childUnpressed,
-                      secondChild: childPressed ?? childUnpressed,
-                      crossFadeState: isPressed
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
+    return ColumnRowSolver(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: HoverContainer(
+            child: ElevatedButton(
+              onPressed: onTap,
+              style: ButtonStyle(
+                fixedSize: MaterialStateProperty.all<Size?>(
+                  Size(size, size),
+                ),
+                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.hovered) ||
+                        states.contains(
+                          MaterialState.disabled,
+                        )) {
+                      return Colors.white.withOpacity(0.6);
+                    }
+
+                    return Colors.white.withOpacity(0.4);
+                  },
+                ),
+                foregroundColor: MaterialStateProperty.all<Color?>(
+                  Colors.transparent,
+                ),
+                overlayColor: MaterialStateProperty.all<Color?>(
+                  Colors.transparent,
+                ),
+                shadowColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.hovered) ||
+                        states.contains(
+                          MaterialState.disabled,
+                        )) {
+                      return colorsPurpleBluePrimary.withOpacity(0.1);
+                    }
+
+                    return Colors.transparent;
+                  },
+                ),
+                shape: MaterialStateProperty.all<OutlinedBorder?>(
+                  CircleBorder(
+                    side: BorderSide(
+                      color: Colors.white.withOpacity(0.8),
+                      width: 1.5,
                     ),
                   ),
                 ),
               ),
+              child: Center(
+                child: AnimatedCrossFade(
+                  duration: const Duration(milliseconds: 300),
+                  firstCurve: Curves.easeInQuint,
+                  secondCurve: Curves.easeInQuint,
+                  firstChild: childUnpressed,
+                  secondChild: childPressed ?? childUnpressed,
+                  crossFadeState: isPressed
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                ),
+              ),
             ),
           ),
-          btnText!.isNotEmpty
-              ? ButtonText(
-                  btnText: btnText!,
-                )
-              : const SizedBox(),
-        ],
+        ),
+        btnText!.isNotEmpty
+            ? ButtonText(
+                btnText: btnText!,
+              )
+            : const SizedBox(),
+      ],
+    );
+  }
+}
+
+class HoverContainer extends StatefulWidget {
+  const HoverContainer({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  State<HoverContainer> createState() => _HoverContainerState();
+}
+
+class _HoverContainerState extends State<HoverContainer> {
+  bool isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          isHovered = false;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            isHovered
+                ? BoxShadow(
+                    color: colorsPurpleBluePrimary.withOpacity(0.7),
+                    offset: const Offset(0, 0),
+                    blurRadius: 18,
+                    spreadRadius: 4,
+                  )
+                : const BoxShadow(color: Colors.transparent),
+          ],
+        ),
+        child: widget.child,
       ),
     );
   }

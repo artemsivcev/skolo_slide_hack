@@ -18,7 +18,7 @@ import 'package:skolo_slide_hack/presentation/widgets/menu/menu_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/sound_button.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();

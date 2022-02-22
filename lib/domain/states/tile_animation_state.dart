@@ -9,12 +9,10 @@ abstract class _TileAnimationState with Store {
   TileAnimationPhase? currentAnimationPhase;
 }
 
+/// Enum for tiles' animation. Normal stands for normal game mode without any animation.
 enum TileAnimationPhase {
   START_ANIMATION,
   WIN,
   SHUFFLE,
-
-  /// Without any animation. Normal game made.
   NORMAL,
-  // add exit?
 }

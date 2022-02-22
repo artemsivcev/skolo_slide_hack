@@ -34,7 +34,8 @@ class MainScreen extends StatelessWidget {
       return BackgroundWithBubbles(
           colorsBackground: colorsBackgroundGame,
           direction: mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
-          numLines: mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
+          numLines: 20, //mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
+          opacity: mainMenuIsShowing || chooseImageIsShowing ? 1.0 : 0,
           child: SafeArea(
             bottom: false,
             left: false,

@@ -6,7 +6,7 @@ import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 
 class SoundButton extends StatelessWidget {
   SoundButton({Key? key}) : super(key: key);

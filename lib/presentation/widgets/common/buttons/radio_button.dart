@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/glass_container_circle.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/column_row_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/column_row_solver.dart';
 
 import 'button_text.dart';
 

@@ -5,7 +5,7 @@ import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/enums/corners_enum.dart';
 import 'package:skolo_slide_hack/domain/models/tile.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container_pure.dart';
+import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 
 class TileWinAnimator extends StatelessWidget {
   final double tweenStart;
@@ -33,7 +33,7 @@ class TileWinAnimator extends StatelessWidget {
         child: winAnimationState.isAnimCompleted
             ? Container(
                 color: Colors.transparent,
-                child: PolymorphicContainerPure(
+                child: PolymorphicContainer(
                   userInnerStyle: false,
                   innerShadowBorderRadius: 0,
                   topLeftCorner: corner == CornersEnum.topLeftCorner,
@@ -43,7 +43,7 @@ class TileWinAnimator extends StatelessWidget {
                   child: tile.customImage == null ? Container() : child,
                 ),
               )
-            : PolymorphicContainerPure(
+            : PolymorphicContainer(
                 userInnerStyle: false,
                 child: child,
               ),

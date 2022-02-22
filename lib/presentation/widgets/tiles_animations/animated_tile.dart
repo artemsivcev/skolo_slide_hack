@@ -9,7 +9,7 @@ import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container_pure.dart';
+import 'package:skolo_slide_hack/presentation/widgets/polymorphic_container.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_shuffle_animator.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_start_play_animator.dart';
 import 'package:skolo_slide_hack/presentation/widgets/tiles_animations/tile_win_animator.dart';
@@ -83,7 +83,7 @@ class AnimatedTile extends StatelessWidget {
             // for TileAnimationPhase.NORMAL
             return tile.isEmpty
                 ? const SizedBox()
-                : PolymorphicContainerPure(child: child!);
+                : PolymorphicContainer(child: child!);
           },
           child: TileToShow(
             tile: tile,
@@ -96,7 +96,7 @@ class AnimatedTile extends StatelessWidget {
 }
 
 class TileToShow extends StatelessWidget {
-  const TileToShow({
+  TileToShow({
     Key? key,
     required this.tile,
     required this.onTap,
@@ -104,6 +104,8 @@ class TileToShow extends StatelessWidget {
 
   final Tile tile;
   final VoidCallback onTap;
+
+  final TileAnimationState animatedTileState = injector<TileAnimationState>();
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +116,11 @@ class TileToShow extends StatelessWidget {
         : ImageTileContent(
             customImage: tile.customImage,
           );
+    var isTileActive =
+        animatedTileState.currentAnimationPhase == TileAnimationPhase.NORMAL;
 
     return InkWell(
-      onTap: onTap,
+      onTap: isTileActive ? onTap : () {},
       child: Center(
         child: Stack(
           alignment: Alignment.center,

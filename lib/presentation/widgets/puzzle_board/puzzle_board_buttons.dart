@@ -8,8 +8,9 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/buttons/button_glass.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
+import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
 
 class PuzzleBoardButtons extends StatelessWidget {
   final buttonsHoverState = injector<ButtonsHoverState>();
@@ -17,6 +18,7 @@ class PuzzleBoardButtons extends StatelessWidget {
   final puzzleState = injector<PuzzleState>();
   final shuffleAnimationState = injector<ShuffleAnimationState>();
   final screenState = injector<ScreenState>();
+  final animatedTileState = injector<TileAnimationState>();
 
   PuzzleBoardButtons({Key? key}) : super(key: key);
 
@@ -24,6 +26,8 @@ class PuzzleBoardButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
       var usedMobileVersion = screenState.usedMobileVersion;
+      var isButtonActive =
+          animatedTileState.currentAnimationPhase == TileAnimationPhase.NORMAL;
 
       return RowColumnSolver(
         children: [
@@ -54,17 +58,22 @@ class PuzzleBoardButtons extends StatelessWidget {
             child: ButtonGlass(
               childUnpressed: SvgPicture.asset(
                 'assets/images/restart.svg',
-                color: colorsPurpleBluePrimary,
+                color: isButtonActive
+                    ? colorsPurpleBluePrimary
+                    : colorsPurpleBluePrimaryLight,
                 height: usedMobileVersion ? 26 : 34,
               ),
               btnText: 'Shuffle',
               size: usedMobileVersion ? 30 : 44,
-              onTap: () async {
-                shuffleAnimationState.shuffledPressed();
-                shuffleAnimationState.animationController!.forward();
-                await puzzleState.shuffleButtonTap();
-              },
+              onTap: isButtonActive
+                  ? () async {
+                      shuffleAnimationState.shuffledPressed();
+                      shuffleAnimationState.animationController!.forward();
+                      await puzzleState.shuffleButtonTap();
+                    }
+                  : () {},
               isHovered: buttonsHoverState.shuffleBtnHovered,
+              isDisabled: !isButtonActive,
               onHover: (value) => buttonsHoverState.toggleHoveredShuffleBtn(),
             ),
           ),

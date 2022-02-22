@@ -7,7 +7,7 @@ import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_button.dart';
 
-import '../text_shadows.dart';
+import '../common/text/text_shadows.dart';
 
 class DifficultyLevel extends StatelessWidget {
   final difficultyState = injector<DifficultyState>();

@@ -9,6 +9,7 @@ const Color blueColour = Colors.blue;
 const Color blackColour = Colors.black;
 
 const Color colorsPurpleBluePrimary = Color(0xFF502195);
+Color colorsPurpleBluePrimaryLight = colorsPurpleBluePrimary.withOpacity(0.6);
 
 const Color colorsBackgroundMenu = Color(0xFFC19AFC);
 const Color colorsBackgroundNewGame = Color(0xFFC19AFC);

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -7,9 +6,8 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/row_column_solver.dart';
-
-import '../buttons/button_glass.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
 
 class ButtonsGroupWidget extends StatelessWidget {
   final menuState = injector<MenuState>();

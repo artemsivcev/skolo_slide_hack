@@ -12,12 +12,11 @@ class PolymorphicContainer extends StatelessWidget {
     this.darkShadowBlurRadius = 7.0,
     this.lightShadowBlurRadius = 7.0,
     this.backgroundColor,
-    this.isTopLeftCorner = true,
-    this.isTopRightCorner = true,
-    this.isBottomLeftCorner = true,
-    this.isBottomRightCorner = true,
     this.userInnerStyle = false,
-    this.duration = const Duration(seconds: 2),
+    this.topLeftCorner = true,
+    this.topRightCorner = true,
+    this.bottomLeftCorner = true,
+    this.bottomRightCorner = true,
   }) : super(key: key);
 
   final Widget child;
@@ -40,11 +39,10 @@ class PolymorphicContainer extends StatelessWidget {
   final bool userInnerStyle;
 
   /// Corners radius of the inner shadows of the polymorphic container.
-  final bool isTopRightCorner;
-  final bool isTopLeftCorner;
-  final bool isBottomRightCorner;
-  final bool isBottomLeftCorner;
-  final Duration duration;
+  final bool topRightCorner;
+  final bool topLeftCorner;
+  final bool bottomRightCorner;
+  final bool bottomLeftCorner;
 
   Color _modifyBackGroundColor(
       Color backGroundColor, double lightnessModifier) {
@@ -68,18 +66,16 @@ class PolymorphicContainer extends StatelessWidget {
     final defaultBackGroundColor =
         backgroundColor ?? Theme.of(context).canvasColor;
 
-    return AnimatedContainer(
-      duration: duration,
+    return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          topRight:
-              Radius.circular(isTopRightCorner ? externalBorderRadius : 0),
-          topLeft: Radius.circular(isTopLeftCorner ? externalBorderRadius : 0),
+          topRight: Radius.circular(topRightCorner ? externalBorderRadius : 0),
+          topLeft: Radius.circular(topLeftCorner ? externalBorderRadius : 0),
           bottomLeft:
-              Radius.circular(isBottomLeftCorner ? externalBorderRadius : 0),
+              Radius.circular(bottomLeftCorner ? externalBorderRadius : 0),
           bottomRight:
-              Radius.circular(isBottomRightCorner ? externalBorderRadius : 0),
+              Radius.circular(bottomRightCorner ? externalBorderRadius : 0),
         ),
       ),
       child: Container(

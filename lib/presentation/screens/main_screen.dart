@@ -24,45 +24,82 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     soundState.preloadMainAudio();
     screenState.setScreenSize(context);
-    return Observer(builder: (context) {
-      final mainMenuIsShowing =
-          menuState.currentGameState == GameState.MAIN_MENU;
-      final chooseImageIsShowing =
-          menuState.currentGameState == GameState.CHOSE_IMAGE;
+    return Container(
+      color: colorsBackgroundGame,
+      child: Observer(builder: (context) {
+        final mainMenuIsShowing =
+            menuState.currentGameState == GameState.MAIN_MENU;
+        final chooseImageIsShowing =
+            menuState.currentGameState == GameState.CHOSE_IMAGE;
 
-      //todo try to extract the BackgroundWithBubbles to the background stack
-      return BackgroundWithBubbles(
-          colorsBackground: colorsBackgroundGame,
-          direction: mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
-          numLines: mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
-          child: SafeArea(
-            bottom: false,
-            left: false,
-            right: false,
+        var firstChild = SizedBox(
+            width: screenState.screenWidth,
+            height: screenState.screenHeight,
+            child: BackgroundWithBubbles(
+                colorsBackground: colorsBackgroundGame,
+                direction:
+                    mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
+                numLines: 20,
+                child: Container()));
+        var secondChild = SizedBox(
+            width: screenState.screenWidth,
+            height: screenState.screenHeight,
+            child: BackgroundWithBubbles(
+                colorsBackground: colorsBackgroundGame,
+                direction:
+                    mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
+                numLines: 0,
+                child: Container()));
+
+        return Material(
+          child: Container(
+            color: colorsBackgroundGame,
             child: Stack(
-              alignment: Alignment.bottomCenter,
+              clipBehavior: Clip.none,
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: SoundButton(),
+                AnimatedCrossFade(
+                  firstChild: firstChild,
+                  secondChild: secondChild,
+                  crossFadeState: mainMenuIsShowing || chooseImageIsShowing
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 3000),
+                  firstCurve: Curves.easeInQuint,
+                  secondCurve: Curves.easeInQuint,
                 ),
-                Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: GameTitle(),
-                    ),
-                    MenuWidget(),
-                    LinksRow(),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: DashIcon(),
+                SafeArea(
+                  bottom: false,
+                  left: false,
+                  right: false,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: SoundButton(),
+                      ),
+                      Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: GameTitle(),
+                          ),
+                          MenuWidget(),
+                          LinksRow(),
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: DashIcon(),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ));
-    });
+          ),
+        );
+      }),
+    );
   }
 }

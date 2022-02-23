@@ -23,8 +23,8 @@ class _ImageChooserState extends State<ImageChooser> {
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
+        const Padding(
+          padding: EdgeInsets.all(16.0),
           child: Text(
             'Choose Image',
             style: TextStyle(

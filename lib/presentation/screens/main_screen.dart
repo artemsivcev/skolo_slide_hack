@@ -24,14 +24,15 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     soundState.preloadMainAudio();
     screenState.setScreenSize(context);
-    return Observer(builder: (context) {
-      final mainMenuIsShowing =
-          menuState.currentGameState == GameState.MAIN_MENU;
-      final chooseImageIsShowing =
-          menuState.currentGameState == GameState.CHOSE_IMAGE;
+    return Observer(
+      builder: (context) {
+        final mainMenuIsShowing =
+            menuState.currentGameState == GameState.MAIN_MENU;
+        final chooseImageIsShowing =
+            menuState.currentGameState == GameState.CHOOSE_IMAGE;
 
-      //todo try to extract the BackgroundWithBubbles to the background stack
-      return BackgroundWithBubbles(
+        //todo try to extract the BackgroundWithBubbles to the background stack
+        return BackgroundWithBubbles(
           colorsBackground: colorsBackgroundGame,
           direction: mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
           numLines: mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
@@ -62,7 +63,9 @@ class MainScreen extends StatelessWidget {
                 ),
               ],
             ),
-          ));
-    });
+          ),
+        );
+      },
+    );
   }
 }

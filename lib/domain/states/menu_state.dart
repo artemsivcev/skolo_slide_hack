@@ -23,7 +23,7 @@ abstract class _MenuState with Store {
   final TileAnimationState _tileAnimationState = injector<TileAnimationState>();
 
   @observable
-  GameState currentGameState = GameState.MAIN_MENU;
+  GameState currentGameState = GameState.ENTRY;
 
   @observable
   GameState? previousGameState;
@@ -58,7 +58,7 @@ abstract class _MenuState with Store {
   /// and calls [splitImage] function
   @action
   Future<void> playWithImagePress() async {
-    changeCurrentGameState(GameState.CHOSE_IMAGE);
+    changeCurrentGameState(GameState.CHOOSE_IMAGE);
     soundState.playForwardSound();
     _tileAnimationState.currentAnimationPhase =
         TileAnimationPhase.START_ANIMATION;
@@ -90,8 +90,9 @@ abstract class _MenuState with Store {
 }
 
 enum GameState {
+  ENTRY,
   MAIN_MENU,
-  CHOSE_IMAGE,
+  CHOOSE_IMAGE,
   WITHOUT_IMAGE_PLAY,
   DEFAULT_IMAGE_PLAY,
   CUSTOM_IMAGE_PLAY,

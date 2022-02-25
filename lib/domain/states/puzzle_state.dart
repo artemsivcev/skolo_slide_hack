@@ -148,8 +148,6 @@ abstract class _PuzzleState with Store {
       puzzle = puzzleWithMovedTiles.sort();
     }
 
-    /// todo add animation and sound when can not move
-
     if (isComplete) {
       tileAnimationState.currentAnimationPhase = TileAnimationPhase.WIN;
       winAnimationState.animate();

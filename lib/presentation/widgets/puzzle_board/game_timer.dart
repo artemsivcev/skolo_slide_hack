@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/text/text_shadows.dart';
 
 class GameTimer extends StatelessWidget {
   GameTimer({
@@ -19,7 +18,7 @@ class GameTimer extends StatelessWidget {
         return Text(
           '${puzzleState.minutes}:'
           '${puzzleState.seconds}',
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Montserrat',
             fontSize: 12,
             fontWeight: FontWeight.w400,

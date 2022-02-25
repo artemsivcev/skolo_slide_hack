@@ -5,10 +5,12 @@ class GlassContainer extends StatelessWidget {
     Key? key,
     required this.child,
     this.innerPadding,
+    this.color,
   }) : super(key: key);
 
   final Widget child;
   final EdgeInsets? innerPadding;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class GlassContainer extends StatelessWidget {
         child: Container(
           padding: innerPadding ?? const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.5),
+            color: color ?? Colors.white.withOpacity(0.5),
             borderRadius: BorderRadius.circular(8),
             border:
                 Border.all(color: Colors.white.withOpacity(0.8), width: 1.5),

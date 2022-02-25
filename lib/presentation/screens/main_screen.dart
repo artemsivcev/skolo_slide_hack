@@ -30,67 +30,65 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     soundState.preloadMainAudio();
     screenState.setScreenSize(context);
-    return Container(
-      color: colorsBackgroundGame,
-      child: Observer(builder: (context) {
-        final mainMenuIsShowing =
-            menuState.currentGameState == GameState.MAIN_MENU;
-        final chooseImageIsShowing =
-            menuState.currentGameState == GameState.CHOSE_IMAGE;
+    return Observer(builder: (context) {
+      final mainMenuIsShowing =
+          menuState.currentGameState == GameState.MAIN_MENU;
+      final chooseImageIsShowing =
+          menuState.currentGameState == GameState.CHOOSE_IMAGE;
 
-        return Material(
-          child: Container(
-            color: colorsBackgroundGame,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                AnimatedOpacity(
-                  opacity: mainMenuIsShowing || chooseImageIsShowing ? 1.0 : 0,
-                  duration: const Duration(seconds: 3),
-                  child: SizedBox(
-                      width: screenState.screenWidth,
-                      height: screenState.screenHeight,
-                      child: BackgroundWithBubbles(
-                          colorsBackground: colorsBackgroundGame,
-                          direction: mainMenuIsShowing
-                              ? LineDirection.Ttb
-                              : LineDirection.Btt,
-                          numLines: 20,
-                          child: Container())),
+      return Material(
+        type: MaterialType.transparency,
+        child: Container(
+          color: colorsBackgroundGame,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              AnimatedOpacity(
+                opacity: mainMenuIsShowing || chooseImageIsShowing ? 1.0 : 0,
+                duration: const Duration(seconds: 3),
+                child: SizedBox(
+                    width: screenState.screenWidth,
+                    height: screenState.screenHeight,
+                    child: BackgroundWithBubbles(
+                        colorsBackground: colorsBackgroundGame,
+                        direction: mainMenuIsShowing
+                            ? LineDirection.Ttb
+                            : LineDirection.Btt,
+                        numLines: 20,
+                        child: Container())),
+              ),
+              SafeArea(
+                bottom: false,
+                left: false,
+                right: false,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: SoundButton(),
+                    ),
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: GameTitle(),
+                        ),
+                        MenuWidget(),
+                        LinksRow(),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: DashIcon(),
+                    ),
+                  ],
                 ),
-                SafeArea(
-                  bottom: false,
-                  left: false,
-                  right: false,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: SoundButton(),
-                      ),
-                      Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: GameTitle(),
-                          ),
-                          MenuWidget(),
-                          LinksRow(),
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: DashIcon(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }

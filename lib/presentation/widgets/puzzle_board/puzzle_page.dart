@@ -43,11 +43,7 @@ class _PuzzlePageState extends State<PuzzlePage> with TickerProviderStateMixin {
 
     startAnimationState.startAnimation();
 
-    var controllerShuffle = AnimationController(
-      duration: animationOneSecondDuration,
-      vsync: this,
-    );
-    shuffleAnimationState.initAnimation(controllerShuffle);
+    shuffleAnimationState.initAnimation(this);
 
     super.initState();
   }

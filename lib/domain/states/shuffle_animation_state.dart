@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
 
@@ -16,6 +17,8 @@ abstract class _ShuffleAnimationState with Store {
   @observable
   AnimationController? animationController;
 
+  AnimationController? shuffleBtnAnimationController;
+
   /// animation for shaking puzzle tiles.
   @observable
   Animation<double>? shakeAnimation;
@@ -24,13 +27,22 @@ abstract class _ShuffleAnimationState with Store {
   @observable
   Animation<double?>? appearDisappearAnimation;
 
+  Animation<double>? shuffleBtnRotationAnimation;
+
   ///Tween for shaking puzzle board
   final Tween<double> tweenForShake = Tween(begin: 0.0, end: 7.0);
 
   /// init the controller and animations
   @action
-  void initAnimation(AnimationController controller) {
-    animationController = controller;
+  void initAnimation(TickerProvider tickerProvider) {
+    animationController = AnimationController(
+      duration: animationOneSecondDuration,
+      vsync: tickerProvider,
+    );
+    ;
+
+    shuffleBtnAnimationController = AnimationController(
+        duration: const Duration(seconds: 1), vsync: tickerProvider);
 
     shakeAnimation = tweenForShake
         .chain(CurveTween(curve: Curves.elasticIn))
@@ -56,6 +68,20 @@ abstract class _ShuffleAnimationState with Store {
         ),
       ),
     );
+
+    shuffleBtnRotationAnimation = Tween<double>(
+      begin: 0,
+      end: 15,
+    ).animate(
+      CurvedAnimation(
+        parent: shuffleBtnAnimationController!,
+        curve: const Interval(
+          0.0,
+          1.0,
+          curve: Curves.linear,
+        ),
+      ),
+    );
   }
 
   /// function for pressing shuffle button and turning on the sound
@@ -73,5 +99,6 @@ abstract class _ShuffleAnimationState with Store {
 
   dispose() {
     animationController?.dispose();
+    shuffleBtnAnimationController?.dispose();
   }
 }

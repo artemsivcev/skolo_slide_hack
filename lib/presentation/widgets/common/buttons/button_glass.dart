@@ -11,7 +11,7 @@ class ButtonGlass extends StatelessWidget {
     this.childPressed,
     this.isPressed = false,
     this.btnText = "",
-    required this.onTap,
+    this.onTap,
     required this.isHovered,
     this.size = 70,
     this.onHover,
@@ -34,7 +34,7 @@ class ButtonGlass extends StatelessWidget {
   String? btnText = "";
 
   ///OnTap function
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   ///Checks if button is hovered
   final bool isHovered;
@@ -57,6 +57,7 @@ class ButtonGlass extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: HoverContainer(
+            isDisabled: isDisabled ?? false,
             child: ElevatedButton(
               onPressed: onTap,
               style: ButtonStyle(
@@ -128,12 +129,14 @@ class ButtonGlass extends StatelessWidget {
 }
 
 class HoverContainer extends StatefulWidget {
-  const HoverContainer({
+  HoverContainer({
     Key? key,
     required this.child,
+    required this.isDisabled,
   }) : super(key: key);
 
   final Widget child;
+  bool isDisabled;
 
   @override
   State<HoverContainer> createState() => _HoverContainerState();
@@ -147,7 +150,9 @@ class _HoverContainerState extends State<HoverContainer> {
     return MouseRegion(
       onEnter: (_) {
         setState(() {
-          isHovered = true;
+          if (!widget.isDisabled) {
+            isHovered = true;
+          }
         });
       },
       onExit: (_) {

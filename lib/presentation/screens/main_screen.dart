@@ -14,8 +14,14 @@ import 'package:skolo_slide_hack/presentation/widgets/menu/links_row.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/menu_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/sound_button.dart';
 
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final menuState = injector<MenuState>();
   final soundState = injector<SoundState>();
   final screenState = injector<ScreenState>();
@@ -32,40 +38,25 @@ class MainScreen extends StatelessWidget {
         final chooseImageIsShowing =
             menuState.currentGameState == GameState.CHOSE_IMAGE;
 
-        var firstChild = SizedBox(
-            width: screenState.screenWidth,
-            height: screenState.screenHeight,
-            child: BackgroundWithBubbles(
-                colorsBackground: colorsBackgroundGame,
-                direction:
-                    mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
-                numLines: 20,
-                child: Container()));
-        var secondChild = SizedBox(
-            width: screenState.screenWidth,
-            height: screenState.screenHeight,
-            child: BackgroundWithBubbles(
-                colorsBackground: colorsBackgroundGame,
-                direction:
-                    mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
-                numLines: 0,
-                child: Container()));
-
         return Material(
           child: Container(
             color: colorsBackgroundGame,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                AnimatedCrossFade(
-                  firstChild: firstChild,
-                  secondChild: secondChild,
-                  crossFadeState: mainMenuIsShowing || chooseImageIsShowing
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: const Duration(milliseconds: 3000),
-                  firstCurve: Curves.easeInQuint,
-                  secondCurve: Curves.easeInQuint,
+                AnimatedOpacity(
+                  opacity: mainMenuIsShowing || chooseImageIsShowing ? 1.0 : 0,
+                  duration: const Duration(seconds: 3),
+                  child: SizedBox(
+                      width: screenState.screenWidth,
+                      height: screenState.screenHeight,
+                      child: BackgroundWithBubbles(
+                          colorsBackground: colorsBackgroundGame,
+                          direction: mainMenuIsShowing
+                              ? LineDirection.Ttb
+                              : LineDirection.Btt,
+                          numLines: 20,
+                          child: Container())),
                 ),
                 SafeArea(
                   bottom: false,

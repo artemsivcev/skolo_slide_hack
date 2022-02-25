@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -87,7 +86,7 @@ class AnimatedTile extends StatelessWidget {
           },
           child: TileToShow(
             tile: tile,
-            onTap: onTap,
+            onTap: animationPhase == TileAnimationPhase.NORMAL ? onTap : null,
           ),
         );
       },
@@ -96,16 +95,14 @@ class AnimatedTile extends StatelessWidget {
 }
 
 class TileToShow extends StatelessWidget {
-  TileToShow({
+  const TileToShow({
     Key? key,
     required this.tile,
-    required this.onTap,
+    this.onTap,
   }) : super(key: key);
 
   final Tile tile;
-  final VoidCallback onTap;
-
-  final TileAnimationState animatedTileState = injector<TileAnimationState>();
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -116,11 +113,9 @@ class TileToShow extends StatelessWidget {
         : ImageTileContent(
             customImage: tile.customImage,
           );
-    var isTileActive =
-        animatedTileState.currentAnimationPhase == TileAnimationPhase.NORMAL;
 
     return InkWell(
-      onTap: isTileActive ? onTap : () {},
+      onTap: onTap,
       child: Center(
         child: Stack(
           alignment: Alignment.center,

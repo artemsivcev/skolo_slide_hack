@@ -18,7 +18,7 @@ class PuzzleBoardButtons extends StatelessWidget {
   final animatedTileState = injector<TileAnimationState>();
 
   PuzzleBoardButtons({Key? key}) : super(key: key);
-
+// todo size
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
@@ -34,18 +34,14 @@ class PuzzleBoardButtons extends StatelessWidget {
             child: ButtonGlass(
               childUnpressed: Icon(
                 Icons.arrow_back,
-                size:
-                    // usedMobileVersion ? 32 :
-                    44,
+                size: usedMobileVersion ? 32 : 44,
                 color: colorsPurpleBluePrimary,
               ),
               btnText: 'Back',
               onTap: () async {
                 menuState.backToMenu();
               },
-              size:
-                  // usedMobileVersion ? 30 :
-                  100,
+              size: usedMobileVersion ? 30 : 44,
             ),
           ),
           //Shuffle
@@ -53,15 +49,13 @@ class PuzzleBoardButtons extends StatelessWidget {
             label: "Shuffle puzzle board",
             enabled: true,
             child: ButtonGlass(
-              size: 100,
+              size: usedMobileVersion ? 30 : 44,
               btnText: 'Shuffle',
               childUnpressed: RotatedShuffleButton(
                 isButtonActive: isButtonActive,
-                buttonSize: 100,
+                buttonSize: usedMobileVersion ? 30 : 44,
               ),
-              onTap: () {
-                //do nothing
-              },
+              onTap: () {},
               isDisabled: !isButtonActive,
             ),
           ),

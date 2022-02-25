@@ -39,18 +39,18 @@ abstract class _ShuffleAnimationState with Store {
       duration: animationOneSecondDuration,
       vsync: tickerProvider,
     );
-    ;
 
     shuffleBtnAnimationController = AnimationController(
-        duration: const Duration(seconds: 1), vsync: tickerProvider);
+      duration: animationOneSecondDuration,
+      vsync: tickerProvider,
+    );
 
     shakeAnimation = tweenForShake
         .chain(CurveTween(curve: Curves.elasticIn))
         .animate(animationController!)
-      ..addStatusListener((status) async {
+      ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           animationController!.reverse();
-          await Future.delayed(const Duration(milliseconds: 690));
           tileAnimationState.currentAnimationPhase = TileAnimationPhase.NORMAL;
         }
       });
@@ -94,7 +94,8 @@ abstract class _ShuffleAnimationState with Store {
   /// reset animation
   @action
   void resetAnimation() {
-    animationController?.dispose();
+    animationController?.reset();
+    shuffleBtnAnimationController?.reset();
   }
 
   dispose() {

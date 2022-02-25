@@ -15,40 +15,40 @@ class ButtonsGroupWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (context) {
-      return RowColumnSolver(
-        children: [
-          Semantics(
-            label: "Play with image",
-            enabled: true,
-            child: ButtonGlass(
-              childUnpressed: SvgPicture.asset(
-                'assets/images/puzzle-new-filled.svg',
-                color: colorsPurpleBluePrimary,
-              ),
-              btnText: 'Play with image',
-              onTap: () async {
-                menuState.playWithImagePress();
-              },
+    return RowColumnSolver(
+      children: [
+        Semantics(
+          label: "Play with image",
+          enabled: true,
+          child: ButtonGlass(
+            childUnpressed: SvgPicture.asset(
+              'assets/images/puzzle-new-filled.svg',
+              color: colorsPurpleBluePrimary,
             ),
+            btnText: 'Play with image',
+            onTap: () async {
+              menuState.playWithImagePress();
+            },
           ),
-          Semantics(
-            label: "Play without image",
-            enabled: true,
-            child: ButtonGlass(
-              childUnpressed: const Icon(
-                Icons.view_comfortable,
-                size: 50.0,
-                color: colorsPurpleBluePrimary,
-              ),
-              btnText: 'Play without image',
-              onTap: () async {
-                menuState.playWithOutImagePress();
-              },
+        ),
+        Semantics(
+          label: "Play without image",
+          enabled: true,
+          child: ButtonGlass(
+            childUnpressed: const Icon(
+              Icons.view_comfortable,
+              size: 50.0,
+              color: colorsPurpleBluePrimary,
             ),
+            btnText: 'Play without image',
+            onTap: () async {
+              menuState.playWithOutImagePress();
+            },
           ),
-          !kIsWeb
-              ? Semantics(
+        ),
+        !kIsWeb
+            ? Observer(
+                builder: (context) => Semantics(
                   label: "Exit the game",
                   enabled: true,
                   child: ButtonGlass(
@@ -63,10 +63,10 @@ class ButtonsGroupWidget extends StatelessWidget {
                       menuState.toggleExitBtn(context);
                     },
                   ),
-                )
-              : const SizedBox(),
-        ],
-      );
-    });
+                ),
+              )
+            : const SizedBox(),
+      ],
+    );
   }
 }

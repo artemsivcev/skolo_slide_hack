@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/column_row_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/hovered_container.dart';
 
 import 'button_text.dart';
 
@@ -12,12 +13,11 @@ class ButtonGlass extends StatelessWidget {
     this.isPressed = false,
     this.btnText = "",
     this.onTap,
-    this.size = 70,
+    this.size = 50,
     this.padding = const EdgeInsets.all(20.0),
     this.isDisabled = false,
-  }) : super(
-          key: key,
-        );
+    this.extraSpace = 32,
+  }) : super(key: key);
 
   ///Widget for unpressed button
   final Widget childUnpressed;
@@ -37,6 +37,9 @@ class ButtonGlass extends StatelessWidget {
   ///btn custom size
   final double size;
 
+  /// add extra space as padding for inner button
+  final double extraSpace;
+
   ///btn custom padding
   EdgeInsetsGeometry padding;
 
@@ -54,7 +57,7 @@ class ButtonGlass extends StatelessWidget {
               onPressed: onTap,
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all<Size?>(
-                  Size(size, size),
+                  Size(size + extraSpace, size + extraSpace),
                 ),
                 backgroundColor: MaterialStateProperty.resolveWith<Color?>(
                   (Set<MaterialState> states) {
@@ -117,58 +120,6 @@ class ButtonGlass extends StatelessWidget {
               )
             : const SizedBox(),
       ],
-    );
-  }
-}
-
-class HoverContainer extends StatefulWidget {
-  HoverContainer({
-    Key? key,
-    required this.child,
-    required this.isDisabled,
-  }) : super(key: key);
-
-  final Widget child;
-  bool isDisabled;
-
-  @override
-  State<HoverContainer> createState() => _HoverContainerState();
-}
-
-class _HoverContainerState extends State<HoverContainer> {
-  bool isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) {
-        setState(() {
-          if (!widget.isDisabled) {
-            isHovered = true;
-          }
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          isHovered = false;
-        });
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            isHovered
-                ? BoxShadow(
-                    color: colorsPurpleBluePrimary.withOpacity(0.7),
-                    offset: const Offset(0, 0),
-                    blurRadius: 18,
-                    spreadRadius: 4,
-                  )
-                : const BoxShadow(color: Colors.transparent),
-          ],
-        ),
-        child: widget.child,
-      ),
     );
   }
 }

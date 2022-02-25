@@ -1,3 +1,14 @@
 {
+"difficultyLevel": "Difficulty level",
+  "withImage": "with image",
+  "withoutImage": "without image",
+  "chooseImage": "Choose Image",
+  "back": "Back",
+  "crop": "Crop",
+  "play": "Play",
+  "moves": "Moves",
+  "shuffle": "Shuffle",
+  "longPressToShuffle": "Long press to shuffle",
+  "exit": "Exit"
 
 }

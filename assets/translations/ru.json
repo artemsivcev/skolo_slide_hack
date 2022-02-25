@@ -1,0 +1,15 @@
+{
+  "difficultyLevel": "Уровень сложности",
+  "withImage": "с картинкой",
+  "withoutImage": "без картинки",
+  "chooseImage": "Выберите изображение",
+  "back": "Назад",
+  "crop": "Нарезать",
+  "play": "Играть",
+  "moves": "Ходы",
+  "shuffle": "Перемешать",
+  "longPressToShuffle": "Удерживайте чтобы перемешать",
+  "exit": "Выход"
+
+
+}

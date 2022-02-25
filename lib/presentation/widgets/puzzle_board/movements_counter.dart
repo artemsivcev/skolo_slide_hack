@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/text/text_shadows.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MovementsCounter extends StatelessWidget {
   const MovementsCounter({
@@ -20,7 +20,7 @@ class MovementsCounter extends StatelessWidget {
           label: "Amount of moves is $moveAmount",
           readOnly: true,
           child: Text(
-            'Moves: $moveAmount',
+            '${'moves'.tr()}: $moveAmount',
             style: const TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 12,

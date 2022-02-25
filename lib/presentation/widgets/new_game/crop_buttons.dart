@@ -4,11 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
-import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 
 class CropButtons extends StatefulWidget {
   const CropButtons({Key? key}) : super(key: key);
@@ -20,7 +19,6 @@ class CropButtons extends StatefulWidget {
 class _CropButtonsState extends State<CropButtons>
     with TickerProviderStateMixin {
   final chooseImageState = injector<ChooseImageState>();
-  final buttonsHoverState = injector<ButtonsHoverState>();
   final menuState = injector<MenuState>();
 
   @override
@@ -36,8 +34,6 @@ class _CropButtonsState extends State<CropButtons>
             ),
             btnText: 'Back',
             onTap: () async => menuState.backToMenu(),
-            isHovered: buttonsHoverState.isBackHover,
-            onHover: (value) => buttonsHoverState.toggleBackHover(),
           ),
           AnimatedCrossFade(
             crossFadeState: chooseImageState.chosenImage != null
@@ -55,10 +51,6 @@ class _CropButtonsState extends State<CropButtons>
                 btnText: 'Crop & Play!',
                 onTap: () async {
                   chooseImageState.splitImageAndPlay();
-                },
-                isHovered: buttonsHoverState.isCropHovered,
-                onHover: (value) {
-                  buttonsHoverState.toggleHoveredCrop();
                 },
               ),
             ),

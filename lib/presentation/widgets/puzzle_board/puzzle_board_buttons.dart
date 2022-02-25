@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
-import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
@@ -12,7 +11,6 @@ import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glas
 import 'package:skolo_slide_hack/presentation/widgets/common/buttons/rotated_shuffle_button.dart';
 
 class PuzzleBoardButtons extends StatelessWidget {
-  final buttonsHoverState = injector<ButtonsHoverState>();
   final menuState = injector<MenuState>();
 
   final shuffleAnimationState = injector<ShuffleAnimationState>();
@@ -42,13 +40,8 @@ class PuzzleBoardButtons extends StatelessWidget {
               btnText: 'Back',
               onTap: () async {
                 menuState.backToMenu();
-                buttonsHoverState.isBackHover = false;
               },
               size: usedMobileVersion ? 30 : 44,
-              isHovered: buttonsHoverState.isBackHover,
-              onHover: (value) {
-                buttonsHoverState.toggleBackHover();
-              },
             ),
           ),
           //Shuffle
@@ -65,9 +58,7 @@ class PuzzleBoardButtons extends StatelessWidget {
               onTap: () {
                 //do nothing
               },
-              isHovered: buttonsHoverState.shuffleBtnHovered,
               isDisabled: !isButtonActive,
-              onHover: (value) => buttonsHoverState.toggleHoveredShuffleBtn(),
             ),
           ),
         ],

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
-import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
@@ -46,7 +45,6 @@ abstract class _MenuState with Store {
     changeCurrentGameState(GameState.MAIN_MENU);
     soundState.playBackwardSound();
     injector<ChooseImageState>().resetChooseImageStateData();
-    injector<ButtonsHoverState>().setAllHoveredToFalse();
     injector<PuzzleState>().resetTimer();
     injector<PuzzleState>().resetMovementsCounter();
     injector<StartAnimationState>().resetStartAnimation();

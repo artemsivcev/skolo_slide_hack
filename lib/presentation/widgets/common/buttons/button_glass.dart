@@ -12,10 +12,8 @@ class ButtonGlass extends StatelessWidget {
     this.isPressed = false,
     this.btnText = "",
     this.onTap,
-    required this.isHovered,
     this.size = 70,
-    this.onHover,
-    this.padding,
+    this.padding = const EdgeInsets.all(20.0),
     this.isDisabled,
   }) : super(
           key: key,
@@ -36,17 +34,11 @@ class ButtonGlass extends StatelessWidget {
   ///OnTap function
   final VoidCallback? onTap;
 
-  ///Checks if button is hovered
-  final bool isHovered;
-
-  ///OnHover function
-  ValueChanged<bool>? onHover = (value) {};
-
   ///btn custom size
   final double size;
 
   ///btn custom padding
-  EdgeInsetsGeometry? padding = const EdgeInsets.all(20.0);
+  EdgeInsetsGeometry padding;
 
   final bool? isDisabled;
 
@@ -55,7 +47,7 @@ class ButtonGlass extends StatelessWidget {
     return ColumnRowSolver(
       children: [
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: padding,
           child: HoverContainer(
             isDisabled: isDisabled ?? false,
             child: ElevatedButton(

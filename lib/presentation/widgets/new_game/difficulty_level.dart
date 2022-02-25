@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/domain/enums/difficulty_level_enum.dart';
 import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_button.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../common/text/text_shadows.dart';
 
@@ -23,10 +24,10 @@ class DifficultyLevel extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(16, 12, 16, 22),
-            child: Text(
-              'Difficulty level',
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 22),
+            child: const Text(
+              'difficultyLevel',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Montserrat',
@@ -35,7 +36,7 @@ class DifficultyLevel extends StatelessWidget {
                 height: 1.4,
                 color: colorsPurpleBluePrimary,
               ),
-            ),
+            ).tr(),
           ),
           Observer(
             builder: (context) {

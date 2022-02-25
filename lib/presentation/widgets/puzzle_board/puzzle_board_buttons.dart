@@ -10,6 +10,7 @@ import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PuzzleBoardButtons extends StatelessWidget {
   final buttonsHoverState = injector<ButtonsHoverState>();
@@ -36,7 +37,7 @@ class PuzzleBoardButtons extends StatelessWidget {
                 size: usedMobileVersion ? 32 : 44,
                 color: colorsPurpleBluePrimary,
               ),
-              btnText: 'Back',
+              btnText: 'back'.tr(),
               onTap: () async {
                 menuState.backToMenu();
                 buttonsHoverState.isBackHover = false;
@@ -57,7 +58,7 @@ class PuzzleBoardButtons extends StatelessWidget {
                 color: colorsPurpleBluePrimary,
                 height: usedMobileVersion ? 26 : 34,
               ),
-              btnText: 'Shuffle',
+              btnText: 'shuffle'.tr(),
               size: usedMobileVersion ? 30 : 44,
               onTap: () async {
                 shuffleAnimationState.shuffledPressed();

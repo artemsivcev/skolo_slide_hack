@@ -8,6 +8,7 @@ import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ButtonsGroupWidget extends StatelessWidget {
   final menuState = injector<MenuState>();
@@ -28,7 +29,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                 'assets/images/puzzle-new-filled.svg',
                 color: colorsPurpleBluePrimary,
               ),
-              btnText: 'Play with image',
+              btnText: '${'play'.tr()} ${'withImage'.tr()}',
               onTap: () async {
                 menuState.playWithImagePress();
               },
@@ -47,7 +48,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                 size: 50.0,
                 color: colorsPurpleBluePrimary,
               ),
-              btnText: 'Play without image',
+              btnText: '${'play'.tr()} ${'withoutImage'.tr()}',
               onTap: () async {
                 menuState.playWithOutImagePress();
               },
@@ -67,7 +68,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                       color: colorsPurpleBluePrimary,
                       height: 40,
                     ),
-                    btnText: 'Exit',
+                    btnText: 'exit'.tr(),
                     isPressed: menuState.exitBtnPressed,
                     onTap: () {
                       menuState.toggleExitBtn();

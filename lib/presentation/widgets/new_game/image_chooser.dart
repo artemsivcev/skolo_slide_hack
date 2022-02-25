@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
-
-import '../common/text/text_shadows.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'default_preview.dart';
 import 'image_preview.dart';
 
@@ -25,15 +24,15 @@ class _ImageChooserState extends State<ImageChooser> {
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'Choose Image',
+          child: const Text(
+            'chooseImage',
             style: TextStyle(
               fontFamily: 'Montserrat',
               fontSize: 24,
               fontWeight: FontWeight.w900,
               color: colorsPurpleBluePrimary,
             ),
-          ),
+          ).tr(),
         ),
         Row(
           children: [

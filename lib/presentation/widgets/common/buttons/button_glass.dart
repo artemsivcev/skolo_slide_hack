@@ -14,7 +14,7 @@ class ButtonGlass extends StatelessWidget {
     this.onTap,
     this.size = 70,
     this.padding = const EdgeInsets.all(20.0),
-    this.isDisabled,
+    this.isDisabled = false,
   }) : super(
           key: key,
         );
@@ -40,7 +40,7 @@ class ButtonGlass extends StatelessWidget {
   ///btn custom padding
   EdgeInsetsGeometry padding;
 
-  final bool? isDisabled;
+  final bool isDisabled;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class ButtonGlass extends StatelessWidget {
         Padding(
           padding: padding,
           child: HoverContainer(
-            isDisabled: isDisabled ?? false,
+            isDisabled: isDisabled,
             child: ElevatedButton(
               onPressed: onTap,
               style: ButtonStyle(
@@ -61,7 +61,8 @@ class ButtonGlass extends StatelessWidget {
                     if (states.contains(MaterialState.hovered) ||
                         states.contains(
                           MaterialState.disabled,
-                        )) {
+                        ) ||
+                        isDisabled) {
                       return Colors.white.withOpacity(0.6);
                     }
 

@@ -34,23 +34,27 @@ class PuzzleBoardButtons extends StatelessWidget {
             child: ButtonGlass(
               childUnpressed: Icon(
                 Icons.arrow_back,
-                size: usedMobileVersion ? 32 : 44,
+                size:
+                    // usedMobileVersion ? 32 :
+                    44,
                 color: colorsPurpleBluePrimary,
               ),
               btnText: 'Back',
               onTap: () async {
                 menuState.backToMenu();
               },
-              size: usedMobileVersion ? 30 : 44,
+              size:
+                  // usedMobileVersion ? 30 :
+                  100,
             ),
           ),
           //Shuffle
           Semantics(
-            label: "Shuffle puzzle boarder",
+            label: "Shuffle puzzle board",
             enabled: true,
             child: ButtonGlass(
               size: 100,
-              btnText: 'Long press to shuffle',
+              btnText: 'Shuffle',
               childUnpressed: RotatedShuffleButton(
                 isButtonActive: isButtonActive,
                 buttonSize: 100,

@@ -68,7 +68,7 @@ class _RotatedShuffleButtonState extends State<RotatedShuffleButton> {
                 child: SvgPicture.asset(
                   'assets/images/restart.svg',
                   color: colorToUse,
-                  height: 40,
+                  height: 25,
                 ),
               ),
               Center(

@@ -14,8 +14,14 @@ import 'package:skolo_slide_hack/presentation/widgets/menu/links_row.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/menu_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/sound_button.dart';
 
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final menuState = injector<MenuState>();
   final soundState = injector<SoundState>();
   final screenState = injector<ScreenState>();
@@ -24,45 +30,67 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     soundState.preloadMainAudio();
     screenState.setScreenSize(context);
-    return Observer(builder: (context) {
-      final mainMenuIsShowing =
-          menuState.currentGameState == GameState.MAIN_MENU;
-      final chooseImageIsShowing =
-          menuState.currentGameState == GameState.CHOSE_IMAGE;
+    return Container(
+      color: colorsBackgroundGame,
+      child: Observer(builder: (context) {
+        final mainMenuIsShowing =
+            menuState.currentGameState == GameState.MAIN_MENU;
+        final chooseImageIsShowing =
+            menuState.currentGameState == GameState.CHOSE_IMAGE;
 
-      //todo try to extract the BackgroundWithBubbles to the background stack
-      return BackgroundWithBubbles(
-          colorsBackground: colorsBackgroundGame,
-          direction: mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
-          numLines: mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
-          child: SafeArea(
-            bottom: false,
-            left: false,
-            right: false,
+        return Material(
+          child: Container(
+            color: colorsBackgroundGame,
             child: Stack(
-              alignment: Alignment.bottomCenter,
+              clipBehavior: Clip.none,
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: SoundButton(),
+                AnimatedOpacity(
+                  opacity: mainMenuIsShowing || chooseImageIsShowing ? 1.0 : 0,
+                  duration: const Duration(seconds: 3),
+                  child: SizedBox(
+                      width: screenState.screenWidth,
+                      height: screenState.screenHeight,
+                      child: BackgroundWithBubbles(
+                          colorsBackground: colorsBackgroundGame,
+                          direction: mainMenuIsShowing
+                              ? LineDirection.Ttb
+                              : LineDirection.Btt,
+                          numLines: 20,
+                          child: Container())),
                 ),
-                Column(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: GameTitle(),
-                    ),
-                    MenuWidget(),
-                    LinksRow(),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: DashIcon(),
+                SafeArea(
+                  bottom: false,
+                  left: false,
+                  right: false,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: SoundButton(),
+                      ),
+                      Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: GameTitle(),
+                          ),
+                          MenuWidget(),
+                          LinksRow(),
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: DashIcon(),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ));
-    });
+          ),
+        );
+      }),
+    );
   }
 }

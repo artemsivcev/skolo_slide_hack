@@ -6,6 +6,7 @@ import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/tile_animation_state.dart';
+import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/buttons/rotated_shuffle_button.dart';
@@ -16,6 +17,7 @@ class PuzzleBoardButtons extends StatelessWidget {
   final shuffleAnimationState = injector<ShuffleAnimationState>();
   final screenState = injector<ScreenState>();
   final animatedTileState = injector<TileAnimationState>();
+  final winAnimationState = injector<WinAnimationState>();
 
   PuzzleBoardButtons({Key? key}) : super(key: key);
 // todo size
@@ -23,8 +25,9 @@ class PuzzleBoardButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
       var usedMobileVersion = screenState.usedMobileVersion;
-      var isButtonActive =
-          animatedTileState.currentAnimationPhase == TileAnimationPhase.NORMAL;
+      var isButtonActive = animatedTileState.currentAnimationPhase ==
+              TileAnimationPhase.NORMAL ||
+          winAnimationState.isAnimCompleted;
 
       return RowColumnSolver(
         children: [

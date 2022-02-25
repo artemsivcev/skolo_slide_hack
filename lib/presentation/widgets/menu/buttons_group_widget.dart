@@ -4,14 +4,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
-import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
-import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
+import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 
 class ButtonsGroupWidget extends StatelessWidget {
   final menuState = injector<MenuState>();
-  final buttonsHoverState = injector<ButtonsHoverState>();
 
   ButtonsGroupWidget({Key? key}) : super(key: key);
 
@@ -32,10 +30,6 @@ class ButtonsGroupWidget extends StatelessWidget {
               onTap: () async {
                 menuState.playWithImagePress();
               },
-              isHovered: buttonsHoverState.isPlayWithImageHovered,
-              onHover: (value) {
-                buttonsHoverState.togglePlayWithImageHovered();
-              },
             ),
           ),
           Semantics(
@@ -50,10 +44,6 @@ class ButtonsGroupWidget extends StatelessWidget {
               btnText: 'Play without image',
               onTap: () async {
                 menuState.playWithOutImagePress();
-              },
-              isHovered: buttonsHoverState.isPlayHovered,
-              onHover: (value) {
-                buttonsHoverState.toggleHoveredPlay();
               },
             ),
           ),
@@ -70,11 +60,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                     btnText: 'Exit',
                     isPressed: menuState.exitBtnPressed,
                     onTap: () {
-                      menuState.toggleExitBtn();
-                    },
-                    isHovered: buttonsHoverState.exitBtnHovered,
-                    onHover: (value) {
-                      buttonsHoverState.toggleHoveredExitBtn();
+                      menuState.toggleExitBtn(context);
                     },
                   ),
                 )

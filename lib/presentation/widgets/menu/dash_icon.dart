@@ -32,7 +32,7 @@ class DashIcon extends StatelessWidget {
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  onTap: () async => {launch("https://flutter.com")},
+                  onTap: () async => {launch("https://flutter.dev/")},
                   child: Image.asset(
                     'assets/images/dash_eyes.png',
                     width: 105,

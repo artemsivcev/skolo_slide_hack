@@ -6,7 +6,10 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
+import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
+import 'package:skolo_slide_hack/domain/states/start_animation_state.dart';
+import 'package:skolo_slide_hack/domain/states/win_animation_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/background/background_with_bubbles.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/dash_icon.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/game_title.dart';
@@ -14,11 +17,31 @@ import 'package:skolo_slide_hack/presentation/widgets/menu/links_row.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/menu_widget.dart';
 import 'package:skolo_slide_hack/presentation/widgets/menu/sound_button.dart';
 
-class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   final menuState = injector<MenuState>();
   final soundState = injector<SoundState>();
   final screenState = injector<ScreenState>();
+
+  /// Called before close the app.
+  void disposeStatesResources() {
+    injector<ShuffleAnimationState>().dispose();
+    soundState.dispose();
+    injector<StartAnimationState>().dispose();
+    injector<WinAnimationState>().dispose();
+  }
+
+  @override
+  void dispose() {
+    disposeStatesResources();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

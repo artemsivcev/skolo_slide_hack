@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:marquee/marquee.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
-import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
@@ -11,7 +10,6 @@ import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glas
 class SoundButton extends StatelessWidget {
   SoundButton({Key? key}) : super(key: key);
 
-  final buttonsHoverState = injector<ButtonsHoverState>();
   final soundState = injector<SoundState>();
   final screenState = injector<ScreenState>();
 
@@ -33,10 +31,6 @@ class SoundButton extends StatelessWidget {
               ButtonGlass(
                 size: usedMobileVersion ? 14 : 20,
                 onTap: () => {soundState.toggleSoundBtn()},
-                isHovered: buttonsHoverState.isSoundHovered,
-                onHover: (value) {
-                  buttonsHoverState.toggleHoveredSound();
-                },
                 childPressed: Icon(
                   Icons.music_off,
                   size: usedMobileVersion ? 16 : 20,

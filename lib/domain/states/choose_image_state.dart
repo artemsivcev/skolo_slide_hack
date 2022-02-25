@@ -104,10 +104,10 @@ abstract class _ChooseImageState with Store {
   @action
   Future<void> splitImageAndPlay() async {
     await splitImage();
+    injector<PuzzleState>().generatePuzzle();
     menuState.changeCurrentGameState(chosenDefaultImage
         ? GameState.DEFAULT_IMAGE_PLAY
         : GameState.CUSTOM_IMAGE_PLAY);
-    injector<PuzzleState>().generatePuzzle();
   }
 
   /// logic for splitting image, working really bad, but we can use loaders!!!
@@ -157,7 +157,7 @@ abstract class _ChooseImageState with Store {
   /// for adaptive layout
   double getImageMaxSize(BuildContext context, {double? customMultiple}) {
     double maxSize = 100.0;
-    double multiple = 0.14;
+    double multiple = 0.15;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 

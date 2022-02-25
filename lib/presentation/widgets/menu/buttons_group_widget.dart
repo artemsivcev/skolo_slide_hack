@@ -29,7 +29,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                 'assets/images/puzzle-new-filled.svg',
                 color: colorsPurpleBluePrimary,
               ),
-              btnText: '${'play'.tr()} ${'withImage'.tr()}',
+              btnText: '${'playing'.tr()} ${'withImage'.tr()}',
               onTap: () async {
                 menuState.playWithImagePress();
               },
@@ -48,7 +48,7 @@ class ButtonsGroupWidget extends StatelessWidget {
                 size: 50.0,
                 color: colorsPurpleBluePrimary,
               ),
-              btnText: '${'play'.tr()} ${'withoutImage'.tr()}',
+              btnText: '${'playing'.tr()} ${'withoutImage'.tr()}',
               onTap: () async {
                 menuState.playWithOutImagePress();
               },

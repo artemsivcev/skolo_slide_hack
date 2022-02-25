@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -20,11 +21,7 @@ class GameTitle extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 8),
             child: Text(
-              usedMobileVersion
-                  ? 'Slide Puzzle\n      Game'
-                  : '''Slide
-        Puzzle
-                   Game''',
+              usedMobileVersion ? 'game_title'.tr() : 'game_big_title'.tr(),
               style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: usedMobileVersion ? 18 : 30,

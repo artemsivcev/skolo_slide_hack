@@ -1,5 +1,4 @@
 import 'package:animated_background/lines.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -44,18 +43,20 @@ class _MainScreenState extends State<MainScreen> {
             clipBehavior: Clip.none,
             children: [
               AnimatedOpacity(
-                opacity: mainMenuIsShowing || chooseImageIsShowing ? 1.0 : 0,
+                opacity: mainMenuIsShowing || chooseImageIsShowing ? 1 : 0,
                 duration: const Duration(seconds: 3),
                 child: SizedBox(
-                    width: screenState.screenWidth,
-                    height: screenState.screenHeight,
-                    child: BackgroundWithBubbles(
-                        colorsBackground: colorsBackgroundGame,
-                        direction: mainMenuIsShowing
-                            ? LineDirection.Ttb
-                            : LineDirection.Btt,
-                        numLines: 20,
-                        child: Container())),
+                  width: screenState.screenWidth,
+                  height: screenState.screenHeight,
+                  child: BackgroundWithBubbles(
+                    colorsBackground: colorsBackgroundGame,
+                    direction: mainMenuIsShowing
+                        ? LineDirection.Ttb
+                        : LineDirection.Btt,
+                    numLines: 20,
+                    child: Container(),
+                  ),
+                ),
               ),
               SafeArea(
                 bottom: false,

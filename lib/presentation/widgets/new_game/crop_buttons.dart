@@ -53,9 +53,9 @@ class _CropButtonsState extends State<CropButtons>
                   'assets/images/puzzle-new.svg',
                   color: colorsPurpleBluePrimary,
                 ),
-                btnText: '${'crop'.tr()} & ${'play'.tr()}!',
+                btnText: '${'crop'.tr()} & ${'play'.tr()}',
                 onTap: () async {
-                  chooseImageState.splitImageAndPlay();
+                  await chooseImageState.splitImageAndPlay();
                 },
                 isHovered: buttonsHoverState.isCropHovered,
                 onHover: (value) {

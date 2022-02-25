@@ -60,7 +60,7 @@ class _TeamIntroductionState extends State<TeamIntroduction> {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   crossAxisCount: isHeightBigger ? 2 : 4,
-                  childAspectRatio: 0.8,
+                  childAspectRatio: 0.85,
                   physics: const NeverScrollableScrollPhysics(),
                   children: List.generate(
                     membersNames.length,

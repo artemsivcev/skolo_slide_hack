@@ -25,8 +25,6 @@ class _EntryScreenState extends State<EntryScreen>
     if (entryAnimationState.animationController == null) {
       entryAnimationState.initAnimation(this);
     }
-    WidgetsBinding.instance!.addPostFrameCallback(
-        (_) async => await entryAnimationState.createImage());
   }
 
   @override

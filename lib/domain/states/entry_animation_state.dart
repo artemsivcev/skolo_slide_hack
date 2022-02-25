@@ -39,7 +39,7 @@ abstract class _EntryAnimationState with Store {
 
   /// init the controller and animations
   @action
-  initAnimation(TickerProvider tickerProvider) {
+  Future<void> initAnimation(TickerProvider tickerProvider) async {
     animationController = AnimationController(
       vsync: tickerProvider,
       duration: animationOneSecondDuration,
@@ -51,12 +51,14 @@ abstract class _EntryAnimationState with Store {
         curve: const Interval(0.0, 1.0, curve: Curves.easeInSine),
       ),
     );
+    await startBreakingGlass();
   }
 
   /// create [screenImage], that is necessary for smooth animation
   /// transition, when breaking glass
   @action
   Future<void> createImage() async {
+    await Future.delayed(animationThreeSecondsDuration);
     try {
       final boundary = repaintBoundaryKey.currentContext!.findRenderObject()
           as RenderRepaintBoundary;
@@ -69,6 +71,7 @@ abstract class _EntryAnimationState with Store {
       screenImage = null;
     }
     partsScreen = ObservableList.of(generateParts());
+    await Future.delayed(animationHalfSecondDuration);
   }
 
   /// generate new parts from triangles.
@@ -91,7 +94,8 @@ abstract class _EntryAnimationState with Store {
 
   /// start animation
   @action
-  void startBreakingGlass() {
+  Future<void> startBreakingGlass() async {
+    await createImage();
     animationController!.forward();
     injector<MenuState>().changeCurrentGameState(GameState.MAIN_MENU);
   }

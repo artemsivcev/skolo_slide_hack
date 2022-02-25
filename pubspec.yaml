@@ -123,6 +123,12 @@ flutter:
       fonts:
         - asset: fonts/Montserrat-Regular.ttf
           weight: 400
+    - family: AmaticSC
+      fonts:
+        - asset: fonts/AmaticSC-Regular.ttf
+          weight: 400
+        - asset: fonts/AmaticSC-Bold.ttf
+          weight: 700
 
 
   #

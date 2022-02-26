@@ -8,10 +8,9 @@
   "play": "Играть",
   "playing": "Игра",
   "moves": "Ходы",
-  "shuffle": "Перемешать",
-  "longPressToShuffle": "Удерживайте, чтобы перемешать",
+  "longPressToShuffle": "Зажми и тасуй",
   "exit": "Выход",
-  "game_big_title": "Игра\n          в\n             пазлы",
+  "game_big_title": "Игра в\n пазлы",
   "game_title": "Игра в\n пазлы",
   "game": "Играть!"
 }

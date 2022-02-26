@@ -66,7 +66,7 @@ class ButtonGlass extends StatelessWidget {
                           MaterialState.disabled,
                         ) ||
                         isDisabled) {
-                      return Colors.white.withOpacity(0.6);
+                      return Colors.white.withOpacity(0.4);
                     }
 
                     return Colors.white.withOpacity(0.4);

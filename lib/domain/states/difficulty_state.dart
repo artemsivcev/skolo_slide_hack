@@ -23,17 +23,11 @@ abstract class _DifficultyState with Store {
   void dispose() {
     //todo move to back btn
     // difficultyLevel = DifficultyLevelEnum.EASY;
-    // isCropPressed = false;
-    // isCropHovered = false;
-    // isPlayHovered = false;
     // chosenImage = null;
     // croppedImage = null;
     // imageMap = null;
     // isGameStart = false;
     // isNewGameShow = false;
-    // isEasyLevelHovered = false;
-    // isMiddleLevelHovered = false;
-    // isHardLevelHovered = false;
     // eyeX = 1.005;
     // eyeY = 1.005;
   }

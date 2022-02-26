@@ -21,7 +21,7 @@ class PuzzleBoardButtons extends StatelessWidget {
   final winAnimationState = injector<WinAnimationState>();
 
   PuzzleBoardButtons({Key? key}) : super(key: key);
-// todo size
+
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (context) {
@@ -53,7 +53,7 @@ class PuzzleBoardButtons extends StatelessWidget {
             label: "Shuffle puzzle board",
             enabled: true,
             child: ButtonGlass(
-              btnText: 'shuffle'.tr(),
+              btnText: 'longPressToShuffle'.tr(),
               size: usedMobileVersion ? 30 : 44,
               childUnpressed: RotatedShuffleButton(
                 isButtonActive: isButtonActive,

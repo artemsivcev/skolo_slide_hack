@@ -136,7 +136,7 @@ abstract class _SoundState with Store {
     }
   }
 
-  dispose() {
+  void dispose() {
     mainPlayer.dispose();
     effectsPlayer.dispose();
   }

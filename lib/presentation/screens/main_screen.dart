@@ -29,12 +29,11 @@ class _MainScreenState extends State<MainScreen> {
   final screenState = injector<ScreenState>();
 
   /// Called before close the app.
-  /// todo add disposeStatesResources not only controllers
   void disposeStatesResources() {
     injector<ShuffleAnimationState>().dispose();
-    soundState.dispose();
     injector<StartAnimationState>().dispose();
     injector<WinAnimationState>().dispose();
+    soundState.dispose();
   }
 
   @override

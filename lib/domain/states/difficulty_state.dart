@@ -19,16 +19,4 @@ abstract class _DifficultyState with Store {
   /// change boarder size
   @action
   void changeDifficulty(DifficultyLevelEnum value) => difficultyLevel = value;
-
-  void dispose() {
-    //todo move to back btn
-    // difficultyLevel = DifficultyLevelEnum.EASY;
-    // chosenImage = null;
-    // croppedImage = null;
-    // imageMap = null;
-    // isGameStart = false;
-    // isNewGameShow = false;
-    // eyeX = 1.005;
-    // eyeY = 1.005;
-  }
 }

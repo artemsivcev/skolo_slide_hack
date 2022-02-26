@@ -122,7 +122,6 @@ abstract class _ChooseImageState with Store {
       await cropImage();
     }
 
-    //todo this is problem spot
     img.Image image = img.decodeImage(croppedImage!.toList())!;
     int x = 0, y = 0;
     int width = (image.width / difficultyState.boardSize).floor();

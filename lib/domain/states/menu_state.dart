@@ -39,7 +39,6 @@ abstract class _MenuState with Store {
   }
 
   /// restore all bools and go back to menu
-  /// todo mb add dispose?
   @action
   Future<void> backToMenu() async {
     changeCurrentGameState(GameState.MAIN_MENU);

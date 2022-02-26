@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -37,7 +38,7 @@ class PuzzleBoardButtons extends StatelessWidget {
                 size: usedMobileVersion ? 32 : 44,
                 color: colorsPurpleBluePrimary,
               ),
-              btnText: 'Back',
+              btnText: 'back'.tr(),
               onTap: () async {
                 menuState.backToMenu();
               },
@@ -49,8 +50,8 @@ class PuzzleBoardButtons extends StatelessWidget {
             label: "Shuffle puzzle board",
             enabled: true,
             child: ButtonGlass(
+              btnText: 'shuffle'.tr(),
               size: usedMobileVersion ? 30 : 44,
-              btnText: 'Shuffle',
               childUnpressed: RotatedShuffleButton(
                 isButtonActive: isButtonActive,
                 buttonSize: usedMobileVersion ? 30 : 44,

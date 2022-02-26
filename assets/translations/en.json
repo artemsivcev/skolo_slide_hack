@@ -1,3 +1,15 @@
 {
-
+"difficultyLevel": "Difficulty level",
+  "withImage": "with image",
+  "withoutImage": "without image",
+  "chooseImage": "Choose Image",
+  "back": "Back",
+  "crop": "Crop",
+  "play": "Play",
+  "moves": "Moves",
+  "shuffle": "Shuffle",
+  "longPressToShuffle": "Long press to shuffle",
+  "exit": "Exit",
+  "game_big_title": "Slide\n        Puzzle\n                   Game",
+  "game_title": "Slide Puzzle\n      Game"
 }

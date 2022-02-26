@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/shuffle_animation_state.dart';
 
 class RotatedShuffleButton extends StatefulWidget {
@@ -24,11 +25,14 @@ class _RotatedShuffleButtonState extends State<RotatedShuffleButton> {
   final shuffleAnimationState = injector<ShuffleAnimationState>();
   final puzzleState = injector<PuzzleState>();
 
+  final screenState = injector<ScreenState>();
+
   @override
   Widget build(BuildContext context) {
     final colorToUse = widget.isButtonActive
         ? colorsPurpleBluePrimary
         : colorsPurpleBluePrimaryLight;
+    var usedMobileVersion = screenState.usedMobileVersion;
 
     return GestureDetector(
       onLongPress: () {
@@ -64,8 +68,8 @@ class _RotatedShuffleButtonState extends State<RotatedShuffleButton> {
               Center(
                 child: SvgPicture.asset(
                   'assets/images/restart.svg',
-                  color: colorToUse,
-                  height: 40,
+                  color: colorsPurpleBluePrimary,
+                  height: usedMobileVersion ? 26 : 34,
                 ),
               ),
             ],

@@ -7,6 +7,7 @@ import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/adaptivity_solver/row_column_solver.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:skolo_slide_hack/presentation/widgets/common/buttons/button_glass.dart';
 
 class CropButtons extends StatefulWidget {
@@ -32,7 +33,7 @@ class _CropButtonsState extends State<CropButtons>
               size: 50.0,
               color: colorsPurpleBluePrimary,
             ),
-            btnText: 'Back',
+            btnText: 'back'.tr(),
             onTap: () async => menuState.backToMenu(),
           ),
           AnimatedCrossFade(
@@ -48,9 +49,9 @@ class _CropButtonsState extends State<CropButtons>
                   'assets/images/puzzle-new.svg',
                   color: colorsPurpleBluePrimary,
                 ),
-                btnText: 'Crop & Play!',
+                btnText: '${'crop'.tr()} & ${'play'.tr()}',
                 onTap: () async {
-                  chooseImageState.splitImageAndPlay();
+                  await chooseImageState.splitImageAndPlay();
                 },
               ),
             ),

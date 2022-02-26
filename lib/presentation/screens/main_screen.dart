@@ -1,5 +1,4 @@
 import 'package:animated_background/lines.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -52,41 +51,63 @@ class _MainScreenState extends State<MainScreen> {
       final mainMenuIsShowing =
           menuState.currentGameState == GameState.MAIN_MENU;
       final chooseImageIsShowing =
-          menuState.currentGameState == GameState.CHOSE_IMAGE;
+          menuState.currentGameState == GameState.CHOOSE_IMAGE;
 
-      //todo try to extract the BackgroundWithBubbles to the background stack
-      return BackgroundWithBubbles(
-          colorsBackground: colorsBackgroundGame,
-          direction: mainMenuIsShowing ? LineDirection.Ttb : LineDirection.Btt,
-          numLines: mainMenuIsShowing || chooseImageIsShowing ? 20 : 0,
-          child: SafeArea(
-            bottom: false,
-            left: false,
-            right: false,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: SoundButton(),
+      return Material(
+        type: MaterialType.transparency,
+        child: Container(
+          color: colorsBackgroundGame,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              AnimatedOpacity(
+                opacity: mainMenuIsShowing || chooseImageIsShowing ? 1 : 0,
+                duration: const Duration(seconds: 3),
+                child: SizedBox(
+                  width: screenState.screenWidth,
+                  height: screenState.screenHeight,
+                  child: BackgroundWithBubbles(
+                    colorsBackground: colorsBackgroundGame,
+                    direction: mainMenuIsShowing
+                        ? LineDirection.Ttb
+                        : LineDirection.Btt,
+                    numLines: 20,
+                    child: Container(),
+                  ),
                 ),
-                Column(
+              ),
+              SafeArea(
+                bottom: false,
+                left: false,
+                right: false,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
                   children: [
                     Align(
-                      alignment: Alignment.topLeft,
-                      child: GameTitle(),
+                      alignment: Alignment.topRight,
+                      child: SoundButton(),
                     ),
-                    MenuWidget(),
-                    LinksRow(),
+                    Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: GameTitle(),
+                        ),
+                        MenuWidget(),
+                        LinksRow(),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: DashIcon(),
+                    ),
                   ],
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: DashIcon(),
-                ),
-              ],
-            ),
-          ));
+              ),
+            ],
+          ),
+        ),
+      );
     });
   }
 }

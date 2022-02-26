@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:skolo_slide_hack/domain/states/bird_eye_state.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
 import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
+import 'package:skolo_slide_hack/domain/states/entry_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
@@ -19,6 +20,7 @@ Future<void> setupInjection() async {
   injector.registerSingleton(SoundState());
   injector.registerSingleton(ScreenState());
   injector.registerSingleton(TileAnimationState());
+  injector.registerSingleton(EntryAnimationState());
   injector.registerSingleton(WinAnimationState());
   injector.registerLazySingleton(() => StartAnimationState());
   injector.registerSingleton(ShuffleAnimationState());

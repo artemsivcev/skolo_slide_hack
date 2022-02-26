@@ -27,7 +27,7 @@ class MenuWidget extends StatelessWidget {
               Widget secondWidgetToShow = const SizedBox();
 
               switch (menuState.currentGameState) {
-                case GameState.CHOSE_IMAGE:
+                case GameState.CHOOSE_IMAGE:
                   firstWidgetToShow = const ImageChooser();
                   secondWidgetToShow = const CropButtons();
                   break;

@@ -1,0 +1,16 @@
+{
+  "difficultyLevel": "Сложность",
+  "withImage": "с картинкой",
+  "withoutImage": "без картинки",
+  "chooseImage": "Выбрать изображение",
+  "back": "Назад",
+  "crop": "Нарезать",
+  "play": "Играть",
+  "playing": "Игра",
+  "moves": "Ходы",
+  "shuffle": "Перемешать",
+  "longPressToShuffle": "Удерживайте, чтобы перемешать",
+  "exit": "Выход",
+  "game_big_title": "Игра\n          в\n             пазлы",
+  "game_title": "Игра в пазлы"
+}

@@ -10,6 +10,7 @@ import 'package:mobx/mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
 import 'package:skolo_slide_hack/domain/states/puzzle_state.dart';
+import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 
 import 'difficulty_state.dart';
 
@@ -23,6 +24,7 @@ abstract class _ChooseImageState with Store {
   /// state with board size due to its difficulty
   final difficultyState = injector<DifficultyState>();
   final menuState = injector<MenuState>();
+  final soundState = injector<SoundState>();
 
   /// cropped image to preview on new game screen
   @observable
@@ -72,6 +74,7 @@ abstract class _ChooseImageState with Store {
     } else {
       // User canceled the picker
     }
+    soundState.playChooseImageSound();
   }
 
   /// Define a key for cropper
@@ -98,6 +101,7 @@ abstract class _ChooseImageState with Store {
     chosenCustomImage = false;
     croppedImage = data;
     chosenImage = data;
+    soundState.playChooseImageSound();
   }
 
   /// fun for split default image and start to play
@@ -105,6 +109,7 @@ abstract class _ChooseImageState with Store {
   Future<void> splitImageAndPlay() async {
     await splitImage();
     injector<PuzzleState>().generatePuzzle();
+    soundState.playForwardSound();
     menuState.changeCurrentGameState(chosenDefaultImage
         ? GameState.DEFAULT_IMAGE_PLAY
         : GameState.CUSTOM_IMAGE_PLAY);

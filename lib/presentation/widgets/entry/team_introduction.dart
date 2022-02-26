@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
+import 'package:skolo_slide_hack/domain/states/entry_animation_state.dart';
 import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/entry/team_member.dart';
 
@@ -16,6 +18,7 @@ class _TeamIntroductionState extends State<TeamIntroduction> {
   final List<String> membersNames = ['Artem', 'Dasha', 'Maxim', 'Chris'];
 
   final screenState = injector<ScreenState>();
+  final entryAnimationState = injector<EntryAnimationState>();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,7 @@ class _TeamIntroductionState extends State<TeamIntroduction> {
                         text: 'TEAM',
                         style: TextStyle(
                           fontFamily: 'LuckiestGuy-Regular',
-                          fontSize: 54,
+                          fontSize: 52,
                           letterSpacing: 5,
                           fontWeight: FontWeight.w900,
                           color: colorsPurpleBluePrimary,
@@ -60,11 +63,29 @@ class _TeamIntroductionState extends State<TeamIntroduction> {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   crossAxisCount: isHeightBigger ? 2 : 4,
-                  childAspectRatio: 0.85,
+                  childAspectRatio: 0.9,
                   physics: const NeverScrollableScrollPhysics(),
                   children: List.generate(
                     membersNames.length,
                     (ind) => TeamMember(name: membersNames[ind]),
+                  ),
+                ),
+                InkWell(
+                  hoverColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async =>
+                      await entryAnimationState.startBreakingGlass(),
+                  child: Text(
+                    'game'.tr(),
+                    style: const TextStyle(
+                      fontFamily: 'AmaticSC',
+                      fontSize: 50,
+                      letterSpacing: 3,
+                      fontWeight: FontWeight.w900,
+                      color: blackColour,
+                    ),
                   ),
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
+import 'package:skolo_slide_hack/domain/constants/durations.dart';
 
 part 'sound_state.g.dart';
 
@@ -19,10 +20,10 @@ abstract class _SoundState with Store {
 
   /// Action to change sound state
   @action
-  void toggleSoundBtn() {
+  void toggleSoundBtn({bool withDelay = false}) {
     isSoundPlay = !isSoundPlay;
 
-    toggleMainSound();
+    toggleMainSound(withDelay: withDelay);
   }
 
   /// fun check audioSource in [mainPlayer]
@@ -37,14 +38,47 @@ abstract class _SoundState with Store {
 
   /// fun pause and play sound in [mainPlayer]
   @action
-  Future<void> toggleMainSound() async {
+  Future<void> toggleMainSound({bool withDelay = false}) async {
     if (mainPlayer.playing) {
       mainPlayer.pause();
       effectsPlayer.pause();
     } else {
       preloadMainAudio();
+      if (withDelay) await Future.delayed(animationHalfSecondDuration);
       mainPlayer.play();
     }
+  }
+
+  /// fun set glass.mp3 in [effectsPlayer] and playing it once
+  @action
+  void playGlassBreakingSound() {
+    effectsPlayer.setAsset('assets/audio/glass.mp3');
+    effectsPlayer.setLoopMode(LoopMode.off);
+    effectsPlayer.play();
+  }
+
+  /// fun set 3x3.mp3 in [effectsPlayer] and playing it once
+  @action
+  void playEasyModeSound() {
+    effectsPlayer.setAsset('assets/audio/3x3.mp3');
+    effectsPlayer.setLoopMode(LoopMode.off);
+    play(effectsPlayer);
+  }
+
+  /// fun set 4x4.mp3 in [effectsPlayer] and playing it once
+  @action
+  void playMiddleModeSound() {
+    effectsPlayer.setAsset('assets/audio/4x4.mp3');
+    effectsPlayer.setLoopMode(LoopMode.off);
+    play(effectsPlayer);
+  }
+
+  /// fun set 5x5.mp3 in [effectsPlayer] and playing it once
+  @action
+  void playDifficultModeSound() {
+    effectsPlayer.setAsset('assets/audio/5x5.mp3');
+    effectsPlayer.setLoopMode(LoopMode.off);
+    play(effectsPlayer);
   }
 
   /// fun set forward.mp3 in [effectsPlayer] and playing it once
@@ -71,10 +105,10 @@ abstract class _SoundState with Store {
     play(effectsPlayer);
   }
 
-  /// fun set not_movable.mp3 in [effectsPlayer] and playing it once
+  /// fun set choice.mp3 in [effectsPlayer] and playing it once
   @action
-  void playCantMoveSound() {
-    effectsPlayer.setAsset('assets/audio/move.mp3');
+  void playChooseImageSound() {
+    effectsPlayer.setAsset('assets/audio/choice.mp3');
     effectsPlayer.setLoopMode(LoopMode.off);
     play(effectsPlayer);
   }

@@ -8,6 +8,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/models/triangle.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 
 part 'entry_animation_state.g.dart';
 
@@ -15,6 +16,8 @@ class EntryAnimationState = _EntryAnimationState with _$EntryAnimationState;
 
 /// State is used for showing entry animation when the user starts the game.
 abstract class _EntryAnimationState with Store {
+  final soundState = injector<SoundState>();
+
   /// screen transformed to the image for making animation
   @observable
   MemoryImage? screenImage;
@@ -43,13 +46,14 @@ abstract class _EntryAnimationState with Store {
 
   /// init the controller and animations
   @action
-  Future<void> initAnimation(TickerProvider tickerProvider) async {
+  void initAnimation(TickerProvider tickerProvider) {
     animationController = AnimationController(
       vsync: tickerProvider,
       duration: animationOneSecondDuration,
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           isAnimCompleted = true;
+          soundState.toggleSoundBtn(withDelay: true);
         }
 
         if (status == AnimationStatus.dismissed) {
@@ -63,14 +67,12 @@ abstract class _EntryAnimationState with Store {
         curve: const Interval(0.0, 1.0, curve: Curves.easeInSine),
       ),
     );
-    await startBreakingGlass();
   }
 
   /// create [screenImage], that is necessary for smooth animation
   /// transition, when breaking glass
   @action
   Future<void> createImage() async {
-    await Future.delayed(animationThreeSecondsDuration);
     try {
       final boundary = repaintBoundaryKey.currentContext!.findRenderObject()
           as RenderRepaintBoundary;
@@ -83,7 +85,7 @@ abstract class _EntryAnimationState with Store {
       screenImage = null;
     }
     partsScreen = ObservableList.of(generateParts());
-    await Future.delayed(animationHalfSecondDuration);
+    await Future.delayed(const Duration(milliseconds: 200));
   }
 
   /// generate new parts from triangles.
@@ -108,6 +110,7 @@ abstract class _EntryAnimationState with Store {
   @action
   Future<void> startBreakingGlass() async {
     await createImage();
+    soundState.playGlassBreakingSound();
     animationController!.forward();
     injector<MenuState>().changeCurrentGameState(GameState.MAIN_MENU);
   }

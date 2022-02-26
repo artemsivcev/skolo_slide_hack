@@ -26,7 +26,7 @@ class TeamMember extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           SizedBox(
             width: 200,
             height: 70,

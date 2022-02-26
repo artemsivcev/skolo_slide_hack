@@ -69,6 +69,8 @@ dependencies:
   #for moving text
   marquee: ^2.2.0
 
+  flutter_circular_text: ^0.3.1
+
 dev_dependencies:
   dart_code_metrics: ^4.9.1
   build_runner: ^2.1.7

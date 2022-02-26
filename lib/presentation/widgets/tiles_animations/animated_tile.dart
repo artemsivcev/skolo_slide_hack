@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
@@ -87,7 +86,7 @@ class AnimatedTile extends StatelessWidget {
           },
           child: TileToShow(
             tile: tile,
-            onTap: onTap,
+            onTap: animationPhase == TileAnimationPhase.NORMAL ? onTap : null,
           ),
         );
       },
@@ -99,11 +98,11 @@ class TileToShow extends StatelessWidget {
   const TileToShow({
     Key? key,
     required this.tile,
-    required this.onTap,
+    this.onTap,
   }) : super(key: key);
 
   final Tile tile;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

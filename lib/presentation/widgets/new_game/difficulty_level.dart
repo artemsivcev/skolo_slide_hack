@@ -3,18 +3,14 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/enums/difficulty_level_enum.dart';
-import 'package:skolo_slide_hack/domain/states/buttons_hover_state.dart';
 import 'package:skolo_slide_hack/domain/states/difficulty_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 import 'package:skolo_slide_hack/presentation/widgets/new_game/difficulty_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-import '../common/text/text_shadows.dart';
-
 class DifficultyLevel extends StatelessWidget {
   final soundState = injector<SoundState>();
   final difficultyState = injector<DifficultyState>();
-  final buttonsHoverState = injector<ButtonsHoverState>();
 
   DifficultyLevel({Key? key}) : super(key: key);
 
@@ -55,9 +51,6 @@ class DifficultyLevel extends StatelessWidget {
                           .changeDifficulty(DifficultyLevelEnum.EASY);
                       soundState.playEasyModeSound();
                     },
-                    isHovered: buttonsHoverState.isEasyLevelHovered,
-                    onHover: (value) =>
-                        buttonsHoverState.toggleHoveredEasyLevel(),
                   ),
                   const SizedBox(width: 12),
                   DifficultyButton(
@@ -69,9 +62,6 @@ class DifficultyLevel extends StatelessWidget {
                           .changeDifficulty(DifficultyLevelEnum.MIDDLE);
                       soundState.playMiddleModeSound();
                     },
-                    isHovered: buttonsHoverState.isMiddleLevelHovered,
-                    onHover: (value) =>
-                        buttonsHoverState.toggleHoveredMiddleLevel(),
                   ),
                   const SizedBox(width: 12),
                   DifficultyButton(
@@ -83,9 +73,6 @@ class DifficultyLevel extends StatelessWidget {
                           .changeDifficulty(DifficultyLevelEnum.HARD);
                       soundState.playDifficultModeSound();
                     },
-                    isHovered: buttonsHoverState.isHardLevelHovered,
-                    onHover: (value) =>
-                        buttonsHoverState.toggleHoveredHardLevel(),
                   ),
                 ],
               );

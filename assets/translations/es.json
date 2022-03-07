@@ -1,0 +1,16 @@
+{
+"difficultyLevel": "Nivel de dificultad",
+  "withImage": "con imagen",
+  "withoutImage": "sin imagen",
+  "chooseImage": "Elegir Imagen",
+  "back": "Atrás",
+  "crop": "Cultivo",
+  "play": "Jugar",
+  "playing": "Jugar",
+  "moves": "Mueve",
+  "longPressToShuffle": "Pulsación larga para barajar",
+  "exit": "Salida",
+  "game_big_title": "Slide\n        Puzzle\n                   Juego",
+  "game_title": "Slide Puzzle\n      Juego",
+  "game": "Juego!"
+}

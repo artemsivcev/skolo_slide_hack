@@ -28,10 +28,10 @@ class LinksRow extends StatelessWidget {
               child: Row(
                 children: [
                   GitHubIcon(height: !usedMobileVersion ? 48 : 34),
-                  const SizedBox(width: 12),
-                  usedMobileVersion
-                      ? const SmallSkoloIcon(height: 34)
-                      : SkoloIcon(height: !usedMobileVersion ? 48 : 34),
+                  // const SizedBox(width: 12),
+                  // usedMobileVersion
+                  //     ? const SmallSkoloIcon(height: 34)
+                  //     : SkoloIcon(height: !usedMobileVersion ? 48 : 34),
                 ],
               ),
             ),

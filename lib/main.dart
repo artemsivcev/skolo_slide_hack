@@ -10,7 +10,7 @@ Future<void> main() async {
     EasyLocalization(
       supportedLocales: const [
         Locale('en', 'US'),
-        Locale('ru', 'RU'),
+        Locale('es', 'ES'),
       ],
       saveLocale: true,
       useOnlyLangCode: true,

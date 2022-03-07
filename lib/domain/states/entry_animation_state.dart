@@ -8,6 +8,7 @@ import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/durations.dart';
 import 'package:skolo_slide_hack/domain/models/triangle.dart';
 import 'package:skolo_slide_hack/domain/states/menu_state.dart';
+import 'package:skolo_slide_hack/domain/states/screen_state.dart';
 import 'package:skolo_slide_hack/domain/states/sound_state.dart';
 
 part 'entry_animation_state.g.dart';
@@ -17,6 +18,7 @@ class EntryAnimationState = _EntryAnimationState with _$EntryAnimationState;
 /// State is used for showing entry animation when the user starts the game.
 abstract class _EntryAnimationState with Store {
   final soundState = injector<SoundState>();
+  final screenState = injector<ScreenState>();
 
   /// screen transformed to the image for making animation
   @observable
@@ -49,7 +51,9 @@ abstract class _EntryAnimationState with Store {
   void initAnimation(TickerProvider tickerProvider) {
     animationController = AnimationController(
       vsync: tickerProvider,
-      duration: animationOneSecondDuration,
+      duration: screenState.usedMobileVersion
+          ? animationOneAndHalfSecondDuration
+          : animationOneSecondDuration,
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           isAnimCompleted = true;
@@ -84,8 +88,9 @@ abstract class _EntryAnimationState with Store {
     } catch (_) {
       screenImage = null;
     }
-    partsScreen = ObservableList.of(generateParts());
-    await Future.delayed(const Duration(milliseconds: 200));
+    partsScreen =
+        ObservableList.of(generateParts(screenState.usedMobileVersion ? 1 : 2));
+    await Future.delayed(const Duration(milliseconds: 100));
   }
 
   /// generate new parts from triangles.
@@ -94,7 +99,7 @@ abstract class _EntryAnimationState with Store {
   /// algorithm and the amount of new triangles.
   /// The algorithm starts with these two triangles,
   /// which are created with the diagonal the separates screen
-  Iterable<List<Offset>> generateParts({int repeats = 2}) {
+  Iterable<List<Offset>> generateParts(int repeats) {
     var triangles = [
       Triangle(const Offset(0, 0), const Offset(0, 1), const Offset(1, 0)),
       Triangle(const Offset(1, 1), const Offset(0, 1), const Offset(1, 0)),
@@ -110,8 +115,8 @@ abstract class _EntryAnimationState with Store {
   @action
   Future<void> startBreakingGlass() async {
     await createImage();
-    soundState.playGlassBreakingSound();
     animationController!.forward();
+    soundState.playGlassBreakingSound();
     injector<MenuState>().changeCurrentGameState(GameState.MAIN_MENU);
   }
 

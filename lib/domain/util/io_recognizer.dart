@@ -14,4 +14,4 @@ class IORecognizer implements PlatformRecognizer {
   bool isWeb() => false;
 }
 
-PlatformRecognizer getKeyFinder() => IORecognizer();
+PlatformRecognizer getPlatform() => IORecognizer();

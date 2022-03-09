@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:skolo_slide_hack/di/injector_provider.dart';
 import 'package:skolo_slide_hack/domain/constants/colours.dart';
 import 'package:skolo_slide_hack/domain/states/choose_image_state.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:skolo_slide_hack/domain/util/key_finder.dart';
+
 import 'default_preview.dart';
 import 'image_preview.dart';
 
@@ -49,7 +51,10 @@ class _ImageChooserState extends State<ImageChooser> {
             DefaultPreview(
               imageIndex: 2,
             ),
-            ImagePreview()
+            !PlatformRecognizer().isDesktop() ||
+                    !PlatformRecognizer().isMobile()
+                ? ImagePreview()
+                : SizedBox(),
           ],
         ),
       ],

@@ -8,8 +8,11 @@ Supported platforms:
 Android
 IOS
 Web
-macOS (without an ability to use your own image)
-Notice, the app has not been tested on Windows and Linux.
+macOS*
+windows*
+Notice, the app has not been tested on Linux.
+
+* without an ability to use your own image
 
 Functionality:
 Playing with your own image

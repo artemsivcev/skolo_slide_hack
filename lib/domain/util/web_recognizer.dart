@@ -12,4 +12,4 @@ class WebRecognizer implements PlatformRecognizer {
   bool isWeb() => true;
 }
 
-PlatformRecognizer getKeyFinder() => WebRecognizer();
+PlatformRecognizer getPlatform() => WebRecognizer();

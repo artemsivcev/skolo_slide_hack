@@ -1,8 +1,8 @@
-import 'key_finder_stub.dart'
+import 'platform_recognizer_stub.dart'
 // ignore: uri_does_not_exist
-    if (dart.library.io) 'package:skolo_slide_hack/domain/util/shared_pref_key_finder.dart'
+    if (dart.library.io) 'package:skolo_slide_hack/domain/util/io_recognizer.dart'
 // ignore: uri_does_not_exist
-    if (dart.library.html) 'package:skolo_slide_hack/domain/util/web_key_finder.dart'
+    if (dart.library.html) 'package:skolo_slide_hack/domain/util/web_recognizer.dart'
     as plt;
 
 ///Recognize a platform of used devices.

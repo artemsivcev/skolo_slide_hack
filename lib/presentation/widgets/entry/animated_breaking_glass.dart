@@ -23,8 +23,8 @@ class AnimatedBreakingGlass extends StatelessWidget {
     required this.progress,
     required this.points,
     required this.child,
-    this.multipleX = 0.1,
-    this.multipleY = 1.2,
+    this.multipleX = 0.12,
+    this.multipleY = 1.1,
   }) : super(key: key);
 
   @override
@@ -54,9 +54,9 @@ class AnimatedBreakingGlass extends StatelessWidget {
         child: Transform(
           transform: Matrix4.identity()
             ..setEntry(3, 2, 0.01)
-            ..rotateZ((alignment.x < 0 ? -1 : 1) * 0.6 * progress)
-            ..rotateX((alignment.x < 0 ? -1 : 1) * 0.5 * progress)
-            ..rotateY((alignment.x < 0 ? -1 : 1) * 0.5 * progress),
+            ..rotateZ((alignment.x < 0 ? -1 : 1) * 0.7 * progress)
+            ..rotateX((alignment.x < 0 ? -1 : 1) * 0.6 * progress)
+            ..rotateY((alignment.x < 0 ? -1 : 1) * 0.6 * progress),
           alignment: alignment,
           child: Transform.scale(
             scale: 1 - 0.7 * progress,

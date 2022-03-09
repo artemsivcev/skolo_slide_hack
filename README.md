@@ -1,4 +1,4 @@
-The application was created for the  Flutter Puzzle Hack by the Skolopendra company team (https://skolopendra.com).
+The application was created for the  Flutter Puzzle Hack.
 
 After the downloading the project run the command to run code generation:
 flutter packages pub run build_runner build --delete-conflicting-outputs
